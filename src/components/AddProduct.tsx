@@ -22,6 +22,7 @@ function AddProduct() {
   const onSubmit = (data: shopProductInterface) => {
     // כאן יש לבצע שליחת המידע לשרת ושמירה במסד הנתונים
     // אחרי שמירה מוצלחת, יש לנווט לדף "פרטי מוצר"
+    
     console.log(data);
     // כאן אתה יכול להוסיף לשרת או לשלוח עם axios
     navigate(`/product/${data.id}`);

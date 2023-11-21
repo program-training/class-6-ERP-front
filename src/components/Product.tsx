@@ -1,26 +1,29 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-interface adminProductInterface {
-  id: string;
+interface Image {
+  url: string;
+  alt: string;
+}
+
+interface ShopProductInterface {
+  id: string | undefined;
   name: string;
   salePrice: number;
   quantity: number;
   description: string;
   category: string;
   discountPercentage: number;
-  image: {
-    url: string;
-    alt: string;
-  };
+  image: Image;
 }
 
 const ProductDetails = () => {
   const navigate = useNavigate();
+  const { productId } = useParams();
 
   // הנתונים מתוך מקור חיצוני או אובטני
-  const productDetails: adminProductInterface = {
-    id: '1',
+  const productDetails: ShopProductInterface = {
+    id: productId,
     name: 'Laptop',
     salePrice: 1200,
     quantity: 10,
