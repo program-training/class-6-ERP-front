@@ -1,10 +1,6 @@
-// import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-
-// interface HomeProps {
-//   onLoginSuccess: () => void;
-// }
+import axios from 'axios';
 
 interface FormData {
   username: string;
@@ -15,37 +11,50 @@ const Home = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormData>();
 
-  const handleLogin = (data: FormData) => {
-    // אפשר להשתמש במידע בתוך data כאן לביצוע התחברות
-    console.log('Form Data:', data);
+  const handleLogin = async (data: FormData) => {
+    console.log(data);
+    
+    try {
+      // אם יש צורך בשליחת המידע בכל קריאה, ניתן להוסיף את המידע לתוך הפרמטר data
+      const response = await axios.post('http://localhost:8200/api/users/login', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+            console.log(response);
 
-    // כאן יש להוסיף בדיקות ופעולות התחברות מוצלחת
-    // לדוג', אם ההתחברות מוצלחת:
-    navigate('/Products');
-    // אחרת, יש להציג הודעת שגיאה
+      // כאן יש לבדוק את התשובה מהשרת ולפעול בהתאם
+      if (response.status=== 200) {
+        // התחברות מוצלחת
+        console.log('Login successful');
+        navigate('/Products');
+      } else {
+        // התחברות נכשלה
+        console.error('Login failed');
+        // אפשר להציג הודעת שגיאה או לקבוע משתנה ב-state המציין שההתחברות נכשלה
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      // אפשר להציג הודעת שגיאה או לקבוע משתנה ב-state המציין שהתרחשה טעות
+    }
   };
-
   return (
     <div>
-      <h1>Welcome to Microservice Frontend</h1>
-      <div>
-        <button onClick={() => navigate('/Sign_up')}>Sign up</button>
-        <form onSubmit={handleSubmit(handleLogin)}>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            {...register('username', { required: true })}
-          />
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            {...register('password', { required: true })}
-          />
-          <button type="submit">Login</button>
-        </form>
-      </div>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit(handleLogin)}>
+        <label>
+          Username:
+          <input type="text" {...register('username')} />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input type="password" {...register('password')} />
+        </label>
+        <br />
+        <button type="submit">Login</button>
+        <button onClick={()=>{navigate('./Sign_up')}}>Sign_up</button>
+      </form>
     </div>
   );
 };
