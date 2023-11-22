@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
- function Footer() {
+function Footer() {
   return (
     <Box
       component="footer"
