@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { Box, Button, Container, TextField, Typography, Checkbox, Grid } from '@mui/material';
+import { useState } from 'react';
+import { Label } from '@mui/icons-material';
 
 
 interface shopProductInterface {
@@ -27,130 +30,151 @@ function AddProduct() {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<adminProductInterface>();
 
+  const [checkbox, setCheckbox] = useState<boolean>(false)
+
   const onSubmit = async (data: adminProductInterface) => {
     try {
-      // שליחת המידע לשרת ושמירה במסד הנתונים
+      console.log(data);
+      
       const response = await axios.post('/api/saveProduct', data);
-  
-      // אם השליחה הצליחה, נדפיס את המידע שחזר מהשרת
+
       console.log(response.data);
-  
-      // נווט לדף "פרטי מוצר" עם המזהה של המוצר שנשמר
+
       navigate(`/product/${response.data.id}`);
     } catch (error) {
-      // אם יש שגיאה בשליחה לשרת, יש לטפל בה כאן
       console.error('Error saving product:', error);
     }
   };
-  
-  return (
-    <div>
-      <h1>Add Product</h1>
-      <button onClick={() => navigate('/')}>Logout</button>
-      <button onClick={() => navigate('/Products')}>All Products</button>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* הוספת שדות shopProductInterface */}
-        <label htmlFor="id">Product ID:</label>
-        <input
+  const handleChangeCheckbox = () => {
+    setCheckbox(!checkbox);
+  };
+
+
+  return (
+    <Container>
+      <Typography>Add Product</Typography>
+      <Button onClick={() => navigate('/')}>Logout</Button>
+      <Button onClick={() => navigate('/Products')}>All Products</Button>
+
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{}}
+
+      >
+        {/* הוספת שדות shopProductInterface
+        <TextField
+          label="Product ID"
           type="text"
           id="id"
           {...register('id', { required: true })}
         />
-        {errors.id && <p>Product ID is required.</p>}
+        {errors.id && <p>Product ID is required.</p>} */}
 
-        <label htmlFor="name">Product Name:</label>
-        <input
+        <TextField
+          label='Product name'
           type="text"
           id="name"
           {...register('name', { required: true })}
         />
         {errors.name && <p>Product Name is required.</p>}
 
-        <label htmlFor="salePrice">Sale Price:</label>
-        <input
+        <TextField
+          label='Sale price'
           type="number"
           id="salePrice"
           {...register('salePrice', { required: true })}
         />
         {errors.salePrice && <p>Sale Price is required.</p>}
 
-        <label htmlFor="quantity">Quantity:</label>
-        <input
+        <TextField
+          label='Quantity'
           type="number"
           id="quantity"
           {...register('quantity', { required: true })}
         />
         {errors.quantity && <p>Quantity is required.</p>}
 
-        <label htmlFor="description">Description:</label>
-        <input
+        <TextField
+          label='Description'
           type="text"
           id="description"
           {...register('description', { required: true })}
         />
         {errors.description && <p>Description is required.</p>}
 
-        <label htmlFor="category">Category:</label>
-        <input
+        <TextField
+          label='Category'
           type="text"
           id="category"
           {...register('category', { required: true })}
         />
         {errors.category && <p>Category is required.</p>}
 
-        <label htmlFor="discountPercentage">Discount Percentage:</label>
-        <input
+        <TextField
+          label='Discount percentage'
           type="number"
           id="discountPercentage"
           {...register('discountPercentage', { required: true })}
         />
         {errors.discountPercentage && <p>Discount Percentage is required.</p>}
+        <Box sx={{display: 'flex' }}>
+          <Typography>Is for sale</Typography>
+        <Checkbox
+          checked={checkbox}
+          onClick={handleChangeCheckbox}
+          inputProps={{ "aria-label": "primary checkbox" }}
+          {...register('isForSale', { required: true })}
+
+        />  </Box>
+      
+        {errors.isForSale && <p>Is For Sale is required.</p>}
+
 
         {/* הוספת שדות של adminProductInterface */}
-        <label htmlFor="isForSale">Is For Sale:</label>
-        <input
-          type="checkbox"
+        {/* <TextField
+          label='Is For Sale'
           id="isForSale"
           {...register('isForSale', { required: true })}
         />
-        {errors.isForSale && <p>Is For Sale is required.</p>}
+        {errors.isForSale && <p>Is For Sale is required.</p>} */}
 
-        <label htmlFor="costPrice">Cost Price:</label>
-        <input
+        <TextField
+          label='Cost price'
           type="number"
           id="costPrice"
           {...register('costPrice', { required: true })}
         />
         {errors.costPrice && <p>Cost Price is required.</p>}
 
-        <label htmlFor="supplier">Supplier:</label>
-        <input
+        <TextField
+          label='Supplier'
           type="text"
           id="supplier"
           {...register('supplier', { required: true })}
         />
         {errors.supplier && <p>Supplier is required.</p>}
 
-        <label htmlFor="image.url">Image URL:</label>
-        <input
-          type="text"
+        <TextField
+          label='Image'
+          type="file"
           id="image.url"
-          {...register('image.url', { required: true })}
+          {...register('image.url', { required: false })}
         />
         {errors.image?.url && <p>Image URL is required.</p>}
 
-        <label htmlFor="image.alt">Image Alt:</label>
-        <input
+        <TextField
+          label='Image alt'
           type="text"
           id="image.alt"
           {...register('image.alt', { required: true })}
         />
         {errors.image?.alt && <p>Image Alt is required.</p>}
 
-        <button type="submit">Save Product</button>
-      </form>
-    </div>
+        <Button type="submit">Save Product</Button>
+      </Box>
+    </Container>
   );
 }
 
