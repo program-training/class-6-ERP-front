@@ -1,10 +1,29 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Input from "@mui/material/Input";
+import FormHelperText from "@mui/material/FormHelperText";
+import Grid from "@mui/material/Grid";
 
-// interface RegistrationProps {
-//   onRegistrationSuccess: () => void;
-// }
+const RegisterFormStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+  padding: "20px",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  background: "linear-gradient(to right bottom, #ffffff, #f0f0f0)",
+};
+
+const ButtonStyle: React.CSSProperties = {
+  backgroundColor: "#007BFF",
+  color: "white",
+};
 
 interface FormData {
   username: string;
@@ -12,26 +31,18 @@ interface FormData {
   confirmPassword: string;
 }
 
-const Sign_up = ( ) => {
+const SignUp = () => {
   const navigate = useNavigate();
-
-  const { register, handleSubmit } = useForm<FormData>();
-
-  // הפונקציה לבדיקת תקינות סיסמה
-  const isPasswordValid = (password: string) => {
-    // כאן ניתן להוסיף כללים לבדיקת תקינות הסיסמה
-    return password.length >= 8; // לדוג, הסיסמה צריכה להכיל לפחות 8 תווים
-  };
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
   const handleRegistration = async (data: FormData) => {
-    console.log(data);
-    
-    const { password } = data;
+    const { password, confirmPassword } = data;
+  console.log(data);
+  
 
     // בדיקת עמיתות סיסמה
-    if (!isPasswordValid(password)) {
-      console.error('Password is not valid');
-      // כאן ניתן להציג הודעת שגיאה למשתמש או לבצע פעולות נוספות
+    if (password !== confirmPassword) {
+      console.error('Passwords do not match');
       return;
     }
 
@@ -42,10 +53,9 @@ const Sign_up = ( ) => {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response);
-      
+      console.log(response.data.user);
+      console.log(response.data.message);
 
-      // כאן יש לבדוק את התשובה מהשרת ולפעול בהתאם
       if (response.status === 200) {
         // רישום מוצלח
         console.log('Registration successful');
@@ -53,44 +63,58 @@ const Sign_up = ( ) => {
       } else {
         // רישום נכשל
         console.error('Registration failed');
-        // ניתן להציג הודעת שגיאה או לקבוע משתנה ב-state המציין שהרישום נכשל
       }
     } catch (error) {
       console.error('Error during registration:', error);
-      // ניתן להציג הודעת שגיאה או לקבוע משתנה ב-state המציין שהתרחשה טעות
-    }  };
+    }
+  };
 
   return (
-    <div>
-      <h1>Registration Page</h1>
-      <div>
-        <button onClick={() => navigate('/')}>Go to Login</button>
-        <form onSubmit={handleSubmit(handleRegistration)}>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            {...register('username', { required: true })}
-          />
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            {...register('password', { required: true })}
-          />
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            {...register('confirmPassword', {
-            //   validate: (value) => value === getValue('password') || 'Passwords do not match',
-            })}
-          />
-          <button type="submit">Register</button>
-        </form>
-      </div>
-    </div>
+    <Grid container justifyContent="center" alignItems="center" height="100vh">
+      <Grid item xs={12} md={6}>
+        <Card>
+          <CardContent>
+            <form style={RegisterFormStyle} onSubmit={handleSubmit(handleRegistration)}>
+              <FormControl>
+                <InputLabel htmlFor="email">Enter Your Email</InputLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  {...register('username', { required: 'Email is required' })}
+                />
+                {errors.username && <FormHelperText error>{errors.username.message}</FormHelperText>}
+              </FormControl>
+
+              <FormControl>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  id="password"
+                  type="password"
+                  {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters long' } })}
+                />
+                {errors.password && <FormHelperText error>{errors.password.message}</FormHelperText>}
+              </FormControl>
+
+              <FormControl>
+                <InputLabel htmlFor="confirmPassword">Password Confirmation</InputLabel>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  {...register('confirmPassword', { required: 'Password confirmation is required' })}
+                />
+                {errors.confirmPassword && <FormHelperText error>{errors.confirmPassword.message}</FormHelperText>}
+              </FormControl>
+
+              <Button type="submit" variant="contained" style={ButtonStyle}>
+                Sign Up
+              </Button>
+            </form>
+            
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 
-export default Sign_up;
+export default SignUp;

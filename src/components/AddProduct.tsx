@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+
 
 interface shopProductInterface {
   id: string;
@@ -25,15 +27,22 @@ function AddProduct() {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<adminProductInterface>();
 
-  const onSubmit = (data: adminProductInterface) => {
-    // כאן יש לבצע שליחת המידע לשרת ושמירה במסד הנתונים
-    // אחרי שמירה מוצלחת, יש לנווט לדף "פרטי מוצר"
-    
-    console.log(data);
-    // כאן אתה יכול להוסיף לשרת או לשלוח עם axios
-    navigate(`/product/${data.id}`);
+  const onSubmit = async (data: adminProductInterface) => {
+    try {
+      // שליחת המידע לשרת ושמירה במסד הנתונים
+      const response = await axios.post('/api/saveProduct', data);
+  
+      // אם השליחה הצליחה, נדפיס את המידע שחזר מהשרת
+      console.log(response.data);
+  
+      // נווט לדף "פרטי מוצר" עם המזהה של המוצר שנשמר
+      navigate(`/product/${response.data.id}`);
+    } catch (error) {
+      // אם יש שגיאה בשליחה לשרת, יש לטפל בה כאן
+      console.error('Error saving product:', error);
+    }
   };
-
+  
   return (
     <div>
       <h1>Add Product</h1>
