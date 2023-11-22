@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography"; 
 
 interface FormData {
   username: string;
@@ -23,13 +24,8 @@ const Login = () => {
       const response = await axios.post(
         "http://localhost:8200/api/users/login",
         data,
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }
       );
-console.log(response);
+      console.log(response);
 
       if (response.status === 200) {
         console.log("Login successful");
@@ -61,39 +57,39 @@ console.log(response);
           <Grid item xs={12} md={6}>
             <Card>
               <CardContent>
-                <div>
-                  <h1>Login</h1>
-                  <form onSubmit={handleSubmit(handleLogin)}>
-                    <TextField
-                      id="username"
-                      label="Username"
-                      type="text"
-                      {...register("username")}
-                      fullWidth
-                      margin="normal"
-                    />
-                    <TextField
-                      id="password"
-                      label="Password"
-                      type="password"
-                      {...register("password")}
-                      fullWidth
-                      margin="normal"
-                    />
-                    <Button type="submit" variant="contained" color="primary">
-                      Login
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        navigate("./Sign_up");
-                      }}
-                      variant="contained"
-                      color="primary"  
-                    >
-                      Sign Up
-                    </Button>
-                  </form>
-                </div>
+                <Typography variant="h4">
+                  Login
+                </Typography>
+                <form onSubmit={handleSubmit(handleLogin)}>
+                  <TextField
+                    id="username"
+                    label="Username"
+                    type="text"
+                    {...register("username")}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <TextField
+                    id="password"
+                    label="Password"
+                    type="password"
+                    {...register("password")}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <Button type="submit" variant="contained" color="primary">
+                    Login
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      navigate("./Sign_up");
+                    }}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Sign Up
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </Grid>
