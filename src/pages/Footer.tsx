@@ -31,9 +31,9 @@ function Footer() {
               <br />
               Yishay Ainouze
               <br />
-              Ido Elishar
+              Nehorai
               <br />
-              Jonathan wiezel
+              Zaki
 
             </Typography>
           </Grid>
