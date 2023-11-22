@@ -1,4 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import axios from 'axios';
 
 interface Image {
   url: string;
@@ -26,7 +34,6 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
 
-  // הנתונים מתוך מקור חיצוני או אובטני
   const productDetails: AdminProductInterface = {
     id: productId,
     name: 'Laptop',
@@ -44,12 +51,18 @@ const ProductDetails = () => {
     supplier: 'TechSupplier',
   };
 
-  const handleDelete = () => {
-    // כאן יש לבצע שליחת המידע לשרת ומחיקה מהמסד הנתונים
-    // אחרי מחיקה מוצלחת, יש לנווט לדף "כל המוצרים"
-    console.log('Deleting product with ID:', productDetails.id);
-    // ניתן להשתמש בפונקציות של fetch או axios כדי לבצע את הפעולה
-    navigate('/Products');
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:8200/api/products/${productDetails.id}`);
+      if (response.status === 200) {
+        console.log('Product deleted successfully');
+        navigate('/Products');
+      } else {
+        console.error('Failed to delete product');
+      }
+    } catch (error) {
+      console.error('Error during product deletion:', error);
+    }
   };
 
   const handleEdit = () => {
@@ -58,28 +71,32 @@ const ProductDetails = () => {
   };
 
   return (
-    <div>
-      <h1>Product Details</h1>
-      <button onClick={() => navigate('/')}>Logout</button>
-      <button onClick={() => navigate('/Products')}>All Products</button>
+    <Grid container justifyContent="center" alignItems="center" height="100vh">
+      <Grid item xs={12} md={6}>
+        <Card>
+          <CardContent>
+            <Typography variant="h4">Product Details</Typography>            
+            <Button
+              variant="contained"
+              color="secondary"
+              startIcon={<DeleteIcon />}
+              onClick={handleDelete}
+            >
+              Delete Product
+            </Button>
 
-      <div>
-        <p>ID: {productDetails.id}</p>
-        <p>Name: {productDetails.name}</p>
-        <p>Sale Price: {productDetails.salePrice}</p>
-        <p>Quantity: {productDetails.quantity}</p>
-        <p>Description: {productDetails.description}</p>
-        <p>Category: {productDetails.category}</p>
-        <p>Discount Percentage: {productDetails.discountPercentage}</p>
-        <p>Is For Sale: {productDetails.isForSale ? 'Yes' : 'No'}</p>
-        <p>Cost Price: {productDetails.costPrice}</p>
-        <p>Supplier: {productDetails.supplier}</p>
-        <img src={productDetails.image.url} alt={productDetails.image.alt} />
-      </div>
-
-      <button onClick={handleDelete}>Delete Product</button>
-      <button onClick={handleEdit}>Edit Product</button>
-    </div>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<EditIcon />}
+              onClick={handleEdit}
+            >
+              Edit Product
+            </Button>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 

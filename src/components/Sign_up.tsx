@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,6 +9,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
+import {Box}from "@mui/material"
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
@@ -33,39 +34,46 @@ interface FormData {
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
 
   const handleRegistration = async (data: FormData) => {
     const { password, confirmPassword } = data;
-  console.log(data);
-  
+    console.log(data);
 
     // בדיקת עמיתות סיסמה
     if (password !== confirmPassword) {
-      console.error('Passwords do not match');
+      console.error("Passwords do not match");
       return;
     }
 
     try {
       // שליחת בקשה לשרת עם נתונים בפורמט JSON
-      const response = await axios.post('http://localhost:8200/api/users/register', data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8200/api/users/register",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response.data.user);
       console.log(response.data.message);
 
       if (response.status === 200) {
         // רישום מוצלח
-        console.log('Registration successful');
-        navigate('/');
+        console.log("Registration successful");
+        navigate("/");
       } else {
         // רישום נכשל
-        console.error('Registration failed');
+        console.error("Registration failed");
       }
     } catch (error) {
-      console.error('Error during registration:', error);
+      console.error("Error during registration:", error);
     }
   };
 
@@ -74,15 +82,22 @@ const SignUp = () => {
       <Grid item xs={12} md={6}>
         <Card>
           <CardContent>
-            <form style={RegisterFormStyle} onSubmit={handleSubmit(handleRegistration)}>
+            <Box component ="form"
+              style={RegisterFormStyle}
+              onSubmit={handleSubmit(handleRegistration)}
+            >
               <FormControl>
                 <InputLabel htmlFor="email">Enter Your Email</InputLabel>
                 <Input
                   id="email"
                   type="email"
-                  {...register('username', { required: 'Email is required' })}
+                  {...register("username", { required: "Email is required" })}
                 />
-                {errors.username && <FormHelperText error>{errors.username.message}</FormHelperText>}
+                {errors.username && (
+                  <FormHelperText error>
+                    {errors.username.message}
+                  </FormHelperText>
+                )}
               </FormControl>
 
               <FormControl>
@@ -90,26 +105,43 @@ const SignUp = () => {
                 <Input
                   id="password"
                   type="password"
-                  {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters long' } })}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters long",
+                    },
+                  })}
                 />
-                {errors.password && <FormHelperText error>{errors.password.message}</FormHelperText>}
+                {errors.password && (
+                  <FormHelperText error>
+                    {errors.password.message}
+                  </FormHelperText>
+                )}
               </FormControl>
 
               <FormControl>
-                <InputLabel htmlFor="confirmPassword">Password Confirmation</InputLabel>
+                <InputLabel htmlFor="confirmPassword">
+                  Password Confirmation
+                </InputLabel>
                 <Input
                   id="confirmPassword"
                   type="password"
-                  {...register('confirmPassword', { required: 'Password confirmation is required' })}
+                  {...register("confirmPassword", {
+                    required: "Password confirmation is required",
+                  })}
                 />
-                {errors.confirmPassword && <FormHelperText error>{errors.confirmPassword.message}</FormHelperText>}
+                {errors.confirmPassword && (
+                  <FormHelperText error>
+                    {errors.confirmPassword.message}
+                  </FormHelperText>
+                )}
               </FormControl>
 
               <Button type="submit" variant="contained" style={ButtonStyle}>
                 Sign Up
               </Button>
-            </form>
-            
+            </Box>
           </CardContent>
         </Card>
       </Grid>
