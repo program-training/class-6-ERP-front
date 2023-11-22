@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,24 +7,28 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface Image {
-  url: string;
-  alt: string;
-}
-
 interface ShopProductInterface {
-  id: string;
+
+
+  product_id?: string;
   name: string;
-  salePrice: number;
+  sale_price: string; // נשמור את השם של sale_price כמו שהוא במופע שמתקבל
   quantity: number;
   description: string;
   category: string;
-  discountPercentage: number;
-  image: Image;
+  discount_percentage: string; // נשמור את השם של discount_percentage כמו שהוא במופע שמתקבל
+  image_url: string;
+  image_alt: string;
 }
+
+// interface AdminProductInterface extends ShopProductInterface {
+//   is_for_sale: boolean;
+//   cost_price: number;
+//   supplier: string;
+// }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,37 +52,25 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const Products = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [products, setProducts] = useState<ShopProductInterface[]>([]);
 
-  const products: ShopProductInterface[] = [
-    {
-      id: '1',
-      name: 'Laptop',
-      salePrice: 1200,
-      quantity: 10,
-      description: 'High-performance laptop for work and gaming.',
-      category: 'Electronics',
-      discountPercentage: 5,
-      image: {
-        url: 'https://example.com/laptop.jpg',
-        alt: 'Laptop Image',
-      },
-    },
-    {
-      id: '2',
-      name: 'Smartphone',
-      salePrice: 600,
-      quantity: 20,
-      description: 'Latest smartphone with advanced features.',
-      category: 'Electronics',
-      discountPercentage: 10,
-      image: {
-        url: 'https://example.com/smartphone.jpg',
-        alt: 'Smartphone Image',
-      },
-    },
-    // ניתן להוסיף מוצרים נוספים כמו כן
-  ];
-  const handleProductClick = (productId: string) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8200/api/products/inventory');
+        setProducts(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
+  const handleProductClick = (productId: string | undefined) => {
     console.log(productId);
     navigate(`/Product/${productId}`);
   };
@@ -86,9 +79,7 @@ const Products = () => {
     navigate(`/addProduct`);
   };
 
-  const filteredProducts = products.filter((product) => {
-    return product.name.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+
 
   return (
     <div>
@@ -108,25 +99,32 @@ const Products = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-              <StyledTableCell align="right">Calories</StyledTableCell>
-              <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell align="right">Sale Price</StyledTableCell>
+              <StyledTableCell align="right">Quantity</StyledTableCell>
+              <StyledTableCell align="right">Description</StyledTableCell>
+              <StyledTableCell align="right">Discount Percentage</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProducts.map((product) => (
-              <StyledTableRow key={product.id} onClick={() => handleProductClick(product.id)}>
+
+
+
+            {
+              products?.map((product) => (
+                <StyledTableRow key={product.product_id} onClick={() => handleProductClick(product.product_id)}>
                 <StyledTableCell component="th" scope="row">
-                  {product.name}
-                </StyledTableCell>
-                <StyledTableCell align="right">{product.salePrice}</StyledTableCell>
-                <StyledTableCell align="right">{product.quantity}</StyledTableCell>
-                <StyledTableCell align="right">{product.description}</StyledTableCell>
-                <StyledTableCell align="right">{product.discountPercentage}</StyledTableCell>
+                  {product["product.name"] || "No Name"}</StyledTableCell>
+                <StyledTableCell align="right">{product['product.sale_price']}</StyledTableCell>
+                <StyledTableCell align="right">{product['product.quantity'] || 0}</StyledTableCell>
+                <StyledTableCell align="right">{product.discount_percentage || "No Description"}</StyledTableCell>
+                <StyledTableCell align="right">{product.discount_percentage || 0}</StyledTableCell>
               </StyledTableRow>
-            ))}
+               
+              ))
+            }
+
+
           </TableBody>
         </Table>
       </TableContainer>
