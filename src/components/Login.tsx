@@ -12,7 +12,7 @@ interface FormData {
   password: string;
 }
 
-const login = () => {
+const Login = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormData>();
 
@@ -23,12 +23,13 @@ const login = () => {
       const response = await axios.post(
         "http://localhost:8200/api/users/login",
         data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // }
       );
+console.log(response);
 
       if (response.status === 200) {
         console.log("Login successful");
@@ -102,4 +103,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

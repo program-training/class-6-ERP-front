@@ -6,7 +6,6 @@ import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
 function Footer() {
-
   return (
     <Box
       component="footer"
@@ -85,3 +84,5 @@ function Footer() {
     </Box>
   );
 }
+
+export default Footer

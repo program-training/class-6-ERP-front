@@ -53,6 +53,8 @@ const SignUp = () => {
           'Content-Type': 'application/json',
         },
       });
+      console.log(response.data.user);
+      console.log(response.data.message);
 
       if (response.status === 200) {
         // רישום מוצלח
@@ -107,6 +109,7 @@ const SignUp = () => {
                 Sign Up
               </Button>
             </form>
+            
           </CardContent>
         </Card>
       </Grid>
