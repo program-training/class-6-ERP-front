@@ -3,25 +3,16 @@ import "./App.css";
 // import { CssBaseline } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import Home from "./components/Home";
+import Home from "./components/Login";
 import Sign_up from "./components/Sign_up";
 import Products from "./components/Products";
 import AddProduct from "./components/AddProduct";
 import Product from "./components/Product";
 import EditProduct from "./components/EditProduct";
-// import Product from "./pages/Product";
-// import Products from "./pages/Products";
-// import Login from "./pages/Login";
-// import Sign from "./pages/Sign";
-// import Cart from "./pages/Cart";
-// import Compare from "./pages/Compare";
-// import { useSelector } from "react-redux";
-// import IsraelMap from "./pages/Map";
+
 
 function App() {
-  // Assuming that your state structure has a "global" property
-  // const data = useSelector((state: { global: GlobalState }) => state.global.products);
-  // console.log(data);
+
 
   return (
     <div>
