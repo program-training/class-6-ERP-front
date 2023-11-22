@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface Image {
@@ -17,12 +16,18 @@ interface ShopProductInterface {
   image: Image;
 }
 
+interface AdminProductInterface extends ShopProductInterface {
+  isForSale: boolean;
+  costPrice: number;
+  supplier: string;
+}
+
 const ProductDetails = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
 
   // הנתונים מתוך מקור חיצוני או אובטני
-  const productDetails: ShopProductInterface = {
+  const productDetails: AdminProductInterface = {
     id: productId,
     name: 'Laptop',
     salePrice: 1200,
@@ -34,6 +39,9 @@ const ProductDetails = () => {
       url: 'https://example.com/laptop.jpg',
       alt: 'Laptop Image',
     },
+    isForSale: true,
+    costPrice: 1000,
+    supplier: 'TechSupplier',
   };
 
   const handleDelete = () => {
@@ -63,6 +71,9 @@ const ProductDetails = () => {
         <p>Description: {productDetails.description}</p>
         <p>Category: {productDetails.category}</p>
         <p>Discount Percentage: {productDetails.discountPercentage}</p>
+        <p>Is For Sale: {productDetails.isForSale ? 'Yes' : 'No'}</p>
+        <p>Cost Price: {productDetails.costPrice}</p>
+        <p>Supplier: {productDetails.supplier}</p>
         <img src={productDetails.image.url} alt={productDetails.image.alt} />
       </div>
 

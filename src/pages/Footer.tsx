@@ -5,7 +5,8 @@ import Grid from "@mui/material/Grid";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
-export default function Footer() {
+function Footer() {
+
   return (
     <Box
       component="footer"
@@ -31,9 +32,9 @@ export default function Footer() {
               <br />
               Yishay Ainouze
               <br />
-              Ido Elishar
+              Nehorai
               <br />
-              Jonathan wiezel
+              Zaki
 
             </Typography>
           </Grid>
