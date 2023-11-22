@@ -27,8 +27,9 @@ const Login = () => {
       );
       console.log(response);
 
-      if (response.data.user.status==200) {
-        console.log("Login successful");
+      console.log("Login successful");
+      // if (response.data.user.status == 200) {
+      if (response.data.token) {
         navigate("/Products");
       } else {
         console.error("Login failed");
