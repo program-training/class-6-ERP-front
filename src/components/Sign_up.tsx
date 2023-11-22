@@ -56,7 +56,7 @@ const SignUp = () => {
       console.log(response.data.user);
       console.log(response.data.message);
 
-      if (response.status === 200) {
+      if (response.data.user) {
         // רישום מוצלח
         console.log('Registration successful');
         navigate('/');
