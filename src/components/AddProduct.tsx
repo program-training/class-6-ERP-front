@@ -15,13 +15,20 @@ interface shopProductInterface {
   };
 }
 
+interface adminProductInterface extends shopProductInterface {
+  isForSale: boolean;
+  costPrice: number;
+  supplier: string;
+}
+
 function AddProduct() {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<shopProductInterface>();
+  const { register, handleSubmit, formState: { errors } } = useForm<adminProductInterface>();
 
-  const onSubmit = (data: shopProductInterface) => {
+  const onSubmit = (data: adminProductInterface) => {
     // כאן יש לבצע שליחת המידע לשרת ושמירה במסד הנתונים
     // אחרי שמירה מוצלחת, יש לנווט לדף "פרטי מוצר"
+    
     console.log(data);
     // כאן אתה יכול להוסיף לשרת או לשלוח עם axios
     navigate(`/product/${data.id}`);
@@ -34,6 +41,7 @@ function AddProduct() {
       <button onClick={() => navigate('/Products')}>All Products</button>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* הוספת שדות shopProductInterface */}
         <label htmlFor="id">Product ID:</label>
         <input
           type="text"
@@ -89,6 +97,31 @@ function AddProduct() {
           {...register('discountPercentage', { required: true })}
         />
         {errors.discountPercentage && <p>Discount Percentage is required.</p>}
+
+        {/* הוספת שדות של adminProductInterface */}
+        <label htmlFor="isForSale">Is For Sale:</label>
+        <input
+          type="checkbox"
+          id="isForSale"
+          {...register('isForSale', { required: true })}
+        />
+        {errors.isForSale && <p>Is For Sale is required.</p>}
+
+        <label htmlFor="costPrice">Cost Price:</label>
+        <input
+          type="number"
+          id="costPrice"
+          {...register('costPrice', { required: true })}
+        />
+        {errors.costPrice && <p>Cost Price is required.</p>}
+
+        <label htmlFor="supplier">Supplier:</label>
+        <input
+          type="text"
+          id="supplier"
+          {...register('supplier', { required: true })}
+        />
+        {errors.supplier && <p>Supplier is required.</p>}
 
         <label htmlFor="image.url">Image URL:</label>
         <input

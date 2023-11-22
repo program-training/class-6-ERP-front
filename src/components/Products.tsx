@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useForm } from 'react-hook-form';
+// import axios from 'axios';
+
+interface Image {
+  url: string;
+  alt: string;
+}
+
+interface ShopProductInterface {
+  id: string;
+  name: string;
+  salePrice: number;
+  quantity: number;
+  description: string;
+  category: string;
+  discountPercentage: number;
+  image: Image;
+}
+
+// const serverUrl = 'ה-URL-של-השרת';
+// const token = 'ה-Token-שלך'; // נשים לב לשינוי זה עם המימוש המתאים לך
 
 const Products = () => {
   const navigate = useNavigate();
-//   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const products = [
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const products: ShopProductInterface[] = [
     {
       id: '1',
       name: 'Laptop',
@@ -33,22 +53,18 @@ const Products = () => {
       },
     },
     // ניתן להוסיף מוצרים נוספים כמו כן
-  ]
+  ];
 
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleProductClick = (productId : string) => {
-    // מתוך המוצר, יש לשלוף את הפרטים של המוצר ולשלוף לדף "פרטי מוצר"
-    navigate(`/product/${productId}`);
+  const handleProductClick = (productId: string) => {
+    console.log(productId);
+    navigate(`/Product/${productId}`);
   };
 
-  const handleAddProduct = () => {
-    // יש להעביר לדף "הוספת מוצר"
-    navigate('/AddProduct');
+  const handleAddProduct = async () => {
+navigate(`/addProduct`);
   };
 
   const filteredProducts = products.filter((product) => {
-    // סינון לפי מילות חיפוש
     return product.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
@@ -56,7 +72,7 @@ const Products = () => {
     <div>
       <h1>All Products</h1>
       <button onClick={() => navigate('/')}>Logout</button>
-      
+
       <div>
         <input
           type="text"
@@ -66,13 +82,13 @@ const Products = () => {
         />
       </div>
 
-      <ul>
+      <div>
         {filteredProducts.map((product) => (
-          <li key={product.id} onClick={() => handleProductClick(product.id)}>
+          <div key={product.id} onClick={() => handleProductClick(product.id)}>
             {product.name}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
 
       <button onClick={handleAddProduct}>Add Product</button>
     </div>
