@@ -9,8 +9,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
+
 import Box from "@mui/material/Box";
 
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
+</style>
 export interface ShopProductInterface {
   "product.product_id"?: string;
   "product.name": string;
@@ -74,71 +79,107 @@ const ProductDetails = () => {
     <Grid container justifyContent="center" alignItems="center" height="100vh">
       <Grid item xs={12} md={6}>
         <Card
-           sx={{
-            padding: 3, 
+          style={{
             margin: "20px",
-            backgroundColor: "lightgrey",
-            borderRadius: "15px",
-            width: "100%", 
-            height:"560px"
+            maxWidth: "60em",
+            backgroundColor: "#f5f5f5",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <CardContent>
-            <Typography variant="h4">
-              {productDetails?.["product.name"]}
-            </Typography>
-            <Typography variant="body1">
-              Sale Price: ${productDetails?.["product.sale_price"]}
-            </Typography>
-            <Typography variant="body1">
-              Quantity: {productDetails?.["product.quantity"]}
-            </Typography>
-            <Typography variant="body1">
-              Description: {productDetails?.["product.description"]}
-            </Typography>
-            <Typography variant="body1">
-              Discount Percentage:{" "}
-              {productDetails?.["product.discount_percentage"] ?? 0}%
-            </Typography>
-            <Typography variant="body1">
-              Is For Sale: {productDetails?.is_for_sale ? "Yes" : "No"}
-            </Typography>
-            <Typography variant="body1">
-              Cost Price: ${productDetails?.cost_price ?? 0}
-            </Typography>
-            <Typography variant="body1">
-              Supplier: {productDetails?.supplier}
-            </Typography>
-            <CardMedia
-              component="img"
-              alt={productDetails?.["product.image_alt"]}
-              height="280"
-              image={productDetails?.["product.image_url"]}
-              style={{ maxWidth: "100%" }}
-            />
-            <Box mt={2}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "grey",
-                  color: "white",
-                  marginRight: 1,
-                }}
-                startIcon={<DeleteIcon />}
-                onClick={handleDelete}
-              >
-                Delete Product
-              </Button>
+          <CardContent style={{ display: "flex" }}>
+            {productDetails ? (
+              <>
+                <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      marginRight: "20px",
+                      height: "100%",
+                      width: "50%",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      alt={productDetails["product.image_alt"]}
+                      height="320"
+                      image={productDetails["product.image_url"]}
+                      style={{
+                        width: "100%",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  </div>
+                  <div style={{paddingLeft:'1em', height: "100%", width: "50%"}}>
+                    <Typography 
+                      variant="h4"
+                      style={{ marginBottom: "10px", color: "#333",  }}
+                    >
+                      {productDetails["product.name"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Sale Price: ${productDetails["product.sale_price"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Quantity: {productDetails["product.quantity"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Description: {productDetails["product.description"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Discount Percentage:{" "}
+                      {productDetails["product.discount_percentage"]}%
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Is For Sale:{" "}
+                      {productDetails["is_for_sale"] ? "Yes" : "No"}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Cost Price: ${productDetails["cost_price"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Supplier: {productDetails["supplier"]}
+                    </Typography>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "grey",
+                        color: "white",
+                        '&:hover': {
+                          bgcolor: 'lightgray'
+                        }
+                      }}
+                      startIcon={<DeleteIcon />}
+                      onClick={handleDelete}
+                    >
+                      Delete 
+                    </Button>
 
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<EditIcon />}
-                onClick={handleEdit}
-              >
-                Edit Product
-              </Button>
-            </Box>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        margin: '1em',
+                        backgroundColor: "grey",
+                        color: "white",
+                        width: '7em',
+                        '&:hover': {
+                          bgcolor: 'lightgray'
+                        }
+                      }}
+                      startIcon={<EditIcon />}
+                      onClick={handleEdit}
+                      
+                    >
+                      Edit 
+                    </Button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <Typography variant="body1">Loading...</Typography>
+            )}
+
           </CardContent>
         </Card>
       </Grid>
