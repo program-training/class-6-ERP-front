@@ -61,7 +61,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const Products = () => {
+const Products: React.FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<AdminProductInterface[]>([]);
@@ -69,6 +69,17 @@ const Products = () => {
     AdminProductInterface[]
   >([]);
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState<string>('name');
+  const [sortOrder, setSortOrder] = useState<string>('asc');
+
+  const handleSortChange = (option: string) => {
+    if (option === sortOption) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortOption(option);
+      setSortOrder('asc');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +108,56 @@ const Products = () => {
 
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
+
+  useEffect(() => {
+    setFilteredProducts((prevFilteredProducts) => {
+      const sortedProducts = [...prevFilteredProducts].sort((a, b) => {
+        const valueA =
+          sortOption === 'name'
+            ? a['product.name']
+            : sortOption === 'sale_price'
+            ? a['product.sale_price']
+            : sortOption === 'discount_percentage'
+            ? a['product.discount_percentage']
+            : sortOption === 'description'
+            ? a['product.description']
+            : sortOption === 'quantity'
+            ? a['product.quantity']
+            : 0;
+
+        const valueB =
+          sortOption === 'name'
+            ? b['product.name']
+            : sortOption === 'sale_price'
+            ? b['product.sale_price']
+            : sortOption === 'discount_percentage'
+            ? b['product.discount_percentage']
+            : sortOption === 'description'
+            ? b['product.description']
+            : sortOption === 'quantity'
+            ? b['product.quantity']
+            : 0;
+
+        // Handle numeric and string comparisons
+        if (typeof valueA === 'number' && typeof valueB === 'number') {
+          return sortOrder === 'asc' ? valueA - valueB : valueB - valueA;
+        } else {
+          const nameA = String(valueA).toUpperCase();
+          const nameB = String(valueB).toUpperCase();
+
+          if (nameA < nameB) {
+            return sortOrder === 'asc' ? -1 : 1;
+          } else if (nameA > nameB) {
+            return sortOrder === 'asc' ? 1 : -1;
+          }
+
+          return 0; // values must be equal
+        }
+      });
+
+      return sortedProducts;
+    });
+  }, [sortOption, sortOrder, filteredProducts]);
 
   const handleProductClick = (productId: string | undefined) => {
     console.log(productId);
@@ -129,6 +190,23 @@ const Products = () => {
             border: "1px solid #ccc",
           }}
         />
+        <div>
+        <label>Sort By:</label>
+        <select onChange={(e) => handleSortChange(e.target.value)} value={sortOption}>
+          <option value="name">Name</option>
+          <option value="sale_price">Sale Price</option>
+          <option value="discount_percentage">Discount Percentage</option>
+          <option value="description">Description</option>
+          <option value="quantity">Quantity</option>
+        </select>
+        </div>
+        <div>
+          <label>Sort Order:</label>
+          <select onChange={(e) => setSortOrder(e.target.value)} value={sortOrder}>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
         <button
           onClick={handleAddProduct}
           style={{
@@ -142,7 +220,6 @@ const Products = () => {
         >
           Add Product
         </button>
-
         <button
           onClick={() => navigate("/")}
           style={{
@@ -161,52 +238,52 @@ const Products = () => {
       {loading ? (
         <Loading />
       ) : (
-
-
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}>
-            <TableRow>
-              <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell align="right">Sale Price</StyledTableCell>
-              <StyledTableCell align="right">Quantity</StyledTableCell>
-              <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">
-                Discount Percentage
-              </StyledTableCell>
-              {/* <StyledTableCell align="right">Is For Sale</StyledTableCell> */}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredProducts.map((product) => (
-              <StyledTableRow
-                key={product["product.product_id"]}
-                onClick={() =>
-                  handleProductClick(product["product.product_id"])
-                }
-              >
-                <StyledTableCell component="th" scope="row">
-                  {product["product.name"] || "No Name"}
-                </StyledTableCell>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell align="right">Sale Price</StyledTableCell>
+                <StyledTableCell align="right">Quantity</StyledTableCell>
+                <StyledTableCell align="right">Description</StyledTableCell>
                 <StyledTableCell align="right">
-                  {product["product.sale_price"] || 0}
+                  Discount Percentage
                 </StyledTableCell>
-                <StyledTableCell align="right">
-                  {product["product.quantity"] || 0}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {product["product.description"] || "No Description"}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {product["product.discount_percentage"] || 0}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-            )}
-
+                <StyledTableCell align="right">Is For Sale</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredProducts.map((product) => (
+                <StyledTableRow
+                  key={product["product.product_id"]}
+                  onClick={() =>
+                    handleProductClick(product["product.product_id"])
+                  }
+                >
+                  <StyledTableCell component="th" scope="row">
+                    {product["product.name"] || "No Name"}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product["product.sale_price"] || 0}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product["product.quantity"] || 0}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product["product.description"] || "No Description"}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product["product.discount_percentage"] || 0}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                  {product["is_for_sale"] ? 'true' : 'false'}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </div>
   );
 };
