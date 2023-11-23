@@ -29,6 +29,7 @@ export interface AdminProductInterface extends ShopProductInterface {
 
 const ProductDetails = () => {
   const navigate = useNavigate();
+
   const  { id }  = useParams();
   const [productDetails, setProductDetails] = useState<AdminProductInterface | null>(null);
   // const { id } = productId
@@ -39,13 +40,13 @@ const ProductDetails = () => {
       try {
         const response = await axios.get(`http://localhost:8200/api/products/inventory/${id}`);
         setProductDetails(response.data);
-        // console.log(response);
       } catch (error) {
         console.error('Error fetching product details:', error);
       }
     };
 
     fetchData();
+
   }, []); // Include productId as a dependency
 
   const handleDelete = async () => {
