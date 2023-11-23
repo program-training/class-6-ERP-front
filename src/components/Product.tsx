@@ -10,61 +10,64 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
 
+import Box from "@mui/material/Box";
+
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
 </style>
 export interface ShopProductInterface {
-  'product.product_id'?: string;
-  'product.name': string;
-  'product.sale_price': number;
-  'product.quantity': number;
-  'product.description': string;
-  'product.category': string;
-  'product.discount_percentage': number;
-  'product.image_url': string;
-  'product.image_alt': string;
+  "product.product_id"?: string;
+  "product.name": string;
+  "product.sale_price": number;
+  "product.quantity": number;
+  "product.description": string;
+  "product.category": string;
+  "product.discount_percentage": number;
+  "product.image_url": string;
+  "product.image_alt": string;
 }
 
 export interface AdminProductInterface extends ShopProductInterface {
-  'is_for_sale': boolean;
-  'cost_price': number; 
-  'supplier': string;
+  is_for_sale: boolean;
+  cost_price: number;
+  supplier: string;
 }
 
 const ProductDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [productDetails, setProductDetails] =
+    useState<AdminProductInterface | null>(null);
 
-  const  { id }  = useParams();
-  const [productDetails, setProductDetails] = useState<AdminProductInterface | null>(null);
-  // const { id } = productId
-  console.log(id);
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8200/api/products/inventory/${id}`);
+        const response = await axios.get(
+          `http://localhost:8200/api/products/inventory/${id}`
+        );
         setProductDetails(response.data);
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
       }
     };
 
     fetchData();
-
-  }, []); // Include productId as a dependency
+  }, [id]);
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8200/api/products/inventory/${id}`);
+      const response = await axios.delete(
+        `http://localhost:8200/api/products/inventory/${id}`
+      );
       if (response.status === 200) {
-        console.log('Product deleted successfully');
-        navigate('/Products');
+        console.log("Product deleted successfully");
+        navigate("/Products");
       } else {
-        console.error('Failed to delete product');
+        console.error("Failed to delete product");
       }
     } catch (error) {
-      console.error('Error during product deletion:', error);
+      console.error("Error during product deletion:", error);
     }
   };
 
@@ -176,6 +179,7 @@ const ProductDetails = () => {
             ) : (
               <Typography variant="body1">Loading...</Typography>
             )}
+
           </CardContent>
         </Card>
       </Grid>

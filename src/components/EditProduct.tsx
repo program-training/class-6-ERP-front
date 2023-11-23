@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useForm , SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 interface shopProductInterface {
   id: string;
@@ -43,7 +43,7 @@ const EditProduct = () => {
     supplier: 'TechSupplier',
   };
 
-  const onSubmit: SubmitHandler<adminProductInterface> = (data : adminProductInterface ) => {
+  const onSubmit: SubmitHandler<adminProductInterface> = (data: adminProductInterface) => {
     // כאן יש לבצע שליחת המידע לשרת ועדכון במסד הנתונים
     // אחרי שעדכון מוצלח, יש לנווט לדף "פרטי מוצר"
     console.log(data);
@@ -176,3 +176,6 @@ const EditProduct = () => {
 };
 
 export default EditProduct;
+
+
+
