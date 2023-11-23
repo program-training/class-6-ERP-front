@@ -9,42 +9,42 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { LoadingSpinner } from "../pages/Loading";
 // Loading Component
-const Loading: React.FC = () => (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-      }}
-    >
-      <div
-        style={{
-          border: '8px solid #f3f3f3',
-          borderTop: '8px solid #3498db',
-          borderRadius: '50%',
-          width: '50px',
-          height: '50px',
-          animation: 'spin 1s linear infinite',
-        }}
-      ></div>
-      <p style={{ marginTop: '20px', fontSize: '18px', color: '#555' }}>
-        Loading...
-      </p>
+// const Loading: React.FC = () => (
+//     <div
+//       style={{
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         height: '100vh',
+//       }}
+//     >
+//       <div
+//         style={{
+//           border: '8px solid #f3f3f3',
+//           borderTop: '8px solid #3498db',
+//           borderRadius: '50%',
+//           width: '50px',
+//           height: '50px',
+//           animation: 'spin 1s linear infinite',
+//         }}
+//       ></div>
+//       <p style={{ marginTop: '20px', fontSize: '18px', color: '#555' }}>
+//         Loading...
+//       </p>
   
-      <style>
-        {`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}
-      </style>
-    </div>
-  );
+//       <style>
+//         {`
+//         @keyframes spin {
+//           0% { transform: rotate(0deg); }
+//           100% { transform: rotate(360deg); }
+//         }
+//       `}
+//       </style>
+//     </div>
+//   );
   
 export interface ShopProductInterface {
   "product.product_id"?: string;
@@ -258,7 +258,7 @@ const Products: React.FC = () => {
       </div>
 
       {loading ? (
-        <Loading />
+        <LoadingSpinner />
       ) : (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
