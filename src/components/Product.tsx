@@ -34,26 +34,12 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
 
-  const productDetails: AdminProductInterface = {
-    id: productId,
-    name: 'Laptop',
-    salePrice: 1200,
-    quantity: 10,
-    description: 'High-performance laptop for work and gaming.',
-    category: 'Electronics',
-    discountPercentage: 5,
-    image: {
-      url: 'https://example.com/laptop.jpg',
-      alt: 'Laptop Image',
-    },
-    isForSale: true,
-    costPrice: 1000,
-    supplier: 'TechSupplier',
-  };
+
+
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8200/api/products/${productDetails.id}`);
+      const response = await axios.delete(`http://localhost:8200/api/products/${Products.id}`);
       if (response.status === 200) {
         console.log('Product deleted successfully');
         navigate('/Products');
@@ -65,9 +51,10 @@ const ProductDetails = () => {
     }
   };
 
+
   const handleEdit = () => {
     // יש להעביר לדף "ערוך מוצר" ולשלוף מידע על המוצר לפי ה-ID
-    navigate(`/EditProduct/${productDetails.id}`);
+    navigate(`/EditProduct/${products.id}`);
   };
 
   return (
