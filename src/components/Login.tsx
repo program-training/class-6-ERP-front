@@ -9,7 +9,6 @@ import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-
 interface FormData {
   username: string;
   password: string;
@@ -24,11 +23,6 @@ const RegisterFormStyle: React.CSSProperties = {
   borderRadius: "8px",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   background: "linear-gradient(to right bottom, #ffffff, #f0f0f0)",
-};
-
-const buttonStyle: React.CSSProperties = {
-  backgroundColor: "#007BFF",
-  color: "white",
 };
 
 const Login = () => {
@@ -81,38 +75,51 @@ const Login = () => {
             <Card>
               <CardContent>
                 <Typography variant="h4">Login</Typography>
-                <form style={RegisterFormStyle}
-                onSubmit={handleSubmit(handleLogin)}>
-                    <TextField
-                      id="username"
-                      label="Username"
-                      type="text"
-                      {...register("username")}
-                      fullWidth
-                      margin="normal"
-                      inputProps={register("username")}
-                    />
-                    <TextField
-                      id="password"
-                      label="Password"
-                      type="password"
-                      {...register("password")}
-                      fullWidth
-                      margin="normal"
-                      inputProps={register("password")}
-                    />
-                    <Button type="submit" style={buttonStyle} variant="contained" color="primary">
-                      Login
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        navigate("./Sign_up");
-                      }}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Sign Up
-                    </Button>
+                <form
+                  style={RegisterFormStyle}
+                  onSubmit={handleSubmit(handleLogin)}
+                >
+                  <TextField
+                    id="username"
+                    label="Username"
+                    type="text"
+                    {...register("username")}
+                    fullWidth
+                    margin="normal"
+                    inputProps={register("username")}
+                  />
+                  <TextField
+                    id="password"
+                    label="Password"
+                    type="password"
+                    {...register("password")}
+                    fullWidth
+                    margin="normal"
+                    inputProps={register("password")}
+                  />
+                  <Button
+                    type="submit"
+                    sx={{
+                      backgroundColor: 'grey',
+                      color: 'white',
+                    }}
+                    variant="contained"
+                    
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      navigate("./Sign_up");
+                    }}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: 'grey',
+                      color: 'white',
+                    }}
+                  >
+                    Sign Up
+                  </Button>
                 </form>
               </CardContent>
             </Card>
