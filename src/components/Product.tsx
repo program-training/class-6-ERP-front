@@ -8,7 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import CardMedia from '@mui/material/CardMedia';
+import CardMedia from "@mui/material/CardMedia";
 
 export interface ShopProductInterface {
   "product.product_id"?: string;
@@ -75,7 +75,15 @@ const ProductDetails = () => {
   return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
       <Grid item xs={12} md={6}>
-        <Card>
+        <Card
+          sx={{
+            height: "100%",
+            padding: 7,
+            margin: "20px",
+            backgroundColor: "lightgrey",
+            borderRadius: "15px",
+          }}
+        >
           <CardContent>
             {productDetails ? (
               <>
@@ -107,7 +115,7 @@ const ProductDetails = () => {
                 <CardMedia
                   component="img"
                   alt={productDetails["product.image_alt"]}
-                  height="320"
+                  height="220"
                   image={productDetails["product.image_url"]}
                   style={{ maxWidth: "100%" }}
                 />
@@ -116,7 +124,7 @@ const ProductDetails = () => {
                   variant="contained"
                   sx={{
                     backgroundColor: "grey",
-                    color: "white",
+                    color: "white"
                   }}
                   startIcon={<DeleteIcon />}
                   onClick={handleDelete}
