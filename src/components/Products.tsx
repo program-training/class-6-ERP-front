@@ -157,7 +157,7 @@ const Products: React.FC = () => {
 
       return sortedProducts;
     });
-  }, [sortOption, sortOrder, filteredProducts]);
+  }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
     console.log(productId);
