@@ -10,6 +10,20 @@ import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Loading Component
+const Loading: React.FC = () => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+    }}
+  >
+    <p>Loading...</p>
+  </div>
+);
+
 export interface ShopProductInterface {
   "product.product_id"?: string;
   "product.name": string;
@@ -54,6 +68,7 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState<
     AdminProductInterface[]
   >([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,9 +77,12 @@ const Products = () => {
           "http://localhost:8200/api/products/inventory"
         );
         setProducts(response.data);
+        setFilteredProducts(response.data);
+        setLoading(false);
         console.log(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setLoading(false);
       }
     };
 
@@ -140,6 +158,11 @@ const Products = () => {
         </button>
       </div>
 
+      {loading ? (
+        <Loading />
+      ) : (
+
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}>
@@ -148,7 +171,10 @@ const Products = () => {
               <StyledTableCell align="right">Sale Price</StyledTableCell>
               <StyledTableCell align="right">Quantity</StyledTableCell>
               <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">Discount Percentage</StyledTableCell>
+              <StyledTableCell align="right">
+                Discount Percentage
+              </StyledTableCell>
+              {/* <StyledTableCell align="right">Is For Sale</StyledTableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -179,8 +205,8 @@ const Products = () => {
           </TableBody>
         </Table>
       </TableContainer>
+            )}
 
-      <button onClick={handleAddProduct}>Add Product</button>
     </div>
   );
 };

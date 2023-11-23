@@ -11,6 +11,8 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
 import {Box}from "@mui/material"
 
+
+
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
@@ -18,11 +20,10 @@ const RegisterFormStyle: React.CSSProperties = {
   padding: "20px",
   borderRadius: "8px",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  background: "linear-gradient(to right bottom, #ffffff, #f0f0f0)",
+  background: "linear-gradient(to right bottom, #f5f5f5, #e0e0e0)", // Light gray background
 };
-
 const ButtonStyle: React.CSSProperties = {
-  backgroundColor: "#007BFF",
+  backgroundColor: "#3399FF", // Light blue color
   color: "white",
 };
 
@@ -67,7 +68,7 @@ const SignUp = () => {
       if (response.data.user) {
         // רישום מוצלח
         console.log("Registration successful");
-        navigate("/");
+        navigate("/Products");
       } else {
         // רישום נכשל
         console.error("Registration failed");
