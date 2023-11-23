@@ -107,7 +107,7 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8200/api/products/inventory"
+          "https://erp-beak1-6.onrender.com/api/products/inventory"
         );
         setProducts(response.data);
         setFilteredProducts(response.data);
