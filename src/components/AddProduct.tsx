@@ -41,7 +41,7 @@ function AddProduct() {
   } = useForm<AdminProductInterface>();
 
   const [isForSale, setIsForSale] = useState<boolean>(false);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -49,14 +49,19 @@ function AddProduct() {
 
   const onSubmit = async (data: AdminProductInterface) => {
     try {
+      const preset_key = "hyjuf7js" 
+      const cloudName = "class6erp"
       // Convert and resize image before sending
       const imageInput = document.getElementById('imageInput') as HTMLInputElement;
       if (imageInput && imageInput.files && imageInput.files.length > 0) {
         const imageFile = imageInput.files[0];
-        const resizedBase64Image = await convertImageToBase64(imageFile);
-        setValue('image_url', resizedBase64Image);
-        setPreviewImage(resizedBase64Image);
-
+        const formData = new FormData();
+        formData.append('file', imageFile)
+        formData.append('upload_preset', preset_key)
+        const imageUrl = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, formData)
+        console.log(imageUrl.data.url);
+        setValue('image_url', imageUrl.data.url);
+        setImage(imageUrl.data.url);
       }
 
       const requestData = {
@@ -77,7 +82,6 @@ function AddProduct() {
         },
       };
 
-      console.log(requestData);
 
       const response = await axios.post('http://localhost:8200/api/products/inventory', requestData);
 
@@ -88,23 +92,6 @@ function AddProduct() {
       console.error('Error saving product:', error);
     }
   };
-
-  const convertImageToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-  
-      reader.onload = () => {
-        resolve(reader.result as string);
-      };
-  
-      reader.onerror = (error) => {
-        reject(error);
-      };
-  
-      reader.readAsDataURL(file);
-    });
-  };
-  
 
   return (
     <Container>
@@ -181,9 +168,9 @@ function AddProduct() {
 
           <TextField label="Supplier" type="text" {...register('supplier', { required: true })} margin="normal" />
           {errors.supplier && <Alert severity="error">Supplier is required.</Alert >}
-          {previewImage && (
+          {image && (
             <img
-              src={previewImage}
+              src={image}
               alt="Preview"
               style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }}
             />
