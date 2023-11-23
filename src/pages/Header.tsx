@@ -1,8 +1,19 @@
+import React from 'react';
 
-function Header() {
+const Header = () => {
   return (
-    <>Header</>
-  )
-}
+    <div style={headerStyle}>
+      <h1>Inventory Management</h1>
+    </div>
+  );
+};
 
-export default Header
+// Styles
+const headerStyle: React.CSSProperties = {
+  background: 'grey', // Use your preferred color
+  color: '#fff',
+  padding: '1rem',
+  textAlign: 'center',
+};
+
+export default Header;
