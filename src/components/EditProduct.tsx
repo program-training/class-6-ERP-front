@@ -71,6 +71,7 @@ function EditProduct() {
   };
 
   const onSubmit = async (data: ProductToServer) => {
+
     console.log(data);
 
     try {
@@ -251,3 +252,4 @@ function EditProduct() {
 }
 
 export default EditProduct;
+

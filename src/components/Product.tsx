@@ -1,64 +1,73 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import CardMedia from "@mui/material/CardMedia";
 
+import Box from "@mui/material/Box";
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
+</style>
 export interface ShopProductInterface {
-  'product.product_id'?: string;
-  'product.name': string;
-  'product.sale_price': number;
-  'product.quantity': number;
-  'product.description': string;
-  'product.category': string;
-  'product.discount_percentage': number;
-  'product.image_url': string;
-  'product.image_alt': string;
+  "product.product_id"?: string;
+  "product.name": string;
+  "product.sale_price": number;
+  "product.quantity": number;
+  "product.description": string;
+  "product.category": string;
+  "product.discount_percentage": number;
+  "product.image_url": string;
+  "product.image_alt": string;
 }
 
 export interface AdminProductInterface extends ShopProductInterface {
-  'is_for_sale': boolean;
-  'cost_price': number;
-  'supplier': string;
+  is_for_sale: boolean;
+  cost_price: number;
+  supplier: string;
 }
 
 const ProductDetails = () => {
   const navigate = useNavigate();
-  const  { id }  = useParams();
-  const [productDetails, setProductDetails] = useState<AdminProductInterface | null>(null);
-  // const { id } = productId
-  console.log(id);
-  
+  const { id } = useParams();
+  const [productDetails, setProductDetails] =
+    useState<AdminProductInterface | null>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8200/api/products/inventory/${id}`);
+        const response = await axios.get(
+          `http://localhost:8200/api/products/inventory/${id}`
+        );
         setProductDetails(response.data);
-        // console.log(response);
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
       }
     };
 
     fetchData();
-  }, []); // Include productId as a dependency
+  }, [id]);
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8200/api/products/inventory/${id}`);
+      const response = await axios.delete(
+        `http://localhost:8200/api/products/inventory/${id}`
+      );
       if (response.status === 200) {
-        console.log('Product deleted successfully');
-        navigate('/Products');
+        console.log("Product deleted successfully");
+        navigate("/Products");
       } else {
-        console.error('Failed to delete product');
+        console.error("Failed to delete product");
       }
     } catch (error) {
-      console.error('Error during product deletion:', error);
+      console.error("Error during product deletion:", error);
     }
   };
 
@@ -69,40 +78,108 @@ const ProductDetails = () => {
   return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
       <Grid item xs={12} md={6}>
-        <Card>
-          <CardContent>
+        <Card
+          style={{
+            margin: "20px",
+            maxWidth: "60em",
+            backgroundColor: "#f5f5f5",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <CardContent style={{ display: "flex" }}>
             {productDetails ? (
               <>
-                <Typography variant="h4">{productDetails['product.name']}</Typography>
-                <Typography variant="body1">Sale Price: ${productDetails['product.sale_price']}</Typography>
-                <Typography variant="body1">Quantity: {productDetails['product.quantity']}</Typography>
-                <Typography variant="body1">Description: {productDetails['product.description']}</Typography>
-                <Typography variant="body1">Discount Percentage: {productDetails['product.discount_percentage']}%</Typography>
-                <Typography variant="body1">Is For Sale: {productDetails['is_for_sale'] ? 'Yes' : 'No'}</Typography>
-                <Typography variant="body1">Cost Price: ${productDetails['cost_price']}</Typography>
-                <Typography variant="body1">Supplier: {productDetails['supplier']}</Typography>
+                <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      marginRight: "20px",
+                      height: "100%",
+                      width: "50%",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      alt={productDetails["product.image_alt"]}
+                      height="320"
+                      image={productDetails["product.image_url"]}
+                      style={{
+                        width: "100%",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  </div>
+                  <div style={{paddingLeft:'1em', height: "100%", width: "50%"}}>
+                    <Typography 
+                      variant="h4"
+                      style={{ marginBottom: "10px", color: "#333",  }}
+                    >
+                      {productDetails["product.name"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Sale Price: ${productDetails["product.sale_price"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Quantity: {productDetails["product.quantity"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Description: {productDetails["product.description"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Discount Percentage:{" "}
+                      {productDetails["product.discount_percentage"]}%
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Is For Sale:{" "}
+                      {productDetails["is_for_sale"] ? "Yes" : "No"}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Cost Price: ${productDetails["cost_price"]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#555" }}>
+                      Supplier: {productDetails["supplier"]}
+                    </Typography>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "grey",
+                        color: "white",
+                        '&:hover': {
+                          bgcolor: 'lightgray'
+                        }
+                      }}
+                      startIcon={<DeleteIcon />}
+                      onClick={handleDelete}
+                    >
+                      Delete 
+                    </Button>
 
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<DeleteIcon />}
-                  onClick={handleDelete}
-                >
-                  Delete Product
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<EditIcon />}
-                  onClick={handleEdit}
-                >
-                  Edit Product
-                </Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        margin: '1em',
+                        backgroundColor: "grey",
+                        color: "white",
+                        width: '7em',
+                        '&:hover': {
+                          bgcolor: 'lightgray'
+                        }
+                      }}
+                      startIcon={<EditIcon />}
+                      onClick={handleEdit}
+                      
+                    >
+                      Edit 
+                    </Button>
+                  </div>
+                </div>
               </>
             ) : (
               <Typography variant="body1">Loading...</Typography>
             )}
+
           </CardContent>
         </Card>
       </Grid>
