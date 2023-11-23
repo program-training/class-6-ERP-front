@@ -7,53 +7,50 @@ import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-interface Image {
-  url: string;
-  alt: string;
+export interface ShopProductInterface {
+  'product.product_id'?: string;
+  'product.name': string;
+  'product.sale_price': number;
+  'product.quantity': number;
+  'product.description': string;
+  'product.category': string;
+  'product.discount_percentage': number;
+  'product.image_url': string;
+  'product.image_alt': string;
 }
 
-interface ShopProductInterface {
-  id: string | undefined;
-  name: string;
-  salePrice: number;
-  quantity: number;
-  description: string;
-  category: string;
-  discountPercentage: number;
-  image: Image;
-}
-
-interface AdminProductInterface extends ShopProductInterface {
-  isForSale: boolean;
-  costPrice: number;
-  supplier: string;
+export interface AdminProductInterface extends ShopProductInterface {
+  'is_for_sale': boolean;
+  'cost_price': number;
+  'supplier': string;
 }
 
 const ProductDetails = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
+  const [productDetails, setProductDetails] = useState<AdminProductInterface | null>(null);
+  // const { id } = productId
+  console.log(productId);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8200/api/products/inventory/${productId}`);
+        setProductDetails(response.data);
+        // console.log(response);
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+      }
+    };
 
-  const productDetails: AdminProductInterface = {
-    id: productId,
-    name: 'Laptop',
-    salePrice: 1200,
-    quantity: 10,
-    description: 'High-performance laptop for work and gaming.',
-    category: 'Electronics',
-    discountPercentage: 5,
-    image: {
-      url: 'https://example.com/laptop.jpg',
-      alt: 'Laptop Image',
-    },
-    isForSale: true,
-    costPrice: 1000,
-    supplier: 'TechSupplier',
-  };
+    fetchData();
+  }, [productId]); // Include productId as a dependency
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8200/api/products/${productDetails.id}`);
+      const response = await axios.delete(`http://localhost:8200/api/products/inventory/${productId}`);
       if (response.status === 200) {
         console.log('Product deleted successfully');
         navigate('/Products');
@@ -66,8 +63,7 @@ const ProductDetails = () => {
   };
 
   const handleEdit = () => {
-    // יש להעביר לדף "ערוך מוצר" ולשלוף מידע על המוצר לפי ה-ID
-    navigate(`/EditProduct/${productDetails.id}`);
+    navigate(`/EditProduct/${productId}`);
   };
 
   return (
@@ -75,24 +71,38 @@ const ProductDetails = () => {
       <Grid item xs={12} md={6}>
         <Card>
           <CardContent>
-            <Typography variant="h4">Product Details</Typography>            
-            <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<DeleteIcon />}
-              onClick={handleDelete}
-            >
-              Delete Product
-            </Button>
+            {productDetails ? (
+              <>
+                <Typography variant="h4">{productDetails['product.name']}</Typography>
+                <Typography variant="body1">Sale Price: ${productDetails['product.sale_price']}</Typography>
+                <Typography variant="body1">Quantity: {productDetails['product.quantity']}</Typography>
+                <Typography variant="body1">Description: {productDetails['product.description']}</Typography>
+                <Typography variant="body1">Discount Percentage: {productDetails['product.discount_percentage']}%</Typography>
+                <Typography variant="body1">Is For Sale: {productDetails['is_for_sale'] ? 'Yes' : 'No'}</Typography>
+                <Typography variant="body1">Cost Price: ${productDetails['cost_price']}</Typography>
+                <Typography variant="body1">Supplier: {productDetails['supplier']}</Typography>
 
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<EditIcon />}
-              onClick={handleEdit}
-            >
-              Edit Product
-            </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<DeleteIcon />}
+                  onClick={handleDelete}
+                >
+                  Delete Product
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<EditIcon />}
+                  onClick={handleEdit}
+                >
+                  Edit Product
+                </Button>
+              </>
+            ) : (
+              <Typography variant="body1">Loading...</Typography>
+            )}
           </CardContent>
         </Card>
       </Grid>
