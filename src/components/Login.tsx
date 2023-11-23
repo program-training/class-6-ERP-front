@@ -6,12 +6,23 @@ import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography"; 
+import Typography from "@mui/material/Typography";
+import {Box} from "@mui/material"
 
 interface FormData {
   username: string;
   password: string;
 }
+
+const RegisterFormStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+  padding: "20px",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  background: "linear-gradient(to right bottom, #ffffff, #f0f0f0)",
+};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,7 +34,7 @@ const Login = () => {
     try {
       const response = await axios.post(
         "http://localhost:8200/api/users/login",
-        data,
+        data
       );
       console.log(response);
 
@@ -58,10 +69,9 @@ const Login = () => {
           <Grid item xs={12} md={6}>
             <Card>
               <CardContent>
-                <Typography variant="h4">
-                  Login
-                </Typography>
-                <form onSubmit={handleSubmit(handleLogin)}>
+                <Typography variant="h4">Login</Typography>
+                <Box onSubmit={handleSubmit(handleLogin)}
+                  style={RegisterFormStyle}>
                   <TextField
                     id="username"
                     label="Username"
@@ -90,7 +100,7 @@ const Login = () => {
                   >
                     Sign Up
                   </Button>
-                </form>
+                </Box>
               </CardContent>
             </Card>
           </Grid>
