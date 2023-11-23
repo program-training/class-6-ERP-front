@@ -23,7 +23,7 @@ export interface ShopProductInterface {
 
 export interface AdminProductInterface extends ShopProductInterface {
   'is_for_sale': boolean;
-  'cost_price': number;
+  'cost_price': number; 
   'supplier': string;
 }
 

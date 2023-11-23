@@ -15,6 +15,7 @@ interface FormData {
   password: string;
 }
 
+
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
@@ -40,7 +41,12 @@ const Login = () => {
     try {
       const response = await axios.post(
         "http://localhost:8200/api/users/login",
-        data
+        data,
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // }
       );
 
       console.log(response);
