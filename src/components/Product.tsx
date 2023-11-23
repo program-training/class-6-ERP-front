@@ -29,15 +29,15 @@ export interface AdminProductInterface extends ShopProductInterface {
 
 const ProductDetails = () => {
   const navigate = useNavigate();
-  const { productId } = useParams();
+  const  { id }  = useParams();
   const [productDetails, setProductDetails] = useState<AdminProductInterface | null>(null);
   // const { id } = productId
-  console.log(productId);
+  console.log(id);
   
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8200/api/products/inventory/${productId}`);
+        const response = await axios.get(`http://localhost:8200/api/products/inventory/${id}`);
         setProductDetails(response.data);
         // console.log(response);
       } catch (error) {
@@ -50,7 +50,7 @@ const ProductDetails = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8200/api/products/inventory/${productId}`);
+      const response = await axios.delete(`http://localhost:8200/api/products/inventory/${id}`);
       if (response.status === 200) {
         console.log('Product deleted successfully');
         navigate('/Products');
@@ -63,7 +63,7 @@ const ProductDetails = () => {
   };
 
   const handleEdit = () => {
-    navigate(`/EditProduct/${productId}`);
+    navigate(`/EditProduct/${id}`);
   };
 
   return (
