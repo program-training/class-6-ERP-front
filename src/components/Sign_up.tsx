@@ -69,7 +69,7 @@ const SignUp = () => {
         // רישום מוצלח
         console.log("Registration successful");
         navigate("/Products");
-      } else {
+      } else { 
         // רישום נכשל
         console.error("Registration failed");
       }
