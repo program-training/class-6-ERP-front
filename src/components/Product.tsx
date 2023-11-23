@@ -23,15 +23,18 @@ export interface ShopProductInterface {
 
 export interface AdminProductInterface extends ShopProductInterface {
   'is_for_sale': boolean;
-  'cost_price': number;
+  'cost_price': number; 
   'supplier': string;
 }
 
 const ProductDetails = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>(); // Use "id" as the parameter name
-  const [productDetails, setProductDetails] = useState<AdminProductInterface | null>(null);
 
+  const  { id }  = useParams();
+  const [productDetails, setProductDetails] = useState<AdminProductInterface | null>(null);
+  // const { id } = productId
+  console.log(id);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,11 +46,12 @@ const ProductDetails = () => {
     };
 
     fetchData();
-  }, [id]); // Include "id" as a dependency
+
+  }, []); // Include productId as a dependency
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8200/api/product/inventory/${id}`);
+      const response = await axios.delete(`http://localhost:8200/api/products/inventory/${id}`);
       if (response.status === 200) {
         console.log('Product deleted successfully');
         navigate('/Products');
