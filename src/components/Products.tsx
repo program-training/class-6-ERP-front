@@ -93,10 +93,10 @@ const Products = () => {
     <div>
       <div
         style={{
+          backgroundColor: "gray",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: "20px",
         }}
       >
         <h1 style={{ marginRight: "10px" }}>All Products</h1>
@@ -142,16 +142,13 @@ const Products = () => {
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead>
+          <TableHead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}>
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell align="right">Sale Price</StyledTableCell>
               <StyledTableCell align="right">Quantity</StyledTableCell>
               <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">
-                Discount Percentage
-              </StyledTableCell>
-              {/* <StyledTableCell align="right">Is For Sale</StyledTableCell> */}
+              <StyledTableCell align="right">Discount Percentage</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -182,6 +179,8 @@ const Products = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <button onClick={handleAddProduct}>Add Product</button>
     </div>
   );
 };
