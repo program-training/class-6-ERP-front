@@ -39,7 +39,7 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8200/api/products/inventory/${id}`
+          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`
         );
         setProductDetails(response.data);
       } catch (error) {
@@ -53,7 +53,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8200/api/products/inventory/${id}`
+        `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`
       );
       if (response.status === 200) {
         console.log("Product deleted successfully");
