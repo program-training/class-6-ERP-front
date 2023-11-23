@@ -112,6 +112,20 @@ const Products = () => {
           }}
         />
         <button
+          onClick={handleAddProduct}
+          style={{
+            marginLeft: "10px",
+            padding: "8px",
+            borderRadius: "4px",
+            backgroundColor: "black",
+            color: "white",
+            border: "none",
+          }}
+        >
+          Add Product
+        </button>
+
+        <button
           onClick={() => navigate("/")}
           style={{
             marginLeft: "10px",
@@ -168,8 +182,6 @@ const Products = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <button onClick={handleAddProduct}>Add Product</button>
     </div>
   );
 };
