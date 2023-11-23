@@ -36,7 +36,6 @@ const Login = () => {
       const response = await axios.post(
         "http://localhost:8200/api/users/login",
         data,
-        
       );
 
       console.log(response);
