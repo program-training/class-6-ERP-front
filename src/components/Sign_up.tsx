@@ -67,7 +67,7 @@ const SignUp = () => {
       if (response.data.user) {
         // רישום מוצלח
         console.log("Registration successful");
-        navigate("/");
+        navigate("/Products");
       } else {
         // רישום נכשל
         console.error("Registration failed");

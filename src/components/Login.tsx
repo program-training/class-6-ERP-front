@@ -93,9 +93,12 @@ const Login = () => {
                   />
                   <Button
                     type="submit"
-                    sx={{ backgroundColor: "#007BFF", color: "white" }}
+                    sx={{
+                      backgroundColor: 'grey',
+                      color: 'white',
+                    }}
                     variant="contained"
-                    color="primary"
+                    
                   >
                     Login
                   </Button>
@@ -104,7 +107,10 @@ const Login = () => {
                       navigate("./Sign_up");
                     }}
                     variant="contained"
-                    color="primary"
+                    sx={{
+                      backgroundColor: 'grey',
+                      color: 'white',
+                    }}
                   >
                     Sign Up
                   </Button>
