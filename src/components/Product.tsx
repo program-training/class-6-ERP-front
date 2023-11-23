@@ -46,7 +46,7 @@ const ProductDetails = () => {
     };
 
     fetchData();
-  }, [productId]); // Include productId as a dependency
+  }, []); // Include productId as a dependency
 
   const handleDelete = async () => {
     try {
