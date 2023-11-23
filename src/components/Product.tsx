@@ -9,7 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
-import { LoadingSpinner } from "../pages/Loading";
+import  LoadingSpinner  from "../pages/Loading";
 
 
 

@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoadingSpinner } from "../pages/Loading";
+import  LoadingSpinner  from "../pages/Loading";
 // Loading Component
 // const Loading: React.FC = () => (
 //     <div
