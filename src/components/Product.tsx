@@ -10,7 +10,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
 
-import Box from "@mui/material/Box";
 
 
 <style>
