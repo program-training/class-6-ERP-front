@@ -10,25 +10,23 @@ import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface ShopProductInterface {
-
-
-  product_id?: string;
-  name: string;
-  sale_price: string; // נשמור את השם של sale_price כמו שהוא במופע שמתקבל
-  quantity: number;
-  description: string;
-  category: string;
-  discount_percentage: string; // נשמור את השם של discount_percentage כמו שהוא במופע שמתקבל
-  image_url: string;
-  image_alt: string;
+export interface ShopProductInterface {
+  'product.product_id'?: string;
+  'product.name': string;
+  'product.sale_price': number;
+  'product.quantity': number;
+  'product.description': string;
+  'product.category': string;
+  'product.discount_percentage': number;
+  'product.image_url': string;
+  'product.image_alt': string;
 }
 
-// interface AdminProductInterface extends ShopProductInterface {
-//   is_for_sale: boolean;
-//   cost_price: number;
-//   supplier: string;
-// }
+export interface AdminProductInterface extends ShopProductInterface {
+  'is_for_sale': boolean;
+  'cost_price': number;
+  'supplier': string;
+}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,7 +50,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const Products = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [products, setProducts] = useState<ShopProductInterface[]>([]);
+  const [products, setProducts] = useState<AdminProductInterface[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,6 +102,8 @@ const Products = () => {
               <StyledTableCell align="right">Quantity</StyledTableCell>
               <StyledTableCell align="right">Description</StyledTableCell>
               <StyledTableCell align="right">Discount Percentage</StyledTableCell>
+              {/* <StyledTableCell align="right">Is For Sale</StyledTableCell> */}
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -112,17 +112,29 @@ const Products = () => {
 
             {
               products?.map((product) => (
-                <StyledTableRow key={product.product_id} onClick={() => handleProductClick(product.product_id)}>
-                <StyledTableCell component="th" scope="row">
-                  {product["product.name"] || "No Name"}</StyledTableCell>
-                <StyledTableCell align="right">{product['product.sale_price']}</StyledTableCell>
-                <StyledTableCell align="right">{product['product.quantity'] || 0}</StyledTableCell>
-                <StyledTableCell align="right">{product.discount_percentage || "No Description"}</StyledTableCell>
-                <StyledTableCell align="right">{product.discount_percentage || 0}</StyledTableCell>
-              </StyledTableRow>
-               
+                <StyledTableRow key={product['product.product_id']} onClick={() => handleProductClick(product['product.product_id'])}>
+                  <StyledTableCell component="th" scope="row">
+                    {product['product.name'] || "No Name"}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product['product.sale_price'] || 0}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product['product.quantity'] || 0}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product['product.description'] || "No Description"}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product['product.discount_percentage'] || 0}
+                  </StyledTableCell>
+                  {/* <StyledTableCell align="right">
+                    {product['is_for_sale'] || 0}
+                  </StyledTableCell> */}
+                </StyledTableRow>
               ))
             }
+
 
 
           </TableBody>
