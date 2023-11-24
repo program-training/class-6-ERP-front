@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -10,6 +11,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
 import  LoadingSpinner  from "../pages/Loading";
+
+// import Box from "@mui/material/Box";
 
 
 
@@ -44,7 +47,12 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`
+          `http://localhost:8200/api/products/inventory/${id}`, {
+          headers: {
+            Authorization: Cookies.get('token'),
+          }
+        }
+
         );
         setProductDetails(response.data);
       } catch (error) {
@@ -58,7 +66,12 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`
+        `http://localhost:8200/api/products/inventory/${id}`, {
+          headers: {
+            Authorization: Cookies.get('token'),
+          }
+        }
+
       );
       if (response.status === 200) {
         console.log("Product deleted successfully");
@@ -109,10 +122,10 @@ const ProductDetails = () => {
                       }}
                     />
                   </div>
-                  <div style={{paddingLeft:'1em', height: "100%", width: "50%"}}>
-                    <Typography 
+                  <div style={{ paddingLeft: '1em', height: "100%", width: "50%" }}>
+                    <Typography
                       variant="h4"
-                      style={{ marginBottom: "10px", color: "#333",  }}
+                      style={{ marginBottom: "10px", color: "#333", }}
                     >
                       {productDetails["product.name"]}
                     </Typography>
@@ -152,7 +165,7 @@ const ProductDetails = () => {
                       startIcon={<DeleteIcon />}
                       onClick={handleDelete}
                     >
-                      Delete 
+                      Delete
                     </Button>
 
                     <Button
@@ -169,9 +182,9 @@ const ProductDetails = () => {
                       }}
                       startIcon={<EditIcon />}
                       onClick={handleEdit}
-                      
+
                     >
-                      Edit 
+                      Edit
                     </Button>
                   </div>
                 </div>

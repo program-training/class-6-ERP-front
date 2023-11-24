@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -41,6 +42,14 @@ const Login = () => {
       console.log(response);
 
       if (response.status === 200) {
+
+        const token = response.data.token
+
+        console.log(token);
+        
+
+        Cookies.set("token", token, { expires: 1 });
+
         navigate("/Products");
       } else {
         console.error("Login failed");
