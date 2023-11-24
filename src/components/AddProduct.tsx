@@ -91,6 +91,7 @@ function AddProduct() {
           }
         });
 
+
       console.log(response.data);
 
       navigate(`/product/${response.data.product_id}`);

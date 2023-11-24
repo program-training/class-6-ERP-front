@@ -54,7 +54,7 @@ const SignUp = () => {
     try {
       // שליחת בקשה לשרת עם נתונים בפורמט JSON
       const response = await axios.post(
-        "http://localhost:8200/api/users/register",
+        "https://erp-beak1-6.onrender.com/api/users/register",
         data,
         {
           headers: {

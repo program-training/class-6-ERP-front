@@ -10,8 +10,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
+import  LoadingSpinner  from "../pages/Loading";
 
 // import Box from "@mui/material/Box";
+
 
 
 <style>
@@ -50,6 +52,7 @@ const ProductDetails = () => {
             Authorization: Cookies.get('token'),
           }
         }
+
         );
         setProductDetails(response.data);
       } catch (error) {
@@ -68,6 +71,7 @@ const ProductDetails = () => {
             Authorization: Cookies.get('token'),
           }
         }
+
       );
       if (response.status === 200) {
         console.log("Product deleted successfully");
@@ -186,8 +190,7 @@ const ProductDetails = () => {
                 </div>
               </>
             ) : (
-              <Typography variant="body1">Loading...</Typography>
-            )}
+             < LoadingSpinner/>           )}
 
           </CardContent>
         </Card>
