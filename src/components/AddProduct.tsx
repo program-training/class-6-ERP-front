@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import {
   Box,
@@ -49,7 +50,7 @@ function AddProduct() {
 
   const onSubmit = async (data: AdminProductInterface) => {
     try {
-      const preset_key = "hyjuf7js" 
+      const preset_key = "hyjuf7js"
       const cloudName = "class6erp"
       // Convert and resize image before sending
       const imageInput = document.getElementById('imageInput') as HTMLInputElement;
@@ -83,7 +84,12 @@ function AddProduct() {
       };
 
 
-      const response = await axios.post('http://localhost:8200/api/products/inventory', requestData);
+      const response = await axios.post('http://localhost:8200/api/products/inventory',
+        requestData, {
+          headers: {
+            Authorization: Cookies.get('token'),
+          }
+        });
 
       console.log(response.data);
 
