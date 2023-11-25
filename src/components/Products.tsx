@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,42 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Loading Component
-const Loading: React.FC = () => (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-      }}
-    >
-      <div
-        style={{
-          border: '8px solid #f3f3f3',
-          borderTop: '8px solid #3498db',
-          borderRadius: '50%',
-          width: '50px',
-          height: '50px',
-          animation: 'spin 1s linear infinite',
-        }}
-      ></div>
-      <p style={{ marginTop: '20px', fontSize: '18px', color: '#555' }}>
-        Loading...
-      </p>
-  
-      <style>
-        {`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}
-      </style>
-    </div>
-  );
+import  LoadingSpinner  from "../pages/Loading";
   
 export interface ShopProductInterface {
   "product.product_id"?: string;
@@ -107,7 +73,12 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://erp-beak1-6.onrender.com/api/products/inventory"
+          "erp-beak1-6.onrender.com/api/products/inventory", {
+          headers: {
+            Authorization: Cookies.get('token'),
+          }
+        }
+
         );
         setProducts(response.data);
         setFilteredProducts(response.data);
@@ -138,27 +109,27 @@ const Products: React.FC = () => {
           sortOption === 'name'
             ? a['product.name']
             : sortOption === 'sale_price'
-            ? a['product.sale_price']
-            : sortOption === 'discount_percentage'
-            ? a['product.discount_percentage']
-            : sortOption === 'description'
-            ? a['product.description']
-            : sortOption === 'quantity'
-            ? a['product.quantity']
-            : 0;
+              ? a['product.sale_price']
+              : sortOption === 'discount_percentage'
+                ? a['product.discount_percentage']
+                : sortOption === 'description'
+                  ? a['product.description']
+                  : sortOption === 'quantity'
+                    ? a['product.quantity']
+                    : 0;
 
         const valueB =
           sortOption === 'name'
             ? b['product.name']
             : sortOption === 'sale_price'
-            ? b['product.sale_price']
-            : sortOption === 'discount_percentage'
-            ? b['product.discount_percentage']
-            : sortOption === 'description'
-            ? b['product.description']
-            : sortOption === 'quantity'
-            ? b['product.quantity']
-            : 0;
+              ? b['product.sale_price']
+              : sortOption === 'discount_percentage'
+                ? b['product.discount_percentage']
+                : sortOption === 'description'
+                  ? b['product.description']
+                  : sortOption === 'quantity'
+                    ? b['product.quantity']
+                    : 0;
 
         // Handle numeric and string comparisons
         if (typeof valueA === 'number' && typeof valueB === 'number') {
@@ -213,14 +184,14 @@ const Products: React.FC = () => {
           }}
         />
         <div>
-        <label>Sort By:</label>
-        <select onChange={(e) => handleSortChange(e.target.value)} value={sortOption}>
-          <option value="name">Name</option>
-          <option value="sale_price">Sale Price</option>
-          <option value="discount_percentage">Discount Percentage</option>
-          <option value="description">Description</option>
-          <option value="quantity">Quantity</option>
-        </select>
+          <label>Sort By:</label>
+          <select onChange={(e) => handleSortChange(e.target.value)} value={sortOption}>
+            <option value="name">Name</option>
+            <option value="sale_price">Sale Price</option>
+            <option value="discount_percentage">Discount Percentage</option>
+            <option value="description">Description</option>
+            <option value="quantity">Quantity</option>
+          </select>
         </div>
         <div>
           <label>Sort Order:</label>
@@ -258,7 +229,7 @@ const Products: React.FC = () => {
       </div>
 
       {loading ? (
-        <Loading />
+        <LoadingSpinner />
       ) : (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -298,7 +269,7 @@ const Products: React.FC = () => {
                     {product["product.discount_percentage"] || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                  {product["is_for_sale"] ? 'true' : 'false'}
+                    {product["is_for_sale"] ? 'true' : 'false'}
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
