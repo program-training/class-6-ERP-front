@@ -9,6 +9,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const apiUrl = process.env.REACT_APP_BASE_URL;
+
+console.log('API URL:', apiUrl);
+
 
 interface FormData {
   username: string;
@@ -35,7 +42,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://erp-beak1-6.onrender.com/api/users/login",
+        `${apiUrl}api/users/login`,
         data,
       );
 

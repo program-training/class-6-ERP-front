@@ -11,6 +11,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
 import  LoadingSpinner  from "../pages/Loading";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const apiUrl = process.env.REACT_APP_BASE_URL;
+
+console.log('API URL:', apiUrl);
 
 // import Box from "@mui/material/Box";
 
@@ -47,7 +53,7 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`, {
+          `${apiUrl}api/products/inventory/${id}`, {
           headers: {
             Authorization: Cookies.get('token'),
           }
@@ -66,7 +72,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8200/api/products/inventory/${id}`, {
+        `${apiUrl}api/products/inventory/${id}`, {
           headers: {
             Authorization: Cookies.get('token'),
           }

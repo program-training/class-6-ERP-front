@@ -14,6 +14,12 @@ import {
   Alert,
 } from '@mui/material';
 import { useState } from 'react';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const apiUrl = process.env.REACT_APP_BASE_URL;
+
+console.log('API URL:', apiUrl);
 
 interface ShopProductInterface {
   name: string;
@@ -84,7 +90,7 @@ function AddProduct() {
       };
 
 
-      const response = await axios.post('https://erp-beak1-6.onrender.com/api/products/inventory',
+      const response = await axios.post(`${apiUrl}api/products/inventory`,
         requestData, {
           headers: {
             Authorization: Cookies.get('token'),
