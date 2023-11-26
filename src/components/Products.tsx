@@ -19,11 +19,9 @@ import { MenuItem, Select, InputLabel } from "@mui/material";
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import dotenv from 'dotenv';
-dotenv.config()
 
 
-const apiUrl = process.env.BASE_URL;
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 console.log(`API Base URL: ${apiUrl}`);
 
@@ -88,7 +86,7 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}/api/products/inventory`,
+          `${apiUrl}api/products/inventory`,
           {
             headers: {
               Authorization: Cookies.get("token"),

@@ -16,11 +16,9 @@ import {
   Alert,
 } from "@mui/material";
 import { useState } from "react";
-import dotenv from 'dotenv';
-dotenv.config()
 
 
-const apiUrl = process.env.BASE_URL;
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 console.log(`API Base URL: ${apiUrl}`);
 

@@ -10,11 +10,10 @@ import Input from "@mui/material/Input";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
 import {Box}from "@mui/material"
-import dotenv from 'dotenv';
-dotenv.config()
+// import dotenv from 'dotenv';
 
 
-const apiUrl = process.env.BASE_URL;
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 console.log(`API Base URL: ${apiUrl}`);
 

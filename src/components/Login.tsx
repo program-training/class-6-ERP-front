@@ -9,11 +9,9 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import dotenv from 'dotenv';
-dotenv.config()
 
 
-const apiUrl = process.env.BASE_URL;
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 console.log(`API Base URL: ${apiUrl}`);
 
