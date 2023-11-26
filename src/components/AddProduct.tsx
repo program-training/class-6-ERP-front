@@ -18,8 +18,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const apiUrl = process.env.REACT_APP_BASE_URL;
-
 console.log('API URL:', apiUrl);
+const cloudNameEnv = process.env.PRESET_KEY;
+console.log('cloudNameEnv:', cloudNameEnv);
 
 interface ShopProductInterface {
   name: string;
