@@ -2,6 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+// import Input from "@mui/material/Input";
+import { InputLabel } from "@mui/material";
 import {
   Box,
   Button,
@@ -87,22 +89,26 @@ function EditProduct() {
         setImage(imageUrl.data.url)
         console.log(imageUrl.data.url);
 
-        const postData: Partial<AdminProductInterface> = {
-          product_id: id,
-          name: data.name,
-          sale_price: data.sale_price,
-          quantity: data.quantity,
-          description: data.description,
-          category: data.category,
-          discount_percentage: data.discount_percentage,
-          image_url: imageUrl.data.url,
-          image_alt: data.image_alt,
-          is_for_sale: isForSale,
-          cost_price: data.cost_price,
-          supplier: data.supplier,
+        const postData = {
+          product: {
+            product_id: id,
+            name: data.name,
+            sale_price: data.sale_price,
+            quantity: data.quantity,
+            description: data.description,
+            category: data.category,
+            discount_percentage: data.discount_percentage,
+            image_url: imageUrl.data.url,
+            image_alt: data.image_alt,
+ 
+          },
+            is_for_sale: isForSale,
+            cost_price: data.cost_price,
+            supplier: data.supplier,
+
         };
 
-        const response = await axios.post(`http://localhost:8200/api/products/inventory/${id}`,
+        const response = await axios.patch(`http://localhost:8200/api/products/inventory/${id}`,
           postData, {
           headers: {
             Authorization: Cookies.get('token'),
@@ -190,11 +196,11 @@ function EditProduct() {
             accept="image/*"
             style={{ display: 'none' }}
           />
-          <label htmlFor="imageInput">
+          <InputLabel htmlFor="imageInput">
             <Button variant="contained" component="span" sx={{ mt: 2 }}>
               Upload Image
             </Button>
-          </label>
+          </InputLabel>
           {errors.image_url && <Alert severity="error">Image URL is required.</Alert >}
 
           <TextField InputLabelProps={{ shrink: true }} label="Image Alt" type="text" {...register('image_alt', { required: true })} margin="normal" />
