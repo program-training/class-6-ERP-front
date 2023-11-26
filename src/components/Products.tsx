@@ -237,6 +237,7 @@ const Products: React.FC = () => {
           }}
         >
           Add Product
+
         </Button>
         <Button
           onClick={() => navigate("/")}
