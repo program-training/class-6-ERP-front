@@ -20,10 +20,10 @@ const RegisterFormStyle: React.CSSProperties = {
   padding: "20px",
   borderRadius: "8px",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  background: "linear-gradient(to right bottom, #f5f5f5, #e0e0e0)", // Light gray background
+  background: "linear-gradient(to right bottom, #f5f5f5, #e0e0e0)", 
 };
 const ButtonStyle: React.CSSProperties = {
-  backgroundColor: "#3399FF", // Light blue color
+  backgroundColor: "#3399FF", 
   color: "white",
 };
 
