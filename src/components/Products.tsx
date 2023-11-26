@@ -87,7 +87,9 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
+
           `${apiUrl}api/products/inventory`,
+
           {
             headers: {
               Authorization: Cookies.get("token"),
