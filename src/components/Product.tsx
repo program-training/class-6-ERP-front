@@ -47,7 +47,7 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8200/api/products/inventory/${id}`,
+          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -66,7 +66,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8200/api/products/inventory/${id}`,
+        `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
         {
           headers: {
             Authorization: Cookies.get("token"),
