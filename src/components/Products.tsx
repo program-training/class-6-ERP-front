@@ -247,7 +247,13 @@ const Products: React.FC = () => {
 
         </Button>
         <Button
-          onClick={() => navigate("/")}
+          onClick={() =>{
+            Cookies.remove('token')
+            navigate("/")
+
+          }
+          
+        }
           style={{
             marginLeft: "10px",
             padding: "8px",
