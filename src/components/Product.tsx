@@ -14,6 +14,7 @@ import LoadingSpinner from "../pages/Loading";
 
 // import Box from "@mui/material/Box";
 
+
 <style>
   @import
   url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
