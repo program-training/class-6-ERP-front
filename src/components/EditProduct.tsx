@@ -2,6 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+// import Input from "@mui/material/Input";
+import { InputLabel } from "@mui/material";
 import {
   Box,
   Button,
@@ -194,11 +196,11 @@ function EditProduct() {
             accept="image/*"
             style={{ display: 'none' }}
           />
-          <label htmlFor="imageInput">
+          <InputLabel htmlFor="imageInput">
             <Button variant="contained" component="span" sx={{ mt: 2 }}>
               Upload Image
             </Button>
-          </label>
+          </InputLabel>
           {errors.image_url && <Alert severity="error">Image URL is required.</Alert >}
 
           <TextField InputLabelProps={{ shrink: true }} label="Image Alt" type="text" {...register('image_alt', { required: true })} margin="normal" />
