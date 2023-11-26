@@ -16,6 +16,13 @@ import {
   Alert,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
+import dotenv from 'dotenv';
+dotenv.config()
+
+
+const apiUrl = process.env.BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
 
 
 interface ShopProductInterface {
@@ -108,7 +115,7 @@ function EditProduct() {
 
         };
 
-        const response = await axios.patch(`https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+        const response = await axios.patch(`${apiUrl}api/products/inventory/${id}`,
           postData, {
           headers: {
             Authorization: Cookies.get('token'),
@@ -127,7 +134,7 @@ function EditProduct() {
   useEffect(() => {
     async function getProduct(id: string) {
       try {
-        const productData = await axios.get(`https://erp-beak1-6.onrender.com/api/products/inventory/${id}`, {
+        const productData = await axios.get(`${apiUrl}api/products/inventory/${id}`, {
           headers: {
             Authorization: Cookies.get('token'),
           }
