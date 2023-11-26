@@ -184,8 +184,7 @@ const Products: React.FC = () => {
         <TextField
           placeholder="Search products..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          InputProps={{
+          onChange={(e) => setSearchTerm(e.target.value)}          InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <SearchIcon />
@@ -198,7 +197,7 @@ const Products: React.FC = () => {
             },
             "& .MuiInputBase-input": {
               color: "withe", 
-            },
+            },          
           }}
         />
         <Typography component="div">
