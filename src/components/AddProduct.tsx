@@ -14,8 +14,17 @@ import {
   FormControlLabel,
   Paper,
   Alert,
-} from "@mui/material";
-import { useState } from "react";
+
+} from '@mui/material';
+import { useState } from 'react';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const apiUrl = process.env.REACT_APP_BASE_URL;
+console.log('API URL:', apiUrl);
+const cloudNameEnv = process.env.PRESET_KEY;
+console.log('cloudNameEnv:', cloudNameEnv);
+
 
 interface ShopProductInterface {
   name: string;
@@ -89,10 +98,9 @@ function AddProduct() {
         },
       };
 
-      const response = await axios.post(
-        "http://localhost:8200/api/products/inventory",
-        requestData,
-        {
+
+      const response = await axios.post(`${apiUrl}api/products/inventory`,
+        requestData, {
           headers: {
             Authorization: Cookies.get("token"),
           },

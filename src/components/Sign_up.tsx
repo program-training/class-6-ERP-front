@@ -10,6 +10,12 @@ import Input from "@mui/material/Input";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
 import {Box}from "@mui/material"
+import dotenv from 'dotenv';
+dotenv.config();
+
+const apiUrl = process.env.REACT_APP_BASE_URL;
+
+console.log('API URL:', apiUrl);
 
 
 
@@ -54,7 +60,7 @@ const SignUp = () => {
     try {
       // שליחת בקשה לשרת עם נתונים בפורמט JSON
       const response = await axios.post(
-        "https://erp-beak1-6.onrender.com/api/users/register",
+        `${apiUrl}api/users/register`,
         data,
         {
           headers: {

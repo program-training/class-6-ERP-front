@@ -16,6 +16,12 @@ import {
   Alert,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const apiUrl = process.env.REACT_APP_BASE_URL;
+
+console.log('API URL:', apiUrl);
 
 
 interface ShopProductInterface {
@@ -104,7 +110,7 @@ function EditProduct() {
           supplier: data.supplier,
         };
 
-        const response = await axios.post(`http://localhost:8200/api/products/inventory/${id}`,
+        const response = await axios.post(`${apiUrl}/api/products/inventory/${id}`,
           postData, {
           headers: {
             Authorization: Cookies.get('token'),
@@ -123,7 +129,7 @@ function EditProduct() {
   useEffect(() => {
     async function getProduct(id: string) {
       try {
-        const productData = await axios.get(`http://localhost:8200/api/products/inventory/${id}`, {
+        const productData = await axios.get(`${apiUrl}api/products/inventory/${id}`, {
           headers: {
             Authorization: Cookies.get('token'),
           }
