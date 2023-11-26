@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,14 +10,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
+import LoadingSpinner from "../pages/Loading";
 
-import Box from "@mui/material/Box";
-
+// import Box from "@mui/material/Box";
 
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
-</style>
+  @import
+  url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
+</style>;
 export interface ShopProductInterface {
   "product.product_id"?: string;
   "product.name": string;
@@ -45,7 +47,12 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8200/api/products/inventory/${id}`
+          `http://localhost:8200/api/products/inventory/${id}`,
+          {
+            headers: {
+              Authorization: Cookies.get("token"),
+            },
+          }
         );
         setProductDetails(response.data);
       } catch (error) {
@@ -59,7 +66,12 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8200/api/products/inventory/${id}`
+        `http://localhost:8200/api/products/inventory/${id}`,
+        {
+          headers: {
+            Authorization: Cookies.get("token"),
+          },
+        }
       );
       if (response.status === 200) {
         console.log("Product deleted successfully");
@@ -90,8 +102,9 @@ const ProductDetails = () => {
           <CardContent style={{ display: "flex" }}>
             {productDetails ? (
               <>
-                <div style={{ display: "flex" }}>
-                  <div
+                <Typography component="div" style={{ display: "flex" }}>
+                  <Typography
+                    component="div"
                     style={{
                       marginRight: "20px",
                       height: "100%",
@@ -109,11 +122,15 @@ const ProductDetails = () => {
                         borderRadius: "8px",
                       }}
                     />
-                  </div>
-                  <div style={{paddingLeft:'1em', height: "100%", width: "50%"}}>
-                    <Typography 
+                  </Typography>
+                  <Typography
+                    component="div"
+                    style={{ paddingLeft: "1em", height: "100%", width: "50%" }}
+                  >
+                    <Typography
+                      component="div"
                       variant="h4"
-                      style={{ marginBottom: "10px", color: "#333",  }}
+                      style={{ marginBottom: "10px", color: "#333" }}
                     >
                       {productDetails["product.name"]}
                     </Typography>
@@ -146,41 +163,39 @@ const ProductDetails = () => {
                       sx={{
                         backgroundColor: "grey",
                         color: "white",
-                        '&:hover': {
-                          bgcolor: 'lightgray'
-                        }
+                        "&:hover": {
+                          bgcolor: "lightgray",
+                        },
                       }}
                       startIcon={<DeleteIcon />}
                       onClick={handleDelete}
                     >
-                      Delete 
+                      Delete
                     </Button>
 
                     <Button
                       type="submit"
                       variant="contained"
                       sx={{
-                        margin: '1em',
+                        margin: "1em",
                         backgroundColor: "grey",
                         color: "white",
-                        width: '7em',
-                        '&:hover': {
-                          bgcolor: 'lightgray'
-                        }
+                        width: "7em",
+                        "&:hover": {
+                          bgcolor: "lightgray",
+                        },
                       }}
                       startIcon={<EditIcon />}
                       onClick={handleEdit}
-                      
                     >
-                      Edit 
+                      Edit
                     </Button>
-                  </div>
-                </div>
+                  </Typography>
+                </Typography>
               </>
             ) : (
-              <Typography variant="body1">Loading...</Typography>
+              <LoadingSpinner />
             )}
-
           </CardContent>
         </Card>
       </Grid>
