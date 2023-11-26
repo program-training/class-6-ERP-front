@@ -19,8 +19,13 @@ import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import dotenv from 'dotenv';
+dotenv.config();
 
-  
+const apiUrl = process.env.REACT_APP_BASE_URL;
+
+console.log('API URL:', apiUrl);
+
 export interface ShopProductInterface {
   "product.product_id"?: string;
   "product.name": string;
@@ -82,7 +87,9 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://erp-beak1-6.onrender.com/api/products/inventory",
+
+          `${apiUrl}api/products/inventory`,
+
           {
             headers: {
               Authorization: Cookies.get("token"),
