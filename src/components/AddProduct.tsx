@@ -1,7 +1,8 @@
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import Cookies from 'js-cookie';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
+import axios from "axios";
+import InputLabel from "@mui/material/InputLabel";
 import {
   Box,
   Button,
@@ -12,8 +13,8 @@ import {
   FormControlLabel,
   Paper,
   Alert,
-} from '@mui/material';
-import { useState } from 'react';
+} from "@mui/material";
+import { useState } from "react";
 
 interface ShopProductInterface {
   name: string;
@@ -50,21 +51,25 @@ function AddProduct() {
 
   const onSubmit = async (data: AdminProductInterface) => {
     try {
-      const preset_key = "hyjuf7js"
-      const cloudName = "class6erp"
+      const preset_key = "hyjuf7js";
+      const cloudName = "class6erp";
       // Convert and resize image before sending
-      const imageInput = document.getElementById('imageInput') as HTMLInputElement;
+      const imageInput = document.getElementById(
+        "imageInput"
+      ) as HTMLInputElement;
       if (imageInput && imageInput.files && imageInput.files.length > 0) {
         const imageFile = imageInput.files[0];
         const formData = new FormData();
-        formData.append('file', imageFile)
-        formData.append('upload_preset', preset_key)
-        const imageUrl = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, formData)
+        formData.append("file", imageFile);
+        formData.append("upload_preset", preset_key);
+        const imageUrl = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          formData
+        );
         console.log(imageUrl.data.url);
-        setValue('image_url', imageUrl.data.url);
+        setValue("image_url", imageUrl.data.url);
         setImage(imageUrl.data.url);
       }
-
       const requestData = {
         product: {
           name: data.name,
@@ -84,74 +89,121 @@ function AddProduct() {
       };
 
 
-      const response = await axios.post('http://localhost:8200/api/products/inventory',
+      const response = await axios.post('https://erp-beak1-6.onrender.com/api/products/inventory',
         requestData, {
           headers: {
-            Authorization: Cookies.get('token'),
-          }
-        });
-
+            Authorization: Cookies.get("token"),
+          },
+        }
+      );
 
       console.log(response.data);
 
       navigate(`/product/${response.data.product_id}`);
     } catch (error) {
-      console.error('Error saving product:', error);
+      console.error("Error saving product:", error);
     }
   };
 
   return (
     <Container>
       <Typography variant="h4">Add Product</Typography>
-      <Button onClick={() => navigate('/')}>Logout</Button>
-      <Button onClick={() => navigate('/Products')}>All Products</Button>
+      <Button onClick={() => navigate("/")}>Logout</Button>
+      <Button onClick={() => navigate("/Products")}>All Products</Button>
       <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
         <Typography variant="h5">Product properties</Typography>
 
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
-          sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
+          sx={{ mt: 2, display: "flex", flexDirection: "column" }}
         >
-          <TextField label="Product Name" type="text" {...register('name', { required: true })} margin="normal" />
-          {errors.name && <Alert severity="error">Product Name is required.</Alert >}
+          <TextField
+            label="Product Name"
+            type="text"
+            {...register("name", { required: true })}
+            margin="normal"
+          />
+          {errors.name && (
+            <Alert severity="error">Product Name is required.</Alert>
+          )}
 
-          <TextField label="Sale Price" type="number" {...register('sale_price', { required: true })} margin="normal" />
-          {errors.sale_price && <Alert severity="error">Sale Price is required.</Alert >}
+          <TextField
+            label="Sale Price"
+            type="number"
+            {...register("sale_price", { required: true })}
+            margin="normal"
+          />
+          {errors.sale_price && (
+            <Alert severity="error">Sale Price is required.</Alert>
+          )}
 
-          <TextField label="Quantity" type="number" {...register('quantity', { required: true })} margin="normal" />
-          {errors.quantity && <Alert severity="error">Quantity is required.</Alert >}
+          <TextField
+            label="Quantity"
+            type="number"
+            {...register("quantity", { required: true })}
+            margin="normal"
+          />
+          {errors.quantity && (
+            <Alert severity="error">Quantity is required.</Alert>
+          )}
 
-          <TextField label="Description" type="text" {...register('description', { required: true })} margin="normal" />
-          {errors.description && <Alert severity="error">Description is required.</Alert >}
+          <TextField
+            label="Description"
+            type="text"
+            {...register("description", { required: true })}
+            margin="normal"
+          />
+          {errors.description && (
+            <Alert severity="error">Description is required.</Alert>
+          )}
 
-          <TextField label="Category" type="text" {...register('category', { required: true })} margin="normal" />
-          {errors.category && <Alert severity="error">Category is required.</Alert >}
+          <TextField
+            label="Category"
+            type="text"
+            {...register("category", { required: true })}
+            margin="normal"
+          />
+          {errors.category && (
+            <Alert severity="error">Category is required.</Alert>
+          )}
 
           <TextField
             label="Discount Percentage"
             type="number"
-            {...register('discount_percentage', { required: true })}
+            {...register("discount_percentage", { required: true })}
             margin="normal"
           />
-          {errors.discount_percentage && <Alert severity="error">Discount Percentage is required.</Alert >}
+          {errors.discount_percentage && (
+            <Alert severity="error">Discount Percentage is required.</Alert>
+          )}
 
           <input
             type="file"
             id="imageInput"
-            {...register('image_url', { required: false })}
+            {...register("image_url", { required: false })}
             accept="image/*"
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
+            
           <label htmlFor="imageInput">
             <Button variant="contained" component="span" sx={{ mt: 2 }}>
               Upload Image
             </Button>
           </label>
-          {errors.image_url && <Alert severity="error">Image URL is required.</Alert >}
+          {errors.image_url && (
+            <Alert severity="error">Image URL is required.</Alert>
+          )}
 
-          <TextField label="Image Alt" type="text" {...register('image_alt', { required: true })} margin="normal" />
-          {errors.image_alt && <Alert severity="error">Image Alt is required.</Alert >}
+          <TextField
+            label="Image Alt"
+            type="text"
+            {...register("image_alt", { required: true })}
+            margin="normal"
+          />
+          {errors.image_alt && (
+            <Alert severity="error">Image Alt is required.</Alert>
+          )}
 
           <Typography variant="h5" sx={{ mt: 2 }}>
             Product meta data
@@ -163,27 +215,52 @@ function AddProduct() {
                 checked={isForSale}
                 onClick={handleChangeCheckbox}
                 inputProps={{ "aria-label": "primary checkbox" }}
-                {...register('is_for_sale', { required: false })}
+                {...register("is_for_sale", { required: false })}
               />
             }
             label="Is for Sale"
           />
-          {errors.is_for_sale && <Alert severity="error">Is For Sale is required.</Alert >}
+          {errors.is_for_sale && (
+            <Alert severity="error">Is For Sale is required.</Alert>
+          )}
 
-          <TextField label="Cost Price" type="number" {...register('cost_price', { required: true })} margin="normal" />
-          {errors.cost_price && <Alert severity="error">Cost Price is required.</Alert >}
+          <TextField
+            label="Cost Price"
+            type="number"
+            {...register("cost_price", { required: true })}
+            margin="normal"
+          />
+          {errors.cost_price && (
+            <Alert severity="error">Cost Price is required.</Alert>
+          )}
 
-          <TextField label="Supplier" type="text" {...register('supplier', { required: true })} margin="normal" />
-          {errors.supplier && <Alert severity="error">Supplier is required.</Alert >}
+          <TextField
+            label="Supplier"
+            type="text"
+            {...register("supplier", { required: true })}
+            margin="normal"
+          />
+          {errors.supplier && (
+            <Alert severity="error">Supplier is required.</Alert>
+          )}
           {image && (
             <img
               src={image}
               alt="Preview"
-              style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "300px",
+                marginTop: "10px",
+              }}
             />
           )}
 
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+          >
             Save Product
           </Button>
         </Box>

@@ -10,7 +10,16 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import  LoadingSpinner  from "../pages/Loading";
+import LoadingSpinner from "../pages/Loading";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { MenuItem, Select, InputLabel } from "@mui/material";
+import { TextField, InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+
   
 export interface ShopProductInterface {
   "product.product_id"?: string;
@@ -57,15 +66,15 @@ const Products: React.FC = () => {
     AdminProductInterface[]
   >([]);
   const [loading, setLoading] = useState(true);
-  const [sortOption, setSortOption] = useState<string>('name');
-  const [sortOrder, setSortOrder] = useState<string>('asc');
+  const [sortOption, setSortOption] = useState<string>("name");
+  const [sortOrder, setSortOrder] = useState<string>("asc");
 
   const handleSortChange = (option: string) => {
     if (option === sortOption) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortOption(option);
-      setSortOrder('asc');
+      setSortOrder("asc");
     }
   };
 
@@ -73,12 +82,12 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://erp-beak1-6.onrender.com/api/products/inventory", {
-          headers: {
-            Authorization: Cookies.get('token'),
+          "https://erp-beak1-6.onrender.com/api/products/inventory",
+          {
+            headers: {
+              Authorization: Cookies.get("token"),
+            },
           }
-        }
-
         );
         setProducts(response.data);
         setFilteredProducts(response.data);
@@ -106,42 +115,42 @@ const Products: React.FC = () => {
     setFilteredProducts((prevFilteredProducts) => {
       const sortedProducts = [...prevFilteredProducts].sort((a, b) => {
         const valueA =
-          sortOption === 'name'
-            ? a['product.name']
-            : sortOption === 'sale_price'
-              ? a['product.sale_price']
-              : sortOption === 'discount_percentage'
-                ? a['product.discount_percentage']
-                : sortOption === 'description'
-                  ? a['product.description']
-                  : sortOption === 'quantity'
-                    ? a['product.quantity']
-                    : 0;
+          sortOption === "name"
+            ? a["product.name"]
+            : sortOption === "sale_price"
+            ? a["product.sale_price"]
+            : sortOption === "discount_percentage"
+            ? a["product.discount_percentage"]
+            : sortOption === "description"
+            ? a["product.description"]
+            : sortOption === "quantity"
+            ? a["product.quantity"]
+            : 0;
 
         const valueB =
-          sortOption === 'name'
-            ? b['product.name']
-            : sortOption === 'sale_price'
-              ? b['product.sale_price']
-              : sortOption === 'discount_percentage'
-                ? b['product.discount_percentage']
-                : sortOption === 'description'
-                  ? b['product.description']
-                  : sortOption === 'quantity'
-                    ? b['product.quantity']
-                    : 0;
+          sortOption === "name"
+            ? b["product.name"]
+            : sortOption === "sale_price"
+            ? b["product.sale_price"]
+            : sortOption === "discount_percentage"
+            ? b["product.discount_percentage"]
+            : sortOption === "description"
+            ? b["product.description"]
+            : sortOption === "quantity"
+            ? b["product.quantity"]
+            : 0;
 
         // Handle numeric and string comparisons
-        if (typeof valueA === 'number' && typeof valueB === 'number') {
-          return sortOrder === 'asc' ? valueA - valueB : valueB - valueA;
+        if (typeof valueA === "number" && typeof valueB === "number") {
+          return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
         } else {
           const nameA = String(valueA).toUpperCase();
           const nameB = String(valueB).toUpperCase();
 
           if (nameA < nameB) {
-            return sortOrder === 'asc' ? -1 : 1;
+            return sortOrder === "asc" ? -1 : 1;
           } else if (nameA > nameB) {
-            return sortOrder === 'asc' ? 1 : -1;
+            return sortOrder === "asc" ? 1 : -1;
           }
 
           return 0; // values must be equal
@@ -162,8 +171,9 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div>
-      <div
+    <Box>
+      <Typography
+        component="div"
         style={{
           backgroundColor: "gray",
           display: "flex",
@@ -171,36 +181,55 @@ const Products: React.FC = () => {
           justifyContent: "space-between",
         }}
       >
-        <h1 style={{ marginRight: "10px" }}>All Products</h1>
-        <input
-          type="text"
+        <Typography component="h1" style={{ marginRight: "10px" }}>
+          All Products
+        </Typography>
+        <TextField
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            padding: "8px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            "& .MuiInputBase-root": {
+              backgroundColor: "white", 
+            },
+            "& .MuiInputBase-input": {
+              color: "withe", 
+            },
           }}
         />
-        <div>
-          <label>Sort By:</label>
-          <select onChange={(e) => handleSortChange(e.target.value)} value={sortOption}>
-            <option value="name">Name</option>
-            <option value="sale_price">Sale Price</option>
-            <option value="discount_percentage">Discount Percentage</option>
-            <option value="description">Description</option>
-            <option value="quantity">Quantity</option>
-          </select>
-        </div>
-        <div>
-          <label>Sort Order:</label>
-          <select onChange={(e) => setSortOrder(e.target.value)} value={sortOrder}>
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
-        </div>
-        <button
+        <Typography component="div">
+          <InputLabel sx={{ color: "white" }}>Sort By:</InputLabel>
+          <Select
+            onChange={(e) => handleSortChange(e.target.value)}
+            value={sortOption}
+            sx={{ color: "white" }}
+          >
+            <MenuItem value="name">Name</MenuItem>
+            <MenuItem value="sale_price">Sale Price</MenuItem>
+            <MenuItem value="discount_percentage">Discount Percentage</MenuItem>
+            <MenuItem value="description">Description</MenuItem>
+            <MenuItem value="quantity">Quantity</MenuItem>
+          </Select>
+        </Typography>
+        <Typography component="div">
+          <InputLabel sx={{ color: "white" }}>Sort Order:</InputLabel>
+          <Select
+            onChange={(e) => setSortOrder(e.target.value)}
+            value={sortOrder}
+            sx={{ color: "white" }}
+          >
+            <MenuItem value="asc">Ascending</MenuItem>
+            <MenuItem value="desc">Descending</MenuItem>
+          </Select>
+        </Typography>
+        <Button
           onClick={handleAddProduct}
           style={{
             marginLeft: "10px",
@@ -212,8 +241,8 @@ const Products: React.FC = () => {
           }}
         >
           Add Product
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => navigate("/")}
           style={{
             marginLeft: "10px",
@@ -225,8 +254,8 @@ const Products: React.FC = () => {
           }}
         >
           Logout
-        </button>
-      </div>
+        </Button>
+      </Typography>
 
       {loading ? (
         <LoadingSpinner />
@@ -235,7 +264,8 @@ const Products: React.FC = () => {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell align="right">Name</StyledTableCell>
                 <StyledTableCell align="right">Sale Price</StyledTableCell>
                 <StyledTableCell align="right">Quantity</StyledTableCell>
                 <StyledTableCell align="right">Description</StyledTableCell>
@@ -254,6 +284,9 @@ const Products: React.FC = () => {
                   }
                 >
                   <StyledTableCell component="th" scope="row">
+                    {product["product.product_id"] || "No Name"}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
                     {product["product.name"] || "No Name"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
@@ -269,7 +302,9 @@ const Products: React.FC = () => {
                     {product["product.discount_percentage"] || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["is_for_sale"] ? 'true' : 'false'}
+
+                    {product["is_for_sale"] ? <CheckIcon/> : <CloseIcon/>}
+
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -277,7 +312,7 @@ const Products: React.FC = () => {
           </Table>
         </TableContainer>
       )}
-    </div>
+    </Box>
   );
 };
 

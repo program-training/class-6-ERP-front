@@ -102,7 +102,7 @@ function EditProduct() {
           supplier: data.supplier,
         };
 
-        const response = await axios.post(`http://localhost:8200/api/products/inventory/${id}`,
+        const response = await axios.post(`https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           postData, {
           headers: {
             Authorization: Cookies.get('token'),
@@ -121,7 +121,7 @@ function EditProduct() {
   useEffect(() => {
     async function getProduct(id: string) {
       try {
-        const productData = await axios.get(`http://localhost:8200/api/products/inventory/${id}`, {
+        const productData = await axios.get(`https://erp-beak1-6.onrender.com/api/products/inventory/${id}`, {
           headers: {
             Authorization: Cookies.get('token'),
           }
