@@ -52,7 +52,7 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}/api/products/inventory/${id}`,
+          `${apiUrl}api/products/inventory/${id}`,
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -71,7 +71,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `${apiUrl}/api/products/inventory/${id}`,
+        `${apiUrl}api/products/inventory/${id}`,
         {
           headers: {
             Authorization: Cookies.get("token"),
