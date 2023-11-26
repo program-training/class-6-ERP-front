@@ -87,22 +87,26 @@ function EditProduct() {
         setImage(imageUrl.data.url)
         console.log(imageUrl.data.url);
 
-        const postData: Partial<AdminProductInterface> = {
-          product_id: id,
-          name: data.name,
-          sale_price: data.sale_price,
-          quantity: data.quantity,
-          description: data.description,
-          category: data.category,
-          discount_percentage: data.discount_percentage,
-          image_url: imageUrl.data.url,
-          image_alt: data.image_alt,
-          is_for_sale: isForSale,
-          cost_price: data.cost_price,
-          supplier: data.supplier,
+        const postData = {
+          product: {
+            product_id: id,
+            name: data.name,
+            sale_price: data.sale_price,
+            quantity: data.quantity,
+            description: data.description,
+            category: data.category,
+            discount_percentage: data.discount_percentage,
+            image_url: imageUrl.data.url,
+            image_alt: data.image_alt,
+ 
+          },
+            is_for_sale: isForSale,
+            cost_price: data.cost_price,
+            supplier: data.supplier,
+
         };
 
-        const response = await axios.post(`http://localhost:8200/api/products/inventory/${id}`,
+        const response = await axios.patch(`http://localhost:8200/api/products/inventory/${id}`,
           postData, {
           headers: {
             Authorization: Cookies.get('token'),
