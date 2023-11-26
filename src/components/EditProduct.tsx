@@ -161,7 +161,11 @@ function EditProduct() {
   return (
     <Container>
       <Typography variant="h4">Edit Product</Typography>
-      <Button onClick={() => navigate('/')}>Logout</Button>
+      <Button 
+       onClick={() =>{
+            Cookies.remove('token')
+            navigate("/")
+          }}>Logout</Button>
       <Button onClick={() => navigate('/Products')}>All Products</Button>
       <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
         <Typography variant="h5">Product properties</Typography>
