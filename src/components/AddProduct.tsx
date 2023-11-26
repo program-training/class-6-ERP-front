@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import axios from "axios";
+// import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import {
   Box,
@@ -178,6 +179,7 @@ function AddProduct() {
           {errors.discount_percentage && (
             <Alert severity="error">Discount Percentage is required.</Alert>
           )}
+           {/* <InputLabel htmlFor="confirmPassword"></InputLabel> */}
 
           <input
             type="file"
@@ -187,11 +189,11 @@ function AddProduct() {
             style={{ display: "none" }}
           />
             
-          <label htmlFor="imageInput">
+          <InputLabel htmlFor="imageInput">
             <Button variant="contained" component="span" sx={{ mt: 2 }}>
               Upload Image
             </Button>
-          </label>
+          </InputLabel>
           {errors.image_url && (
             <Alert severity="error">Image URL is required.</Alert>
           )}
