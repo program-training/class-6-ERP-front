@@ -11,41 +11,9 @@ import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import  LoadingSpinner  from "../pages/Loading";
-// Loading Component
-// const Loading: React.FC = () => (
-//     <div
-//       style={{
-//         display: 'flex',
-//         flexDirection: 'column',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         height: '100vh',
-//       }}
-//     >
-//       <div
-//         style={{
-//           border: '8px solid #f3f3f3',
-//           borderTop: '8px solid #3498db',
-//           borderRadius: '50%',
-//           width: '50px',
-//           height: '50px',
-//           animation: 'spin 1s linear infinite',
-//         }}
-//       ></div>
-//       <p style={{ marginTop: '20px', fontSize: '18px', color: '#555' }}>
-//         Loading...
-//       </p>
-  
-//       <style>
-//         {`
-//         @keyframes spin {
-//           0% { transform: rotate(0deg); }
-//           100% { transform: rotate(360deg); }
-//         }
-//       `}
-//       </style>
-//     </div>
-//   );
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+
   
 export interface ShopProductInterface {
   "product.product_id"?: string;
@@ -270,7 +238,8 @@ const Products: React.FC = () => {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell align="right">Name</StyledTableCell>
                 <StyledTableCell align="right">Sale Price</StyledTableCell>
                 <StyledTableCell align="right">Quantity</StyledTableCell>
                 <StyledTableCell align="right">Description</StyledTableCell>
@@ -289,6 +258,9 @@ const Products: React.FC = () => {
                   }
                 >
                   <StyledTableCell component="th" scope="row">
+                    {product["product.product_id"] || "No Name"}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
                     {product["product.name"] || "No Name"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
@@ -304,7 +276,7 @@ const Products: React.FC = () => {
                     {product["product.discount_percentage"] || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["is_for_sale"] ? 'true' : 'false'}
+                    {product["is_for_sale"] ? <CheckIcon/> : <CloseIcon/>}
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
