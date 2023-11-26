@@ -10,10 +10,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-
 import LoadingSpinner from "../pages/Loading";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -21,7 +19,6 @@ import Typography from "@mui/material/Typography";
 import { MenuItem, Select, InputLabel } from "@mui/material";
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-
 
 export interface ShopProductInterface {
   "product.product_id"?: string;
