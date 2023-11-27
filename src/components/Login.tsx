@@ -9,12 +9,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
 
 interface FormData {
   username: string;
   password: string;
 }
-
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
@@ -36,17 +36,15 @@ const Login = () => {
     try {
       const response = await axios.post(
         "https://erp-beak1-6.onrender.com/api/users/login",
-        data,
+        data
       );
 
       console.log(response);
 
       if (response.status === 200) {
-
-        const token = response.data.token
+        const token = response.data.token;
 
         console.log(token);
-        
 
         Cookies.set("token", token, { expires: 1 });
 
@@ -79,7 +77,8 @@ const Login = () => {
             <Card>
               <CardContent>
                 <Typography variant="h4">Login</Typography>
-                <form
+                <Box
+                  component="form"
                   style={RegisterFormStyle}
                   onSubmit={handleSubmit(handleLogin)}
                 >
@@ -104,11 +103,10 @@ const Login = () => {
                   <Button
                     type="submit"
                     sx={{
-                      backgroundColor: 'grey',
-                      color: 'white',
+                      backgroundColor: "grey",
+                      color: "white",
                     }}
                     variant="contained"
-                    
                   >
                     Login
                   </Button>
@@ -118,13 +116,13 @@ const Login = () => {
                     }}
                     variant="contained"
                     sx={{
-                      backgroundColor: 'grey',
-                      color: 'white',
+                      backgroundColor: "grey",
+                      color: "white",
                     }}
                   >
                     Sign Up
                   </Button>
-                </form>
+                </Box>
               </CardContent>
             </Card>
           </Grid>
