@@ -13,7 +13,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import LoadingSpinner from "../pages/Loading";
 import { Paper } from "@mui/material";
 
-// ... (import statements)
 
 const ProductDetails = () => {
   const navigate = useNavigate();

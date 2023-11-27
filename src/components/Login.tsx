@@ -13,6 +13,11 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+
+// const apiUrl = import.meta.env.VITE_BASE_URL;
+
+// console.log(`API Base URL: ${apiUrl}`);
+
 interface FormData {
   username: string;
   password: string;
@@ -45,6 +50,7 @@ const Login = () => {
       const response = await axios.post(
         "https://erp-beak1-6.onrender.com/api/users/login",
         data
+
       );
 
       if (response.status === 200) {
