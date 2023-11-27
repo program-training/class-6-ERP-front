@@ -13,16 +13,12 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import HeaderLogine from "../pages/HeaderLogine";
-
+import { FormData } from "../interface/interface";
 
 // const apiUrl = import.meta.env.VITE_BASE_URL;
 
 // console.log(`API Base URL: ${apiUrl}`);
 
-interface FormData {
-  username: string;
-  password: string;
-}
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",

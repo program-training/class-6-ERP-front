@@ -17,3 +17,14 @@ export interface ShopProductInterface {
     supplier: string; // Product supplier
   }
   
+  export interface FormData {
+    username: string;
+    password: string;
+  }
+
+  export interface FormDataSignUp {
+    username: string;
+    password: string;
+    confirmPassword: string;
+  }
+  
