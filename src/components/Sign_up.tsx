@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -9,14 +10,9 @@ import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
-import {Box}from "@mui/material"
-// import dotenv from 'dotenv';
-
-
-// const apiUrl = import.meta.env.VITE_BASE_URL;
-
-// console.log(`API Base URL: ${apiUrl}`);
-
+import Box from "@mui/material/Box";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
@@ -25,10 +21,10 @@ const RegisterFormStyle: React.CSSProperties = {
   padding: "20px",
   borderRadius: "8px",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  background: "linear-gradient(to right bottom, #f5f5f5, #e0e0e0)", 
+  background: "linear-gradient(to right bottom, #f5f5f5, #e0e0e0)",
 };
 const ButtonStyle: React.CSSProperties = {
-  backgroundColor: "#3399FF", 
+  backgroundColor: "#3399FF",
   color: "white",
 };
 
@@ -38,6 +34,10 @@ interface FormData {
   confirmPassword: string;
 }
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const SignUp = () => {
   const navigate = useNavigate();
   const {
@@ -45,12 +45,12 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
+  const [open, setOpen] = useState(false);
 
   const handleRegistration = async (data: FormData) => {
     const { password, confirmPassword } = data;
-    console.log(data);
 
-    // בדיקת עמיתות סיסמה
+ 
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
       return;
@@ -58,7 +58,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        `https://erp-beak1-6.onrender.com/api/users/register`,
+        "https://erp-beak1-6.onrender.com/api/users/register",
         data,
         {
           headers: {
@@ -66,13 +66,15 @@ const SignUp = () => {
           },
         }
       );
-      console.log(response.data.user);
-      console.log(response.data.message);
 
       if (response.data.user) {
         console.log("Registration successful");
-        navigate("/Products");
-      } else { 
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+          navigate("/Products");
+        }, 1500);
+      } else {
         console.error("Registration failed");
       }
     } catch (error) {
@@ -80,12 +82,17 @@ const SignUp = () => {
     }
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
       <Grid item xs={12} md={6}>
         <Card>
           <CardContent>
-            <Box component ="form"
+            <Box
+              component="form"
               style={RegisterFormStyle}
               onSubmit={handleSubmit(handleRegistration)}
             >
@@ -144,6 +151,20 @@ const SignUp = () => {
               <Button type="submit" variant="contained" style={ButtonStyle}>
                 Sign Up
               </Button>
+
+              <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="success"
+                  sx={{ width: "100%" }}
+                >
+                  Register successful! Redirecting to Products...
+                </Alert>
+              </Snackbar>
             </Box>
           </CardContent>
         </Card>

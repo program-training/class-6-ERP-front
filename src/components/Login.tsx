@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -12,11 +12,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
-
-// const apiUrl = import.meta.env.VITE_BASE_URL;
-
-// console.log(`API Base URL: ${apiUrl}`);
 
 interface FormData {
   username: string;
@@ -44,13 +39,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormData>();
   const [open, setOpen] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const handleLogin = async (data: FormData) => {
     try {
       const response = await axios.post(
         "https://erp-beak1-6.onrender.com/api/users/login",
         data
-
       );
 
       if (response.status === 200) {
@@ -64,14 +59,17 @@ const Login = () => {
         }, 1500);
       } else {
         console.error("Login failed");
+        setLoginError("Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error("Error during login:", error);
+      setLoginError("An unexpected error occurred during login.");
     }
   };
 
   const handleClose = () => {
     setOpen(false);
+    setLoginError(null);
   };
 
   return (
@@ -141,16 +139,18 @@ const Login = () => {
                     Sign Up
                   </Button>
                   <Snackbar
-                    open={open}
+                    open={open || !!loginError}
                     autoHideDuration={6000}
                     onClose={handleClose}
                   >
                     <Alert
                       onClose={handleClose}
-                      severity="success"
+                      severity={loginError ? "error" : "success"}
                       sx={{ width: "100%" }}
                     >
-                      Login successful! Redirecting to Products...
+                      {loginError
+                        ? loginError
+                        : "Login successful! Redirecting to Products..."}
                     </Alert>
                   </Snackbar>
                 </Box>
