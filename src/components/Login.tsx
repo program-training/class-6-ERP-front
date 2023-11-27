@@ -13,10 +13,10 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-interface FormData {
-  username: string;
-  password: string;
-}
+// const apiUrl = import.meta.env.VITE_BASE_URL;
+
+// console.log(`API Base URL: ${apiUrl}`);
+
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
@@ -42,15 +42,15 @@ const Login = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
 
   const handleLogin = async (data: FormData) => {
-    try {
-      const response = await axios.post(
-        "https://erp-beak1-6.onrender.com/api/users/login",
-        data
-      );
+  try {
+    const response = await axios.post(
+      "https://erp-beak1-6.onrender.com/api/users/login",
+      data
+    );
 
-      if (response.status === 200) {
-        const token = response.data.token;
-        Cookies.set("token", token, { expires: 1 });
+    if (response.status === 200) {
+      const token = response.data.token;
+      Cookies.set("token", token, { expires: 1 });
 
         setOpen(true);
         setTimeout(() => {
@@ -74,6 +74,7 @@ const Login = () => {
 
   return (
     <Card style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
+      <HeaderLogine/>
       <CardContent
         style={{
           display: "flex",
