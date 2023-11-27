@@ -99,56 +99,71 @@ const Products: React.FC = () => {
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
 
+ // Effect to filter products based on the search term
   useEffect(() => {
+    // Logic to filter products based on search term
+    const filtered = products.filter((product) =>
+      product["product.name"].toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredProducts(filtered);
+  }, [searchTerm, products]);
+
+  useEffect(() => {
+    // Logic to sort filtered products
     setFilteredProducts((prevFilteredProducts) => {
-      const sortedProducts = [...prevFilteredProducts].sort((a, b) => {
-        const valueA =
-          sortOption === "name"
-            ? a["product.name"]
-            : sortOption === "sale_price"
-            ? a["product.sale_price"]
-            : sortOption === "discount_percentage"
-            ? a["product.discount_percentage"]
-            : sortOption === "description"
-            ? a["product.description"]
-            : sortOption === "quantity"
-            ? a["product.quantity"]
-            : 0;
+      const sortedProducts = [...prevFilteredProducts].sort(
+        (a: AdminProductInterface, b: AdminProductInterface) => {
+          const valueA =
+            sortOption === "name"
+              ? a["product.name"]
+              : sortOption === "sale_price"
+              ? parseFloat(String(a["product.sale_price"]))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(a["product.discount_percentage"]))
+              : sortOption === "description"
+              ? a["product.description"]
+              : sortOption === "quantity"
+              ? a["product.quantity"]
+              : 0;
 
-        const valueB =
-          sortOption === "name"
-            ? b["product.name"]
-            : sortOption === "sale_price"
-            ? b["product.sale_price"]
-            : sortOption === "discount_percentage"
-            ? b["product.discount_percentage"]
-            : sortOption === "description"
-            ? b["product.description"]
-            : sortOption === "quantity"
-            ? b["product.quantity"]
-            : 0;
+          const valueB =
+            sortOption === "name"
+              ? b["product.name"]
+              : sortOption === "sale_price"
+              ? parseFloat(String(b["product.sale_price"]))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(b["product.discount_percentage"]))
+              : sortOption === "description"
+              ? b["product.description"]
+              : sortOption === "quantity"
+              ? b["product.quantity"]
+              : 0;
 
-        if (typeof valueA === "number" && typeof valueB === "number") {
-          return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
-        } else {
-          const nameA = String(valueA).toUpperCase();
-          const nameB = String(valueB).toUpperCase();
+          // Handle numeric and string comparisons
+          if (typeof valueA === "number" && typeof valueB === "number") {
+            return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
+          } else {
+            const nameA = String(valueA).toUpperCase();
+            const nameB = String(valueB).toUpperCase();
 
-          if (nameA < nameB) {
-            return sortOrder === "asc" ? -1 : 1;
-          } else if (nameA > nameB) {
-            return sortOrder === "asc" ? 1 : -1;
+            if (nameA < nameB) {
+              return sortOrder === "asc" ? -1 : 1;
+            } else if (nameA > nameB) {
+              return sortOrder === "asc" ? 1 : -1;
+            }
+
+            return 0; // values must be equal
           }
-
-          return 0; 
         }
-      });
+      );
 
       return sortedProducts;
     });
   }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
+    console.log(productId);
     navigate(`/Product/${productId}`);
   };
 
