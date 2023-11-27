@@ -10,8 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import LoadingSpinner from "../pages/Loading";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -20,7 +18,8 @@ import { MenuItem, Select, InputLabel } from "@mui/material";
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { AdminProductInterface } from "../interface/interface";
-
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,7 +28,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-  }
+  },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -39,12 +38,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:last-child td, &:last-child th": {
     border: 0,
   },
-  
-  "&:hover ": {
-    cursor: "pointer", 
+
+  "&:hover": {
+    cursor: "pointer",
+    backgroundColor: "lightgrey",
   },
 }));
-
 
 const Products: React.FC = () => {
   const navigate = useNavigate();
@@ -99,7 +98,7 @@ const Products: React.FC = () => {
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
 
- // Effect to filter products based on the search term
+  // Effect to filter products based on the search term
   useEffect(() => {
     // Logic to filter products based on search term
     const filtered = products.filter((product) =>
@@ -275,7 +274,6 @@ const Products: React.FC = () => {
                 </StyledTableCell>
                 <StyledTableCell align="right">Picture</StyledTableCell>
                 <StyledTableCell align="right">Is For Sale</StyledTableCell>
-
               </TableRow>
             </TableHead>
 
@@ -294,7 +292,7 @@ const Products: React.FC = () => {
                     {product["product.name"] || "No Name"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["product.sale_price" ]+"$" || 0}
+                    {product["product.sale_price"] + "$" || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {product["product.quantity"] || 0}
@@ -303,10 +301,11 @@ const Products: React.FC = () => {
                     {product["product.description"] || "No Description"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["product.discount_percentage"]+'%'|| 0}
+                    {product["product.discount_percentage"] + "%" || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    <Typography component="div"
+                    <Typography
+                      component="div"
                       onMouseEnter={() =>
                         setHoveredImage(product["product.image_url"])
                       }
@@ -316,10 +315,15 @@ const Products: React.FC = () => {
                       <img
                         src={product["product.image_url"]}
                         alt={product["product.image_alt"] || "No Alt Text"}
-                        style={{ width: "50px", height: "50px" ,borderRadius: "13%"}}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "13%",
+                        }}
                       />
                       {hoveredImage === product["product.image_url"] && (
-                        <Typography component="div"
+                        <Typography
+                          component="div"
                           style={{
                             position: "absolute",
                             top: "50%",
@@ -331,7 +335,11 @@ const Products: React.FC = () => {
                           <img
                             src={product["product.image_url"]}
                             alt={product["product.image_alt"] || "No Alt Text"}
-                            style={{ width: "150px", height: "150px" ,borderRadius: "13%"}} 
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              borderRadius: "13%",
+                            }}
                           />
                         </Typography>
                       )}
@@ -339,9 +347,11 @@ const Products: React.FC = () => {
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {product["is_for_sale"] ? (
-                      <CheckCircleOutlinedIcon />) : (<CloseIcon />)}
+                      <CheckIcon style={{ color: "green" }} />
+                    ) : (
+                      <ClearIcon style={{ color: "red" }} />
+                    )}
                   </StyledTableCell>
-
                 </StyledTableRow>
               ))}
             </TableBody>
