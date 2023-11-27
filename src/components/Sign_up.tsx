@@ -75,9 +75,10 @@ const SignUp = () => {
     }
   };
 
-  return (
+  return (<>
+      <HeaderLogine/>
+
     <Grid container justifyContent="center" alignItems="center" height="100vh">
-    <HeaderLogine/>
 
       <Grid item xs={12} md={6}>
         <Card>
@@ -145,7 +146,8 @@ const SignUp = () => {
           </CardContent>
         </Card>
       </Grid>
-    </Grid>
+    
+    </Grid></>
   );
 };
 
