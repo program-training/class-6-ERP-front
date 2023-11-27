@@ -164,7 +164,6 @@ const Products: React.FC = () => {
   }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
-    console.log(productId);
     navigate(`/Product/${productId}`);
   };
 
