@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-// import Input from "@mui/material/Input";
 import { InputLabel } from "@mui/material";
 import {
   Box,

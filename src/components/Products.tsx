@@ -155,7 +155,7 @@ const Products: React.FC = () => {
             return sortOrder === "asc" ? 1 : -1;
           }
 
-          return 0; // values must be equal
+          return 0; 
         }
       });
 
