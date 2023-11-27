@@ -272,7 +272,8 @@ const Products: React.FC = () => {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell align="right">Name</StyledTableCell>
                 <StyledTableCell align="right">Sale Price</StyledTableCell>
                 <StyledTableCell align="right">Quantity</StyledTableCell>
                 <StyledTableCell align="right">Description</StyledTableCell>
@@ -291,6 +292,9 @@ const Products: React.FC = () => {
                   }
                 >
                   <StyledTableCell component="th" scope="row">
+                    {product["product.product_id"] || "No Name"}
+                  </StyledTableCell>
+                  <StyledTableCell align="right" >
                     {product["product.name"] || "No Name"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
