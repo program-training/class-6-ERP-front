@@ -49,9 +49,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
-  "&:hover ": {
-    cursor: "pointer", // Change cursor to pointer on hover for elements with the class "clickable-text"
-  },
 }));
 // Styling for table rows
 
@@ -61,6 +58,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
   "&:last-child td, &:last-child th": {
     border: 0,
+  },
+
+  "&:hover ": {
+    cursor: "pointer",
   },
 }));
 
@@ -126,54 +127,55 @@ const Products: React.FC = () => {
 
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
-
   // Effect to sort filtered products based on sort option and order
   useEffect(() => {
     // Logic to sort filtered products
     setFilteredProducts((prevFilteredProducts) => {
-      const sortedProducts = [...prevFilteredProducts].sort((a, b) => {
-        const valueA =
-          sortOption === "name"
-            ? a["product.name"]
-            : sortOption === "sale_price"
-            ? a["product.sale_price"]
-            : sortOption === "discount_percentage"
-            ? a["product.discount_percentage"]
-            : sortOption === "description"
-            ? a["product.description"]
-            : sortOption === "quantity"
-            ? a["product.quantity"]
-            : 0;
+      const sortedProducts = [...prevFilteredProducts].sort(
+        (a: AdminProductInterface, b: AdminProductInterface) => {
+          const valueA =
+            sortOption === "name"
+              ? a["product.name"]
+              : sortOption === "sale_price"
+              ? parseFloat(String(a["product.sale_price"]))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(a["product.discount_percentage"]))
+              : sortOption === "description"
+              ? a["product.description"]
+              : sortOption === "quantity"
+              ? a["product.quantity"]
+              : 0;
 
-        const valueB =
-          sortOption === "name"
-            ? b["product.name"]
-            : sortOption === "sale_price"
-            ? b["product.sale_price"]
-            : sortOption === "discount_percentage"
-            ? b["product.discount_percentage"]
-            : sortOption === "description"
-            ? b["product.description"]
-            : sortOption === "quantity"
-            ? b["product.quantity"]
-            : 0;
+          const valueB =
+            sortOption === "name"
+              ? b["product.name"]
+              : sortOption === "sale_price"
+              ? parseFloat(String(b["product.sale_price"]))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(b["product.discount_percentage"]))
+              : sortOption === "description"
+              ? b["product.description"]
+              : sortOption === "quantity"
+              ? b["product.quantity"]
+              : 0;
 
-        // Handle numeric and string comparisons
-        if (typeof valueA === "number" && typeof valueB === "number") {
-          return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
-        } else {
-          const nameA = String(valueA).toUpperCase();
-          const nameB = String(valueB).toUpperCase();
+          // Handle numeric and string comparisons
+          if (typeof valueA === "number" && typeof valueB === "number") {
+            return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
+          } else {
+            const nameA = String(valueA).toUpperCase();
+            const nameB = String(valueB).toUpperCase();
 
-          if (nameA < nameB) {
-            return sortOrder === "asc" ? -1 : 1;
-          } else if (nameA > nameB) {
-            return sortOrder === "asc" ? 1 : -1;
+            if (nameA < nameB) {
+              return sortOrder === "asc" ? -1 : 1;
+            } else if (nameA > nameB) {
+              return sortOrder === "asc" ? 1 : -1;
+            }
+
+            return 0; // values must be equal
           }
-
-          return 0; // values must be equal
         }
-      });
+      );
 
       return sortedProducts;
     });
@@ -331,7 +333,8 @@ const Products: React.FC = () => {
                     )}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    <Typography component="div"
+                    <Typography
+                      component="div"
                       onMouseEnter={() =>
                         setHoveredImage(product["product.image_url"])
                       }
@@ -344,7 +347,8 @@ const Products: React.FC = () => {
                         style={{ width: "50px", height: "50px" }}
                       />
                       {hoveredImage === product["product.image_url"] && (
-                        <Typography component="div"
+                        <Typography
+                          component="div"
                           style={{
                             position: "absolute",
                             top: "50%",
