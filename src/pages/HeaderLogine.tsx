@@ -1,13 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
-  const nav = useNavigate()
+
+
+const HeaderLogine = () => {
   return (
     <div style={headerStyle}>
-      <h1 onClick={() =>{
-        nav('/products')
-      }}>Inventory Management</h1>
+      <h1 >Inventory Management</h1>
     </div>
   );
 };
@@ -20,4 +18,4 @@ const headerStyle: React.CSSProperties = {
   textAlign: 'center',
 };
 
-export default Header;
+export default HeaderLogine;

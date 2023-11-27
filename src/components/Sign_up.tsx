@@ -10,7 +10,8 @@ import Input from "@mui/material/Input";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
 import {Box}from "@mui/material"
-// import dotenv from 'dotenv';
+import HeaderLogine from "../pages/HeaderLogine";
+import { FormDataSignUp } from "../interface/interface";
 
 
 // const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -32,11 +33,6 @@ const ButtonStyle: React.CSSProperties = {
   color: "white",
 };
 
-interface FormData {
-  username: string;
-  password: string;
-  confirmPassword: string;
-}
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -44,20 +40,18 @@ const SignUp = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormDataSignUp>();
 
-  const handleRegistration = async (data: FormData) => {
+  const handleRegistration = async (data: FormDataSignUp) => {
     const { password, confirmPassword } = data;
     console.log(data);
 
-    // בדיקת עמיתות סיסמה
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
       return;
     }
 
     try {
-      // שליחת בקשה לשרת עם נתונים בפורמט JSON
       const response = await axios.post(
         `https://erp-beak1-6.onrender.com/api/users/register`,
         data,
@@ -71,11 +65,9 @@ const SignUp = () => {
       console.log(response.data.message);
 
       if (response.data.user) {
-        // רישום מוצלח
         console.log("Registration successful");
         navigate("/Products");
       } else { 
-        // רישום נכשל
         console.error("Registration failed");
       }
     } catch (error) {
@@ -85,6 +77,8 @@ const SignUp = () => {
 
   return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
+    <HeaderLogine/>
+
       <Grid item xs={12} md={6}>
         <Card>
           <CardContent>
