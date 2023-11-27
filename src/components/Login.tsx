@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import HeaderLogine from "../pages/HeaderLogine";
 
 
 // const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -76,6 +77,7 @@ const Login = () => {
 
   return (
     <Card style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
+      <HeaderLogine/>
       <CardContent
         style={{
           display: "flex",

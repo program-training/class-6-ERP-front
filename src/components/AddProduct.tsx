@@ -16,28 +16,11 @@ import {
   Alert,
 } from "@mui/material";
 import { useState } from "react";
-
+import { AdminProductInterface } from "../interface/interfaceAddProduct";
 
 // const apiUrl = import.meta.env.VITE_BASE_URL;
 
 // console.log(`API Base URL: ${apiUrl}`);
-
-interface ShopProductInterface {
-  name: string;
-  sale_price: number;
-  quantity: number;
-  description: string;
-  category: string;
-  discount_percentage: number;
-  image_url: string;
-  image_alt: string;
-}
-
-interface AdminProductInterface extends ShopProductInterface {
-  is_for_sale: boolean;
-  cost_price: number;
-  supplier: string;
-}
 
 function AddProduct() {
   const navigate = useNavigate();

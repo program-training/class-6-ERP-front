@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -16,39 +15,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
+import { AdminProductInterface } from "../interface/interfaceEditProduct";
 
-interface ShopProductInterface {
-  product_id?: string;
-  name: string;
-  sale_price: number;
-  quantity: number;
-  description: string;
-  category: string;
-  discount_percentage: number;
-  image_url: string;
-  image_alt: string;
-}
-
-export interface AdminProductInterface extends ShopProductInterface {
-  is_for_sale: boolean;
-  cost_price: number;
-  supplier: string;
-}
-
-export interface ProductFromServer {
-  "product.product_id"?: string;
-  "product.name": string;
-  "product.sale_price": number;
-  "product.quantity": number;
-  "product.description": string;
-  "product.category": string;
-  "product.discount_percentage": number;
-  "product.image_url": string;
-  "product.image_alt": string;
-  is_for_sale: boolean;
-  cost_price: number;
-  supplier: string;
-}
 
 function EditProduct() {
   const { id } = useParams();

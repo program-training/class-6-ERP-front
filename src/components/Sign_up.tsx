@@ -10,6 +10,7 @@ import Input from "@mui/material/Input";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
 import {Box}from "@mui/material"
+import HeaderLogine from "../pages/HeaderLogine";
 // import dotenv from 'dotenv';
 
 
@@ -82,6 +83,8 @@ const SignUp = () => {
 
   return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
+    <HeaderLogine/>
+
       <Grid item xs={12} md={6}>
         <Card>
           <CardContent>
