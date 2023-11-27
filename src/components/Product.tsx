@@ -1,56 +1,30 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import CardMedia from "@mui/material/CardMedia";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import CardMedia from "@mui/material/CardMedia";
+import LoadingSpinner from "../pages/Loading";
+import { Paper } from "@mui/material";
 
-
-
-<style>
-  @import
-  url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
-</style>;
-export interface ShopProductInterface {
-  "product.product_id"?: string;
-  "product.name": string;
-  "product.sale_price": number;
-  "product.quantity": number;
-  "product.description": string;
-  "product.category": string;
-  "product.discount_percentage": number;
-  "product.image_url": string;
-  "product.image_alt": string;
-}
-
-export interface AdminProductInterface extends ShopProductInterface {
-  is_for_sale: boolean;
-  cost_price: number;
-  supplier: string;
-}
 
 const ProductDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [productDetails, setProductDetails] =
-    useState<AdminProductInterface | null>(null);
+  const [productDetails, setProductDetails] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
           `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
-          {
-            headers: {
-              Authorization: Cookies.get("token"),
-            },
-          }
+          { headers: { Authorization: Cookies.get("token") } }
         );
         setProductDetails(response.data);
       } catch (error) {
@@ -65,12 +39,9 @@ const ProductDetails = () => {
     try {
       const response = await axios.delete(
         `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
-        {
-          headers: {
-            Authorization: Cookies.get("token"),
-          },
-        }
+        { headers: { Authorization: Cookies.get("token") } }
       );
+
       if (response.status === 200) {
         console.log("Product deleted successfully");
         navigate("/Products");
@@ -82,15 +53,13 @@ const ProductDetails = () => {
     }
   };
 
-  const handleEdit = () => {
-    navigate(`/EditProduct/${id}`);
-  };
+  const handleEdit = () => navigate(`/EditProduct/${id}`);
 
   return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
-      <Grid item xs={12} md={6}>
+      <Paper>
         <Card
-          style={{
+          sx={{
             margin: "20px",
             maxWidth: "60em",
             backgroundColor: "#f5f5f5",
@@ -99,104 +68,70 @@ const ProductDetails = () => {
         >
           <CardContent style={{ display: "flex" }}>
             {productDetails ? (
-              <>
-                <Typography component="div" style={{ display: "flex" }}>
-                  <Typography
-                    component="div"
-                    style={{
-                      marginRight: "20px",
-                      height: "100%",
-                      width: "50%",
+              <div style={{ display: "flex" }}>
+                <CardMedia
+                  component="img"
+                  alt={productDetails["product.image_alt"]}
+                  height="320"
+                  image={productDetails["product.image_url"]}
+                  sx={{ width: "50%", objectFit: "cover", borderRadius: "8px" }}
+                />
+                <div style={{ paddingLeft: "1em", width: "50%" }}>
+                  <Typography variant="h4" sx={{ marginBottom: "10px", color: "#333" }}>
+                    {productDetails["product.name"]}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
+                    <strong>Sale Price:</strong> ${productDetails["product.sale_price"]}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
+                    <strong>Quantity:</strong> {productDetails["product.quantity"]}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
+                    <strong>Description:</strong> {productDetails["product.description"]}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
+                    <strong>Discount Percentage:</strong>{" "}
+                    {productDetails["product.discount_percentage"]}%
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
+                    <strong>Is For Sale:</strong>{" "}
+                    {productDetails["is_for_sale"] ? "Yes" : "No"}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
+                    <strong>Cost Price:</strong> ${productDetails["cost_price"]}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
+                    <strong>Supplier:</strong> {productDetails["supplier"]}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    sx={{ bgcolor: "#d32f2f", "&:hover": { bgcolor: "#b71c1c" } }}
+                    startIcon={<DeleteIcon />}
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      margin: "1em",
+                      width: "7em",
+                      bgcolor: "#1976D2",
+                      "&:hover": { bgcolor: "#1565C0" },
                     }}
+                    startIcon={<EditIcon />}
+                    onClick={handleEdit}
                   >
-                    <CardMedia
-                      component="img"
-                      alt={productDetails["product.image_alt"]}
-                      height="320"
-                      image={productDetails["product.image_url"]}
-                      style={{
-                        width: "100%",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                      }}
-                    />
-                  </Typography>
-                  <Typography
-                    component="div"
-                    style={{ paddingLeft: "1em", height: "100%", width: "50%" }}
-                  >
-                    <Typography
-                      component="div"
-                      variant="h4"
-                      style={{ marginBottom: "10px", color: "#333" }}
-                    >
-                      {productDetails["product.name"]}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#555" }}>
-                      Sale Price: ${productDetails["product.sale_price"]}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#555" }}>
-                      Quantity: {productDetails["product.quantity"]}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#555" }}>
-                      Description: {productDetails["product.description"]}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#555" }}>
-                      Discount Percentage:{" "}
-                      {productDetails["product.discount_percentage"]}%
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#555" }}>
-                      Is For Sale:{" "}
-                      {productDetails["is_for_sale"] ? "Yes" : "No"}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#555" }}>
-                      Cost Price: ${productDetails["cost_price"]}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#555" }}>
-                      Supplier: {productDetails["supplier"]}
-                    </Typography>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "grey",
-                        color: "white",
-                        "&:hover": {
-                          bgcolor: "lightgray",
-                        },
-                      }}
-                      startIcon={<DeleteIcon />}
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </Button>
-
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      sx={{
-                        margin: "1em",
-                        backgroundColor: "grey",
-                        color: "white",
-                        width: "7em",
-                        "&:hover": {
-                          bgcolor: "lightgray",
-                        },
-                      }}
-                      startIcon={<EditIcon />}
-                      onClick={handleEdit}
-                    >
-                      Edit
-                    </Button>
-                  </Typography>
-                </Typography>
-              </>
+                    Edit
+                  </Button>
+                </div>
+              </div>
             ) : (
               <LoadingSpinner />
             )}
           </CardContent>
         </Card>
-      </Grid>
+      </Paper>
     </Grid>
   );
 };
