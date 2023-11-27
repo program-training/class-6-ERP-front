@@ -13,8 +13,6 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import {Box}from "@mui/material"
-import HeaderLogine from "../pages/HeaderLogine";
 import { FormDataSignUp } from "../interface/interface";
 
 
@@ -36,12 +34,6 @@ const ButtonStyle: React.CSSProperties = {
   backgroundColor: "#3399FF",
   color: "white",
 };
-
-interface FormData {
-  username: string;
-  password: string;
-  confirmPassword: string;
-}
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

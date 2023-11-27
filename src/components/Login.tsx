@@ -74,7 +74,6 @@ const Login = () => {
 
   return (
     <Card style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
-      <HeaderLogine/>
       <CardContent
         style={{
           display: "flex",
@@ -102,19 +101,19 @@ const Login = () => {
                     id="username"
                     label="Username"
                     type="text"
-                    {...register("username")}
+                    {...register}
                     fullWidth
                     margin="normal"
-                    inputProps={register("username")}
+                    inputProps={register}
                   />
                   <TextField
                     id="password"
                     label="Password"
                     type="password"
-                    {...register("password")}
+                    {...register}
                     fullWidth
                     margin="normal"
-                    inputProps={register("password")}
+                    inputProps={register}
                   />
                   <Button
                     type="submit"
