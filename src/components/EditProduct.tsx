@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -160,7 +160,7 @@ function EditProduct() {
         console.error(err);
       }
     }
-    getProduct(id!)
+    getProduct(id!);
   }, []);
 
   return (
@@ -246,11 +246,11 @@ function EditProduct() {
             accept="image/*"
             style={{ display: "none" }}
           />
-          <input>
+          <label htmlFor="imageInput">
             <Button variant="contained" component="span" sx={{ mt: 2 }}>
               Upload Image
             </Button>
-          </input>
+          </label>
           {uploading && <LinearWithValueLabel />}
 
           {errors.image_url && <Alert severity="error">Image URL is required.</Alert>}

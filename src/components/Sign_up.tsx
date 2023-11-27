@@ -57,7 +57,6 @@ const SignUp = () => {
     }
 
     try {
-      // שליחת בקשה לשרת עם נתונים בפורמט JSON
       const response = await axios.post(
         `https://erp-beak1-6.onrender.com/api/users/register`,
         data,
@@ -71,11 +70,9 @@ const SignUp = () => {
       console.log(response.data.message);
 
       if (response.data.user) {
-        // רישום מוצלח
         console.log("Registration successful");
         navigate("/Products");
       } else { 
-        // רישום נכשל
         console.error("Registration failed");
       }
     } catch (error) {
