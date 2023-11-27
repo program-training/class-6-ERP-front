@@ -31,7 +31,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
   }
 }));
-// Styling for table rows
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -47,7 +46,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 
-// Main functional component for rendering products
 const Products: React.FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,9 +58,7 @@ const Products: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
-  // Function to handle sorting change
   const handleSortChange = (option: string) => {
-    // Logic to handle sorting
     if (option === sortOption) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -71,11 +67,9 @@ const Products: React.FC = () => {
     }
   };
 
-  // Effect to fetch product data from the server on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Make API call to get product data
         const response = await axios.get(
           "https://erp-beak1-6.onrender.com/api/products/inventory",
           {
@@ -84,25 +78,20 @@ const Products: React.FC = () => {
             },
           }
         );
-        // Update state with fetched data
         setProducts(response.data);
         setFilteredProducts(response.data);
         setLoading(false);
         console.log(response.data);
       } catch (error) {
-        // Handle error if API call fails
         console.error("Error fetching products:", error);
         setLoading(false);
       }
     };
 
-    // Call the fetchData function
     fetchData();
   }, []);
 
-  // Effect to filter products based on the search term
   useEffect(() => {
-    // Logic to filter products based on search term
     const filtered = products.filter((product) =>
       product["product.name"].toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -110,9 +99,7 @@ const Products: React.FC = () => {
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
 
-  // Effect to sort filtered products based on sort option and order
   useEffect(() => {
-    // Logic to sort filtered products
     setFilteredProducts((prevFilteredProducts) => {
       const sortedProducts = [...prevFilteredProducts].sort((a, b) => {
         const valueA =
@@ -141,7 +128,6 @@ const Products: React.FC = () => {
             ? b["product.quantity"]
             : 0;
 
-        // Handle numeric and string comparisons
         if (typeof valueA === "number" && typeof valueB === "number") {
           return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
         } else {
@@ -162,12 +148,10 @@ const Products: React.FC = () => {
     });
   }, [sortOption, sortOrder]);
 
-  // Function to handle product click and navigate to product details page
   const handleProductClick = (productId: string | undefined) => {
     navigate(`/Product/${productId}`);
   };
 
-  // Function to handle adding a new product
   const handleAddProduct = async () => {
     navigate(`/addProduct`);
   };

@@ -46,7 +46,6 @@ const SignUp = () => {
     const { password, confirmPassword } = data;
     console.log(data);
 
-    // בדיקת עמיתות סיסמה
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
       return;
