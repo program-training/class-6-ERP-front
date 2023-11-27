@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import axios from "axios";
-// import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import {
   Box,
@@ -27,7 +26,7 @@ function AddProduct() {
   const {
     register,
     handleSubmit,
-    setValue, // Add this line
+    setValue, 
     formState: { errors },
   } = useForm<AdminProductInterface>();
 
@@ -42,7 +41,6 @@ function AddProduct() {
     try {
       const preset_key = "hyjuf7js";
       const cloudName = "class6erp";
-      // Convert and resize image before sending
       const imageInput = document.getElementById(
         "imageInput"
       ) as HTMLInputElement;
@@ -167,7 +165,6 @@ function AddProduct() {
           {errors.discount_percentage && (
             <Alert severity="error">Discount Percentage is required.</Alert>
           )}
-           {/* <InputLabel htmlFor="confirmPassword"></InputLabel> */}
 
           <input
             type="file"

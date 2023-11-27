@@ -11,7 +11,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
 import {Box}from "@mui/material"
 import HeaderLogine from "../pages/HeaderLogine";
-// import dotenv from 'dotenv';
+import { FormDataSignUp } from "../interface/interface";
 
 
 // const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -33,11 +33,6 @@ const ButtonStyle: React.CSSProperties = {
   color: "white",
 };
 
-interface FormData {
-  username: string;
-  password: string;
-  confirmPassword: string;
-}
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -45,13 +40,12 @@ const SignUp = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormDataSignUp>();
 
-  const handleRegistration = async (data: FormData) => {
+  const handleRegistration = async (data: FormDataSignUp) => {
     const { password, confirmPassword } = data;
     console.log(data);
 
-    // בדיקת עמיתות סיסמה
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
       return;
