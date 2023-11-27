@@ -314,7 +314,7 @@ const Products: React.FC = () => {
                     {product["product.name"] || "No Name"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["product.sale_price"] || 0}
+                    {product["product.sale_price" ]+"$" || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {product["product.quantity"] || 0}
