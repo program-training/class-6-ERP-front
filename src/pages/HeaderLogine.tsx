@@ -12,7 +12,7 @@ const HeaderLogine = () => {
 
 // Styles
 const headerStyle: React.CSSProperties = {
-  background: 'grey', // Use your preferred color
+  background: 'grey', 
   color: '#fff',
   padding: '1rem',
   textAlign: 'center',

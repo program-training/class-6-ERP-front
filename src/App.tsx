@@ -19,9 +19,10 @@ function App() {
         <Routes>
         <Route index element={<Home/>} />
         <Route path="/Sign_up" element={<Sign_up />} />
-        <Route path="/Products" element={<Products />} />
 
           <Route path="/" element={<Layout />}>
+          <Route path="/Products" element={<Products />} />
+
             <Route path="/Product/:id" element={<Product />} />
             <Route path="/AddProduct" element={<AddProduct />} />
             <Route path="/EditProduct/:id" element={<EditProduct />} />
