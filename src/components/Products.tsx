@@ -173,7 +173,7 @@ const Products: React.FC = () => {
             return sortOrder === "asc" ? 1 : -1;
           }
 
-          return 0; // values must be equal
+          return 0; 
         }
       });
 
@@ -183,7 +183,6 @@ const Products: React.FC = () => {
 
   // Function to handle product click and navigate to product details page
   const handleProductClick = (productId: string | undefined) => {
-    console.log(productId);
     navigate(`/Product/${productId}`);
   };
 
@@ -290,12 +289,13 @@ const Products: React.FC = () => {
                 <StyledTableCell>Name</StyledTableCell>
                 <StyledTableCell align="right">Sale Price</StyledTableCell>
                 <StyledTableCell align="right">Quantity</StyledTableCell>
-                <StyledTableCell align="right">Description</StyledTableCell>
+                <StyledTableCell align="left">Description</StyledTableCell>
                 <StyledTableCell align="right">
                   Discount Percentage
                 </StyledTableCell>
-                <StyledTableCell align="right">Is For Sale</StyledTableCell>
                 <StyledTableCell align="right">Picture</StyledTableCell>
+                <StyledTableCell align="right">Is For Sale</StyledTableCell>
+
               </TableRow>
             </TableHead>
 
@@ -319,18 +319,11 @@ const Products: React.FC = () => {
                   <StyledTableCell align="right">
                     {product["product.quantity"] || 0}
                   </StyledTableCell>
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="left">
                     {product["product.description"] || "No Description"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["product.discount_percentage"] || 0}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {product["is_for_sale"] ? (
-                      <CheckCircleOutlinedIcon />
-                    ) : (
-                      <CloseIcon />
-                    )}
+                    {product["product.discount_percentage"]+'%'|| 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     <Typography component="div"
@@ -343,7 +336,7 @@ const Products: React.FC = () => {
                       <img
                         src={product["product.image_url"]}
                         alt={product["product.image_alt"] || "No Alt Text"}
-                        style={{ width: "50px", height: "50px" }}
+                        style={{ width: "50px", height: "50px" ,borderRadius: "13%"}}
                       />
                       {hoveredImage === product["product.image_url"] && (
                         <Typography component="div"
@@ -358,12 +351,17 @@ const Products: React.FC = () => {
                           <img
                             src={product["product.image_url"]}
                             alt={product["product.image_alt"] || "No Alt Text"}
-                            style={{ width: "150px", height: "150px" }} // Adjust the size of the larger image
+                            style={{ width: "150px", height: "150px" ,borderRadius: "13%"}} 
                           />
                         </Typography>
                       )}
                     </Typography>
                   </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product["is_for_sale"] ? (
+                      <CheckCircleOutlinedIcon />) : (<CloseIcon />)}
+                  </StyledTableCell>
+
                 </StyledTableRow>
               ))}
             </TableBody>

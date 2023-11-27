@@ -13,7 +13,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import LoadingSpinner from "../pages/Loading";
 import { Paper } from "@mui/material";
 
-
 const ProductDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -57,10 +56,9 @@ const ProductDetails = () => {
 
   return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
-      <Paper>
+      <Paper style={{ background: "#f0eae2", padding: "20px" }}>
         <Card
           sx={{
-            margin: "20px",
             maxWidth: "60em",
             backgroundColor: "#f5f5f5",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -133,7 +131,7 @@ const ProductDetails = () => {
                   >
                     Supplier: {productDetails["supplier"]}
                   </Typography>
-                  <Button
+                                    <Button
                     variant="contained"
                     sx={{
                       bgcolor: "#d32f2f",
@@ -147,10 +145,9 @@ const ProductDetails = () => {
                   <Button
                     variant="contained"
                     sx={{
-                      margin: "1em",
                       width: "7em",
-                      bgcolor: "#1976D2",
-                      "&:hover": { bgcolor: "#1565C0" },
+                      backgroundColor: "#1976D2",
+                      "&:hover": { backgroundColor: "#1565C0" },
                     }}
                     startIcon={<EditIcon />}
                     onClick={handleEdit}
