@@ -17,9 +17,8 @@ const Header = () => {
   );
 };
 
-// Styles
 const headerStyle: React.CSSProperties = {
-  backgroundColor: 'grey.A700', // MUI color
+  backgroundColor: 'grey.A700', 
   color: '#fff',
   padding: '1rem',
   textAlign: 'center',
