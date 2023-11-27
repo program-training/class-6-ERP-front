@@ -156,7 +156,7 @@ function EditProduct() {
       }
     }
     getProduct(id!)
-  }, [])
+  }, []);
 
   return (
     <Container>

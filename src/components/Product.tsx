@@ -68,7 +68,7 @@ const ProductDetails = () => {
         >
           <CardContent style={{ display: "flex" }}>
             {productDetails ? (
-              <div style={{ display: "flex" }}>
+              <Typography component="div" style={{ display: "flex" }}>
                 <CardMedia
                   component="img"
                   alt={productDetails["product.image_alt"]}
@@ -76,36 +76,69 @@ const ProductDetails = () => {
                   image={productDetails["product.image_url"]}
                   sx={{ width: "50%", objectFit: "cover", borderRadius: "8px" }}
                 />
-                <div style={{ paddingLeft: "1em", width: "50%" }}>
-                  <Typography variant="h4" sx={{ marginBottom: "10px", color: "#333" }}>
+                <Typography
+                  component="div"
+                  style={{ paddingLeft: "1em", width: "50%" }}
+                >
+                  <Typography
+                    variant="h4"
+                    sx={{ marginBottom: "10px", color: "#333" }}
+                  >
                     {productDetails["product.name"]}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
-                    <strong>Sale Price:</strong> ${productDetails["product.sale_price"]}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#555", marginBottom: "8px" }}
+                  >
+                    Sale Price: $
+                    {productDetails["product.sale_price"]}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
-                    <strong>Quantity:</strong> {productDetails["product.quantity"]}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#555", marginBottom: "8px" }}
+                  >
+                    Quantity:{" "}
+                    {productDetails["product.quantity"]}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
-                    <strong>Description:</strong> {productDetails["product.description"]}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#555", marginBottom: "8px" }}
+                  >
+                    Description:{" "}
+                    {productDetails["product.description"]}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
-                    <strong>Discount Percentage:</strong>{" "}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#555", marginBottom: "8px" }}
+                  >
+                    Discount Percentage:{" "}
                     {productDetails["product.discount_percentage"]}%
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
-                    <strong>Is For Sale:</strong>{" "}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#555", marginBottom: "8px" }}
+                  >
+                    Is For Sale:{" "}
                     {productDetails["is_for_sale"] ? "Yes" : "No"}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
-                    <strong>Cost Price:</strong> ${productDetails["cost_price"]}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#555", marginBottom: "8px" }}
+                  >
+                    Cost Price: ${productDetails["cost_price"]}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#555", marginBottom: "8px" }}>
-                    <strong>Supplier:</strong> {productDetails["supplier"]}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#555", marginBottom: "8px" }}
+                  >
+                    Supplier: {productDetails["supplier"]}
                   </Typography>
                   <Button
                     variant="contained"
-                    sx={{ bgcolor: "#d32f2f", "&:hover": { bgcolor: "#b71c1c" } }}
+                    sx={{
+                      bgcolor: "#d32f2f",
+                      "&:hover": { bgcolor: "#b71c1c" },
+                    }}
                     startIcon={<DeleteIcon />}
                     onClick={handleDelete}
                   >
@@ -124,8 +157,8 @@ const ProductDetails = () => {
                   >
                     Edit
                   </Button>
-                </div>
-              </div>
+                </Typography>
+              </Typography>
             ) : (
               <LoadingSpinner />
             )}
