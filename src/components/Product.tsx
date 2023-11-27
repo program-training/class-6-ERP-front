@@ -12,11 +12,6 @@ import { useEffect, useState } from "react";
 import CardMedia from "@mui/material/CardMedia";
 import LoadingSpinner from "../pages/Loading";
 
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
-
-console.log(`API Base URL: ${apiUrl}`);
-
 // import Box from "@mui/material/Box";
 
 
@@ -52,7 +47,7 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}api/products/inventory/${id}`,
+          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -71,7 +66,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `${apiUrl}api/products/inventory/${id}`,
+        `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
         {
           headers: {
             Authorization: Cookies.get("token"),

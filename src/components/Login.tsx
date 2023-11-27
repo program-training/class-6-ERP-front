@@ -11,9 +11,9 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
+// const apiUrl = import.meta.env.VITE_BASE_URL;
 
-console.log(`API Base URL: ${apiUrl}`);
+// console.log(`API Base URL: ${apiUrl}`);
 
 interface FormData {
   username: string;
@@ -40,7 +40,8 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        `${apiUrl}api/users/login`,
+        // `${apiUrl}api/users/login`,
+        `https://erp-beak1-6.onrender.com/api/users/login`,
         data,
       );
 

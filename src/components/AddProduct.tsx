@@ -18,9 +18,9 @@ import {
 import { useState } from "react";
 
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
+// const apiUrl = import.meta.env.VITE_BASE_URL;
 
-console.log(`API Base URL: ${apiUrl}`);
+// console.log(`API Base URL: ${apiUrl}`);
 
 interface ShopProductInterface {
   name: string;
@@ -95,7 +95,7 @@ function AddProduct() {
       };
 
       const response = await axios.post(
-        `${apiUrl}api/products/inventory`,
+        `https://erp-beak1-6.onrender.com/api/products/inventory`,
         requestData,
         {
           headers: {

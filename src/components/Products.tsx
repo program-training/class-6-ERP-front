@@ -21,9 +21,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
-
-console.log(`API Base URL: ${apiUrl}`);
 
 export interface ShopProductInterface {
   "product.product_id"?: string;
@@ -86,7 +83,8 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}api/products/inventory`,
+          // `${apiUrl}api/products/inventory`,
+          `https://erp-beak1-6.onrender.com/api/products/inventory`,
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -248,7 +246,7 @@ const Products: React.FC = () => {
         </Button>
         <Button
           onClick={() =>{
-            Cookies.remove('token')
+            Cookies.remove('token');
             navigate("/")
 
           }

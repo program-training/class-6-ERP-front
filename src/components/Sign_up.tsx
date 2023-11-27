@@ -13,9 +13,9 @@ import {Box}from "@mui/material"
 // import dotenv from 'dotenv';
 
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
+// const apiUrl = import.meta.env.VITE_BASE_URL;
 
-console.log(`API Base URL: ${apiUrl}`);
+// console.log(`API Base URL: ${apiUrl}`);
 
 
 const RegisterFormStyle: React.CSSProperties = {
@@ -59,7 +59,7 @@ const SignUp = () => {
     try {
       // שליחת בקשה לשרת עם נתונים בפורמט JSON
       const response = await axios.post(
-        `${apiUrl}api/users/register`,
+        `https://erp-beak1-6.onrender.com/api/users/register`,
         data,
         {
           headers: {
