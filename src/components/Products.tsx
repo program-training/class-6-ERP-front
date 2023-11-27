@@ -10,8 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import LoadingSpinner from "../pages/Loading";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -19,28 +17,10 @@ import Typography from "@mui/material/Typography";
 import { MenuItem, Select, InputLabel } from "@mui/material";
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-// Interface for shop product details
-export interface ShopProductInterface {
-  "product.product_id"?: string; // Optional product ID
-  "product.name": string; // Product name
-  "product.sale_price": number; // Product sale price
-  "product.quantity": number; // Product quantity
-  "product.description": string; // Product description
-  "product.category": string; // Product category
-  "product.discount_percentage": number; // Product discount percentage
-  "product.image_url": string; // Product image URL
-  "product.image_alt": string; // Product image alt text
-}
+import { AdminProductInterface } from "../interface/interface";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 
-// Interface for admin product details, extending shop product interface
-export interface AdminProductInterface extends ShopProductInterface {
-  is_for_sale: boolean; // Flag indicating whether the product is for sale
-  cost_price: number; // Product cost price
-  supplier: string; // Product supplier
-}
-
-// Styled components for custom styling using MUI's styled utility
-// Styling for table header cells
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -50,7 +30,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
   },
 }));
-// Styling for table rows
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -60,12 +39,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 
-  "&:hover ": {
+  "&:hover": {
     cursor: "pointer",
+    backgroundColor: "lightgrey",
   },
 }));
 
-// Main functional component for rendering products
 const Products: React.FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,9 +57,7 @@ const Products: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
-  // Function to handle sorting change
   const handleSortChange = (option: string) => {
-    // Logic to handle sorting
     if (option === sortOption) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -89,11 +66,9 @@ const Products: React.FC = () => {
     }
   };
 
-  // Effect to fetch product data from the server on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Make API call to get product data
         const response = await axios.get(
           "https://erp-beak1-6.onrender.com/api/products/inventory",
           {
@@ -102,21 +77,26 @@ const Products: React.FC = () => {
             },
           }
         );
-        // Update state with fetched data
         setProducts(response.data);
         setFilteredProducts(response.data);
         setLoading(false);
         console.log(response.data);
       } catch (error) {
-        // Handle error if API call fails
         console.error("Error fetching products:", error);
         setLoading(false);
       }
     };
 
-    // Call the fetchData function
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const filtered = products.filter((product) =>
+      product["product.name"].toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredProducts(filtered);
+  }, [searchTerm, products]);
 
   // Effect to filter products based on the search term
   useEffect(() => {
@@ -127,7 +107,7 @@ const Products: React.FC = () => {
 
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
-  // Effect to sort filtered products based on sort option and order
+
   useEffect(() => {
     // Logic to sort filtered products
     setFilteredProducts((prevFilteredProducts) => {
@@ -181,13 +161,11 @@ const Products: React.FC = () => {
     });
   }, [sortOption, sortOrder]);
 
-  // Function to handle product click and navigate to product details page
   const handleProductClick = (productId: string | undefined) => {
     console.log(productId);
     navigate(`/Product/${productId}`);
   };
 
-  // Function to handle adding a new product
   const handleAddProduct = async () => {
     navigate(`/addProduct`);
   };
@@ -290,12 +268,12 @@ const Products: React.FC = () => {
                 <StyledTableCell>Name</StyledTableCell>
                 <StyledTableCell align="right">Sale Price</StyledTableCell>
                 <StyledTableCell align="right">Quantity</StyledTableCell>
-                <StyledTableCell align="right">Description</StyledTableCell>
+                <StyledTableCell align="left">Description</StyledTableCell>
                 <StyledTableCell align="right">
                   Discount Percentage
                 </StyledTableCell>
-                <StyledTableCell align="right">Is For Sale</StyledTableCell>
                 <StyledTableCell align="right">Picture</StyledTableCell>
+                <StyledTableCell align="right">Is For Sale</StyledTableCell>
               </TableRow>
             </TableHead>
 
@@ -314,23 +292,16 @@ const Products: React.FC = () => {
                     {product["product.name"] || "No Name"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["product.sale_price"] || 0}
+                    {product["product.sale_price"] + "$" || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {product["product.quantity"] || 0}
                   </StyledTableCell>
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="left">
                     {product["product.description"] || "No Description"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["product.discount_percentage"] || 0}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {product["is_for_sale"] ? (
-                      <CheckCircleOutlinedIcon />
-                    ) : (
-                      <CloseIcon />
-                    )}
+                    {product["product.discount_percentage"] + "%" || 0}
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     <Typography
@@ -344,7 +315,11 @@ const Products: React.FC = () => {
                       <img
                         src={product["product.image_url"]}
                         alt={product["product.image_alt"] || "No Alt Text"}
-                        style={{ width: "50px", height: "50px" }}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "13%",
+                        }}
                       />
                       {hoveredImage === product["product.image_url"] && (
                         <Typography
@@ -360,11 +335,22 @@ const Products: React.FC = () => {
                           <img
                             src={product["product.image_url"]}
                             alt={product["product.image_alt"] || "No Alt Text"}
-                            style={{ width: "150px", height: "150px" }} // Adjust the size of the larger image
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              borderRadius: "13%",
+                            }}
                           />
                         </Typography>
                       )}
                     </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product["is_for_sale"] ? (
+                      <CheckIcon style={{ color: "green" }} />
+                    ) : (
+                      <ClearIcon style={{ color: "red" }} />
+                    )}
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
