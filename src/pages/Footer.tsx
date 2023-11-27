@@ -33,7 +33,7 @@ function Footer() {
               <br />
               Nehorai
               <br />
-              Zaki
+              Zvika Berkovich
 
             </Typography>
           </Grid>
