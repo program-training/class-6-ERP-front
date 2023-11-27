@@ -331,7 +331,7 @@ const Products: React.FC = () => {
                     )}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    <div
+                    <Typography component="div"
                       onMouseEnter={() =>
                         setHoveredImage(product["product.image_url"])
                       }
@@ -344,7 +344,7 @@ const Products: React.FC = () => {
                         style={{ width: "50px", height: "50px" }}
                       />
                       {hoveredImage === product["product.image_url"] && (
-                        <div
+                        <Typography component="div"
                           style={{
                             position: "absolute",
                             top: "50%",
@@ -358,9 +358,9 @@ const Products: React.FC = () => {
                             alt={product["product.image_alt"] || "No Alt Text"}
                             style={{ width: "150px", height: "150px" }} // Adjust the size of the larger image
                           />
-                        </div>
+                        </Typography>
                       )}
-                    </div>
+                    </Typography>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
