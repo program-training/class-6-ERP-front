@@ -100,7 +100,6 @@ const Products: React.FC = () => {
 
   // Effect to filter products based on the search term
   useEffect(() => {
-    // Logic to filter products based on search term
     const filtered = products.filter((product) =>
       product["product.name"].toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -109,7 +108,6 @@ const Products: React.FC = () => {
   }, [searchTerm, products]);
 
   useEffect(() => {
-    // Logic to sort filtered products
     setFilteredProducts((prevFilteredProducts) => {
       const sortedProducts = [...prevFilteredProducts].sort(
         (a: AdminProductInterface, b: AdminProductInterface) => {
@@ -139,7 +137,6 @@ const Products: React.FC = () => {
               ? b["product.quantity"]
               : 0;
 
-          // Handle numeric and string comparisons
           if (typeof valueA === "number" && typeof valueB === "number") {
             return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
           } else {
@@ -152,7 +149,7 @@ const Products: React.FC = () => {
               return sortOrder === "asc" ? 1 : -1;
             }
 
-            return 0; // values must be equal
+            return 0; 
           }
         }
       );
@@ -243,7 +240,10 @@ const Products: React.FC = () => {
           Add Product
         </Button>
         <Button
-          onClick={() => navigate("/")}
+          onClick={() =>{
+            Cookies.remove('token')
+            navigate("/")
+          } }
           style={{
             marginLeft: "10px",
             padding: "8px",

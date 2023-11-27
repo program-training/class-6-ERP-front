@@ -14,6 +14,7 @@ import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { FormDataSignUp } from "../interface/interface";
+import HeaderLogine from "../pages/HeaderLogine";
 
 
 // const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -83,12 +84,11 @@ const SignUp = () => {
     }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  return (<>
+      <HeaderLogine/>
 
-  return (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
+
       <Grid item xs={12} md={6}>
         <Card>
           <CardContent>
@@ -170,7 +170,8 @@ const SignUp = () => {
           </CardContent>
         </Card>
       </Grid>
-    </Grid>
+    
+    </Grid></>
   );
 };
 
