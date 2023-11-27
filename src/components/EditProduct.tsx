@@ -160,7 +160,7 @@ function EditProduct() {
         console.error(err);
       }
     }
-    getProduct(id!);
+    getProduct(id!)
   }, []);
 
   return (
