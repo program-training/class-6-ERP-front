@@ -57,18 +57,18 @@ const Products: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const [isPostRead, setIsPostRead] = useState(false);
-  
-    const handleIconClick = (productId : string | undefined ) => {
-      // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
-      // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
-  
-      // לדוג', אם המשתמש לוחץ על האיקון והפוסט לא נקרא, יש לשנות את המשתנה ל-true
-      setIsPostRead(!isPostRead);
-     console.log(productId);
-  
-      // לאחר מכן, ניתן לבצע את הקריאה לשרת או כל פעולה אחרת
-      // אפשר להוסיף כל פעולה נוספת שתתאים לדרישות שלך
-    }
+
+  const handleIconClick = (productId: string | undefined) => {
+    // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
+    // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
+
+    // לדוג', אם המשתמש לוחץ על האיקון והפוסט לא נקרא, יש לשנות את המשתנה ל-true
+    setIsPostRead(!isPostRead);
+    console.log(productId);
+
+    // לאחר מכן, ניתן לבצע את הקריאה לשרת או כל פעולה אחרת
+    // אפשר להוסיף כל פעולה נוספת שתתאים לדרישות שלך
+  }
 
 
 
@@ -178,7 +178,7 @@ const Products: React.FC = () => {
   const handleAddProduct = async () => {
     navigate(`/addProduct`);
   };
-  
+
 
   return (
     <Box>
@@ -191,7 +191,7 @@ const Products: React.FC = () => {
           justifyContent: "space-between",
         }}
       >
-        <Typography component="h1" style={{ marginRight: "10px" }}>
+        <Typography component="h2" style={{ marginRight: "10px" }}>
           All Products
         </Typography>
         <TextField
@@ -208,18 +208,26 @@ const Products: React.FC = () => {
           sx={{
             "& .MuiInputBase-root": {
               backgroundColor: "white",
+              borderRadius: "30px",
             },
             "& .MuiInputBase-input": {
               color: "withe",
+              borderRadius: "30px",
+
             },
           }}
         />
         <Typography component="div">
-          <InputLabel sx={{ color: "white" }}>Sort By:</InputLabel>
+          <InputLabel sx={{
+            color: "white",
+            borderRadius: "15px",
+
+          }}>Sort By:</InputLabel>
           <Select
             onChange={(e) => handleSortChange(e.target.value)}
             value={sortOption}
-            sx={{ color: "white" }}
+            sx={{ color: "white" ,borderRadius: "15px",
+          }}
           >
             <MenuItem value="name">Name</MenuItem>
             <MenuItem value="sale_price">Sale Price</MenuItem>
@@ -229,11 +237,11 @@ const Products: React.FC = () => {
           </Select>
         </Typography>
         <Typography component="div">
-          <InputLabel sx={{ color: "white" }}>Sort Order:</InputLabel>
+          <InputLabel sx={{ color: "white",borderRadius: "15px" }}>Sort Order:</InputLabel>
           <Select
             onChange={(e) => setSortOrder(e.target.value)}
             value={sortOrder}
-            sx={{ color: "white" }}
+            sx={{ color: "white" ,borderRadius: "15px"}}
           >
             <MenuItem value="asc">Ascending</MenuItem>
             <MenuItem value="desc">Descending</MenuItem>
@@ -244,7 +252,7 @@ const Products: React.FC = () => {
           style={{
             marginLeft: "10px",
             padding: "8px",
-            borderRadius: "4px",
+            borderRadius: "10px",
             backgroundColor: "black",
             color: "white",
             border: "none",
@@ -260,10 +268,11 @@ const Products: React.FC = () => {
           style={{
             marginLeft: "10px",
             padding: "8px",
-            borderRadius: "4px",
+            borderRadius: "10px",
             backgroundColor: "black",
             color: "white",
             border: "none",
+
           }}
         >
           Logout
@@ -274,9 +283,9 @@ const Products: React.FC = () => {
         <SkeletonTable />
       ) : (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
+          <Table stickyHeader sx={{ minWidth: 700 }}  aria-label="sticky table" >
+            <TableHead >
+              <TableRow >
                 <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
                 <StyledTableCell align="right">Sale Price</StyledTableCell>
@@ -367,8 +376,8 @@ const Products: React.FC = () => {
                     ) : (
                       <ClearIcon style={{ color: "red" }} />
                     )}
-                  </StyledTableCell>       
-                           </StyledTableRow>
+                  </StyledTableCell>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
