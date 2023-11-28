@@ -18,6 +18,11 @@ import { useState } from "react";
 import { AdminProductInterface } from "../interface/interfaceAddProduct";
 import { AxiosError } from 'axios';
 
+interface YourResponseType {
+  message: string;
+  // other properties...
+}
+
 function AddProduct() {
   const navigate = useNavigate();
   const {
@@ -83,7 +88,7 @@ function AddProduct() {
           },
         }
       );
-
+      
         
       navigate(`/products}`);
       console.log(response);
@@ -94,13 +99,13 @@ function AddProduct() {
       setTimeout(() => {
         setAlertMessage(null);
         }, 2000);
-        try {
+        
         } catch (error: unknown) {
           if (axios.isAxiosError(error)) {
-            const axiosError = error as AxiosError;
+            const axiosError = error as AxiosError<YourResponseType>;
             if (axiosError.response) {
               setIsAlertSuccess(false);
-              setAlertMessage(axiosError.response);
+              setAlertMessage(axiosError.response.data.message);
             } else {
               setIsAlertSuccess(false);
               setAlertMessage("Error adding the product. Please try again.");
@@ -110,7 +115,7 @@ function AddProduct() {
             setAlertMessage("An unknown error occurred. Please try again.");
           }
         }
-  
+  }
 
   return (
     <Container>
@@ -280,5 +285,5 @@ function AddProduct() {
     </Container>
   );
 }
-
+  
 export default AddProduct;
