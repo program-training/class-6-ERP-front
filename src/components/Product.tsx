@@ -51,10 +51,11 @@ const ProductDetails = () => {
       console.error("Error during product deletion:", error);
     }
   };
-
+  
   const handleEdit = () => navigate(`/EditProduct/${id}`);
-
-  return (
+  
+  return (<>
+    {productDetails ? (
     <Grid container justifyContent="center" alignItems="center" height="100vh">
       <Paper style={{ background: "#f0eae2", padding: "20px" }}>
         <Card
@@ -65,7 +66,6 @@ const ProductDetails = () => {
           }}
         >
           <CardContent style={{ display: "flex" }}>
-            {productDetails ? (
               <Typography component="div" style={{ display: "flex" }}>
                 <CardMedia
                   component="img"
@@ -156,13 +156,14 @@ const ProductDetails = () => {
                   </Button>
                 </Typography>
               </Typography>
-            ) : (
-              <LoadingSpinner />
-            )}
+           
           </CardContent>
         </Card>
       </Paper>
     </Grid>
+     ) : (<LoadingSpinner />)
+    }
+    </>
   );
 };
 
