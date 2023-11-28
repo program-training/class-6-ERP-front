@@ -90,7 +90,6 @@ const Products: React.FC = () => {
       try {
         const response = await axios.get(
           `${apiUrl}api/products/inventory`,
-
           // "https://erp-beak1-6.onrender.com/api/products/inventory",
           {
             headers: {
@@ -197,7 +196,7 @@ const Products: React.FC = () => {
           justifyContent: "space-between",
         }}
       >
-        <Typography component="h2" style={{ marginRight: "10px" }}>
+        <Typography component="h2" style={{ marginRight: "10px" ,flex :'space'}}>
           All Products
         </Typography>
         <TextField
@@ -215,10 +214,12 @@ const Products: React.FC = () => {
             "& .MuiInputBase-root": {
               backgroundColor: "white",
               borderRadius: "30px",
+              height: "40px",
             },
             "& .MuiInputBase-input": {
               color: "withe",
               borderRadius: "30px",
+              height: "40px",
 
             },
           }}
@@ -227,12 +228,17 @@ const Products: React.FC = () => {
           <InputLabel sx={{
             color: "white",
             borderRadius: "15px",
-
+            
           }}>Sort By:</InputLabel>
           <Select
             onChange={(e) => handleSortChange(e.target.value)}
             value={sortOption}
-            sx={{ color: "white" ,borderRadius: "15px" , marginBottom: "25px",backgroundColor :'black'
+            sx={{ color: "white" ,
+            borderRadius: "15px" , 
+            marginBottom: "25px",
+            backgroundColor :'black',         
+                 height: "40px",
+
           }}
           >
             <MenuItem value="name">Name</MenuItem>
@@ -251,6 +257,8 @@ const Products: React.FC = () => {
             borderRadius: "15px",
              marginBottom: "25px",
              backgroundColor :'black',
+             height: "40px",
+
              
             }}
           >
@@ -263,10 +271,11 @@ const Products: React.FC = () => {
           style={{
             marginLeft: "10px",
             padding: "8px",
-            borderRadius: "10px",
+            borderRadius: "15px",
             backgroundColor: "black",
             color: "white",
-            border: "none",
+            height: "40px",
+
           }}
         >
           Add Product
@@ -278,11 +287,14 @@ const Products: React.FC = () => {
           }}
           style={{
             marginLeft: "10px",
+            marginRight: "10px",
             padding: "8px",
-            borderRadius: "10px",
+            borderRadius: "15px",
             backgroundColor: "black",
             color: "white",
             border: "none",
+            height: "40px",
+
 
           }}
         >
