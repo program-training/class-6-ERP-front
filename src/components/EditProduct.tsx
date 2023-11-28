@@ -17,6 +17,7 @@ import {
 import { useForm } from "react-hook-form";
 import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
 import { AdminProductInterface } from "../interface/interfaceEditProduct";
+import { ProductData } from "../interface/interfaceAddProduct";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -122,17 +123,12 @@ function EditProduct() {
             },
           }
         );
-        setValue("name", productData.data["product.name"]);
-        setValue("sale_price", productData.data["product.sale_price"]);
-        setValue("quantity", productData.data["product.quantity"]);
-        setValue("description", productData.data["product.description"]);
-        setValue("category", productData.data["product.category"]);
-        setValue("discount_percentage", productData.data["product.discount_percentage"]);
-        setValue("image_url", productData.data["product.image_url"]);
-        setValue("image_alt", productData.data["product.image_alt"]);
-        setValue("is_for_sale", isForSale);
-        setValue("cost_price", productData.data["cost_price"]);
-        setValue("supplier", productData.data["supplier"]);
+
+        Object.keys(productData.data).forEach(key => {
+          if (!key.includes("product_id")) {
+            setValue(key as ProductData, productData.data[key])
+          }})
+
       } catch (err) {
         console.error(err);
       }
@@ -164,7 +160,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Product Name"
             type="text"
-            {...register("name", { required: true })}
+            {...register("product.name"as ProductData, { required: true })}
             margin="normal"
           />
           {errors.name && <Alert severity="error">Product Name is required.</Alert>}
@@ -173,7 +169,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Sale Price"
             type="number"
-            {...register("sale_price", { required: true })}
+            {...register("product.sale_price"as ProductData, { required: true })}
             margin="normal"
           />
           {errors.sale_price && <Alert severity="error">Sale Price is required.</Alert>}
@@ -182,7 +178,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Quantity"
             type="number"
-            {...register("quantity", { required: true })}
+            {...register("product.quantity" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.quantity && <Alert severity="error">Quantity is required.</Alert>}
@@ -191,7 +187,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Description"
             type="text"
-            {...register("description", { required: true })}
+            {...register("product.description"as ProductData, { required: true })}
             margin="normal"
           />
           {errors.description && <Alert severity="error">Description is required.</Alert>}
@@ -200,7 +196,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Category"
             type="text"
-            {...register("category", { required: true })}
+            {...register("product.category"as ProductData, { required: true })}
             margin="normal"
           />
           {errors.category && <Alert severity="error">Category is required.</Alert>}
@@ -209,7 +205,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Discount Percentage"
             type="number"
-            {...register("discount_percentage", { required: true })}
+            {...register("product.discount_percentage"as ProductData, { required: true })}
             margin="normal"
           />
           {errors.discount_percentage && (
@@ -219,7 +215,7 @@ function EditProduct() {
           <input
             type="file"
             id="imageInput"
-            {...register("image_url", { required: false })}
+            {...register("product.image_url" as ProductData, { required: false })}
             accept="image/*"
             style={{ display: "none" }}
           />
@@ -236,7 +232,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Image Alt"
             type="text"
-            {...register("image_alt", { required: true })}
+            {...register("product.image_alt" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.image_alt && <Alert severity="error">Image Alt is required.</Alert>}
