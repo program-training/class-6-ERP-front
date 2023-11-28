@@ -18,6 +18,11 @@ import { useState } from "react";
 import { AdminProductInterface } from "../interface/interfaceAddProduct";
 import { AxiosError } from 'axios';
 
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
+
 interface YourResponseType {
   message: string;
   // other properties...
@@ -80,7 +85,9 @@ function AddProduct() {
       };
 
       const response = await axios.post(
-        `https://erp-beak1-6.onrender.com/api/products/inventory`,
+        `${apiUrl}api/products/inventory`,
+
+        // `https://erp-beak1-6.onrender.com/api/products/inventory`,
         requestData,
         {
           headers: {

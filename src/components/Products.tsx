@@ -21,6 +21,10 @@ import { AdminProductInterface } from "../interface/interface";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -85,7 +89,9 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://erp-beak1-6.onrender.com/api/products/inventory",
+          `${apiUrl}api/products/inventory`,
+
+          // "https://erp-beak1-6.onrender.com/api/products/inventory",
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -226,7 +232,7 @@ const Products: React.FC = () => {
           <Select
             onChange={(e) => handleSortChange(e.target.value)}
             value={sortOption}
-            sx={{ color: "white" ,borderRadius: "15px",
+            sx={{ color: "white" ,borderRadius: "15px" , marginBottom: "25px",backgroundColor :'black'
           }}
           >
             <MenuItem value="name">Name</MenuItem>
@@ -236,12 +242,17 @@ const Products: React.FC = () => {
             <MenuItem value="quantity">Quantity</MenuItem>
           </Select>
         </Typography>
-        <Typography component="div">
+        <Typography component="div" >
           <InputLabel sx={{ color: "white",borderRadius: "15px" }}>Sort Order:</InputLabel>
           <Select
             onChange={(e) => setSortOrder(e.target.value)}
             value={sortOrder}
-            sx={{ color: "white" ,borderRadius: "15px"}}
+            sx={{ color: "white" ,
+            borderRadius: "15px",
+             marginBottom: "25px",
+             backgroundColor :'black',
+             
+            }}
           >
             <MenuItem value="asc">Ascending</MenuItem>
             <MenuItem value="desc">Descending</MenuItem>
