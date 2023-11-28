@@ -58,7 +58,7 @@ const Products: React.FC = () => {
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const [isPostRead, setIsPostRead] = useState(false);
   
-    const handleIconClick = (productId :string ) => {
+    const handleIconClick = (productId : string | undefined ) => {
       // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
       // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
   
@@ -367,7 +367,8 @@ const Products: React.FC = () => {
                     ) : (
                       <ClearIcon style={{ color: "red" }} />
                     )}
-                  </StyledTableCell>                </StyledTableRow>
+                  </StyledTableCell>       
+                           </StyledTableRow>
               ))}
             </TableBody>
           </Table>
