@@ -56,7 +56,7 @@ const Products: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("name");
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  // const [isPostRead, setIsPostRead] = useState(false);
+  const [isPostRead, setIsPostRead] = useState(false);
 
   // const handleIconClick = (productId: string | undefined) => {
   //   // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
