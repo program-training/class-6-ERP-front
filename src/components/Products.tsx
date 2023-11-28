@@ -208,11 +208,11 @@ const Products: React.FC = () => {
           sx={{
             "& .MuiInputBase-root": {
               backgroundColor: "white",
-              borderRadius: "10px",
+              borderRadius: "30px",
             },
             "& .MuiInputBase-input": {
               color: "withe",
-              borderRadius: "10px",
+              borderRadius: "30px",
 
             },
           }}
@@ -283,9 +283,9 @@ const Products: React.FC = () => {
         <LoadingSpinner />
       ) : (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
+          <Table stickyHeader sx={{ minWidth: 700 }}  aria-label="sticky table" >
+            <TableHead >
+              <TableRow >
                 <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
                 <StyledTableCell align="right">Sale Price</StyledTableCell>

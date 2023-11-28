@@ -199,7 +199,8 @@ function AddProduct() {
           />
             
           <InputLabel htmlFor="imageInput">
-            <Button variant="contained" component="span" sx={{ mt: 2 }}>
+            <Button variant="contained" component="span" sx={{ mt: 2 }}
+            >
               Upload Image
             </Button>
           </InputLabel>
