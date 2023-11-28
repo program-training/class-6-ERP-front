@@ -90,7 +90,7 @@ function AddProduct() {
       );
       
         
-      navigate(`/products}`);
+      navigate(`/products`);
       console.log(response);
       
       setIsAlertSuccess(true);
