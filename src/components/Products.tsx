@@ -56,21 +56,19 @@ const Products: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("name");
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  const [isPostRead, setIsPostRead] = useState(false);
-  
-    const handleIconClick = (productId : string | undefined ) => {
-      // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
-      // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
-  
-      // לדוג', אם המשתמש לוחץ על האיקון והפוסט לא נקרא, יש לשנות את המשתנה ל-true
-      setIsPostRead(!isPostRead);
-     console.log(productId);
-  
-      // לאחר מכן, ניתן לבצע את הקריאה לשרת או כל פעולה אחרת
-      // אפשר להוסיף כל פעולה נוספת שתתאים לדרישות שלך
-    }
+  // const [isPostRead, setIsPostRead] = useState(false);
 
+  // const handleIconClick = (productId: string | undefined) => {
+  //   // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
+  //   // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
 
+  //   // לדוג', אם המשתמש לוחץ על האיקון והפוסט לא נקרא, יש לשנות את המשתנה ל-true
+  //   setIsPostRead(!isPostRead);
+  //   console.log(productId);
+
+  //   // לאחר מכן, ניתן לבצע את הקריאה לשרת או כל פעולה אחרת
+  //   // אפשר להוסיף כל פעולה נוספת שתתאים לדרישות שלך
+  // };
 
   const handleSortChange = (option: string) => {
     if (option === sortOption) {
@@ -79,6 +77,20 @@ const Products: React.FC = () => {
       setSortOption(option);
       setSortOrder("asc");
     }
+  };
+  const handleToggleIsForSale = (productId: string) => {
+    setProducts((prevProducts) => {
+      const updatedProducts = prevProducts.map((product) => {
+        if (product["product.product_id"] === productId) {
+          return {
+            ...product,
+            is_for_sale: !product.is_for_sale,
+          };
+        }
+        return product;
+      });
+      return updatedProducts;
+    });
   };
 
   useEffect(() => {
@@ -128,27 +140,27 @@ const Products: React.FC = () => {
             sortOption === "name"
               ? a["product.name"]
               : sortOption === "sale_price"
-                ? parseFloat(String(a["product.sale_price"]))
-                : sortOption === "discount_percentage"
-                  ? parseFloat(String(a["product.discount_percentage"]))
-                  : sortOption === "description"
-                    ? a["product.description"]
-                    : sortOption === "quantity"
-                      ? a["product.quantity"]
-                      : 0;
+              ? parseFloat(String(a["product.sale_price"]))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(a["product.discount_percentage"]))
+              : sortOption === "description"
+              ? a["product.description"]
+              : sortOption === "quantity"
+              ? a["product.quantity"]
+              : 0;
 
           const valueB =
             sortOption === "name"
               ? b["product.name"]
               : sortOption === "sale_price"
-                ? parseFloat(String(b["product.sale_price"]))
-                : sortOption === "discount_percentage"
-                  ? parseFloat(String(b["product.discount_percentage"]))
-                  : sortOption === "description"
-                    ? b["product.description"]
-                    : sortOption === "quantity"
-                      ? b["product.quantity"]
-                      : 0;
+              ? parseFloat(String(b["product.sale_price"]))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(b["product.discount_percentage"]))
+              : sortOption === "description"
+              ? b["product.description"]
+              : sortOption === "quantity"
+              ? b["product.quantity"]
+              : 0;
 
           if (typeof valueA === "number" && typeof valueB === "number") {
             return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
@@ -178,7 +190,6 @@ const Products: React.FC = () => {
   const handleAddProduct = async () => {
     navigate(`/addProduct`);
   };
-  
 
   return (
     <Box>
@@ -254,8 +265,8 @@ const Products: React.FC = () => {
         </Button>
         <Button
           onClick={() => {
-            Cookies.remove('token')
-            navigate("/")
+            Cookies.remove("token");
+            navigate("/");
           }}
           style={{
             marginLeft: "10px",
@@ -359,16 +370,35 @@ const Products: React.FC = () => {
                     </Typography>
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["is_for_sale"] ? (
+                    {product.is_for_sale ? (
                       <CheckIcon
-                        style={{ color: isPostRead ? "blue" : "green" }}
-                        onClick={() => handleIconClick(product["product.product_id"])}
+                        style={{ color: "green", cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents the row click event from triggering
+                          const productId = product["product.product_id"];
+                          if (productId) {
+                            handleToggleIsForSale(productId);
+                          } else {
+                            console.error("Product ID is undefined");
+                          }
+                        }}
                       />
                     ) : (
-                      <ClearIcon style={{ color: "red" }} />
+                      <ClearIcon
+                        style={{ color: "red", cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents the row click event from triggering
+                          const productId = product["product.product_id"];
+                          if (productId) {
+                            handleToggleIsForSale(productId);
+                          } else {
+                            console.error("Product ID is undefined");
+                          }
+                        }}
+                      />
                     )}
-                  </StyledTableCell>       
-                           </StyledTableRow>
+                  </StyledTableCell>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
