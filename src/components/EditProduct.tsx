@@ -18,6 +18,11 @@ import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
 import { AdminProductInterface } from "../interface/interfaceEditProduct";
 import { ProductData } from "../interface/interfaceAddProduct";
 
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
+
+
 function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -76,7 +81,9 @@ function EditProduct() {
         };
 
         const response = await axios.patch(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+          `${apiUrl}api/products/inventory/${id}`,
+
+          // `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           postData,
           {
             headers: {
@@ -100,7 +107,9 @@ function EditProduct() {
     async function getProduct(id: string) {
       try {
         const productData = await axios.get(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+          `${apiUrl}api/products/inventory/${id}`,
+
+          // `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           {
             headers: {
               Authorization: Cookies.get("token"),
