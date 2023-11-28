@@ -31,7 +31,6 @@ function EditProduct() {
   const [isForSale, setIsForSale] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
-  const [mesge, setMesge] = useState<string | null>(null);
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -87,19 +86,14 @@ function EditProduct() {
         );
 
         if (response.status === 200) {
-          setMesge("Added successfully!");
-          setTimeout(() => {
             navigate(`/products`);
-          }, 2000);
         } else {
           console.error("Failed to add product");
         }
       }
     } catch (error) {
       console.error("Error saving product:", error);
-    } finally {
-      setUploading(false);
-    }
+    } 
   };
 
   useEffect(() => {
@@ -117,7 +111,8 @@ function EditProduct() {
         Object.keys(productData.data).forEach(key => {
           if (!key.includes("product_id")) {
             setValue(key as ProductData, productData.data[key])
-          }})
+          }
+        })
 
       } catch (err) {
         console.error(err);
@@ -150,7 +145,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Product Name"
             type="text"
-            {...register("product.name"as ProductData, { required: true })}
+            {...register("product.name" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.name && <Alert severity="error">Product Name is required.</Alert>}
@@ -159,7 +154,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Sale Price"
             type="number"
-            {...register("product.sale_price"as ProductData, { required: true })}
+            {...register("product.sale_price" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.sale_price && <Alert severity="error">Sale Price is required.</Alert>}
@@ -177,7 +172,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Description"
             type="text"
-            {...register("product.description"as ProductData, { required: true })}
+            {...register("product.description" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.description && <Alert severity="error">Description is required.</Alert>}
@@ -186,7 +181,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Category"
             type="text"
-            {...register("product.category"as ProductData, { required: true })}
+            {...register("product.category" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.category && <Alert severity="error">Category is required.</Alert>}
@@ -195,7 +190,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Discount Percentage"
             type="number"
-            {...register("product.discount_percentage"as ProductData, { required: true })}
+            {...register("product.discount_percentage" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.discount_percentage && (
@@ -272,7 +267,6 @@ function EditProduct() {
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Save Product
           </Button>
-          {mesge ? <p> {mesge} </p> : null}
         </Box>
       </Paper>
     </Container>

@@ -14,13 +14,13 @@ import {
   Paper,
   Alert,
 } from "@mui/material";
+import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
 import { useState } from "react";
 import { AdminProductInterface } from "../interface/interfaceAddProduct";
 import { AxiosError } from 'axios';
 
 interface YourResponseType {
   message: string;
-  // other properties...
 }
 
 function AddProduct() {
@@ -36,6 +36,8 @@ function AddProduct() {
   const [image, setImage] = useState<string | null>(null);
   const [isAlertSuccess, setIsAlertSuccess] = useState<boolean | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
+
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -57,9 +59,10 @@ function AddProduct() {
           `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
           formData
         );
-        console.log(imageUrl.data.url);
         setValue("image_url", imageUrl.data.url);
         setImage(imageUrl.data.url);
+        setUploading(true);
+
       }
       const requestData = {
         product: {
@@ -199,10 +202,12 @@ function AddProduct() {
           />
             
           <InputLabel htmlFor="imageInput">
-            <Button variant="contained" component="span" sx={{ mt: 2 }}
+            <Button variant="contained" component="span" sx={{ mt: 2 }} 
             >
               Upload Image
             </Button>
+            {uploading && <LinearWithValueLabel />}
+
           </InputLabel>
           {errors.image_url && (
             <Alert severity="error">Image URL is required.</Alert>
