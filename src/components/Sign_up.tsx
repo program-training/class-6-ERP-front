@@ -61,12 +61,10 @@ const SignUp = () => {
           },
         }
       );
-      console.log(response.data.user);
-      console.log(response.data.message);
 
       if (response.data.user) {
         console.log("Registration successful");
-        navigate("/Products");
+        navigate("/");
       } else { 
         console.error("Registration failed");
       }

@@ -85,9 +85,10 @@ function AddProduct() {
         }
       );
 
-      console.log(response.data);
-
-      navigate(`/product/${response.data.product_id}`);
+        
+      navigate(`/products}`);
+      console.log(response);
+      
     } catch (error) {
       console.error("Error saving product:", error);
     }
