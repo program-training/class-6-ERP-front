@@ -14,7 +14,7 @@ import LoadingSpinner from "../pages/Loading";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { MenuItem, Select, InputLabel } from "@mui/material";
+import { MenuItem, Select, InputLabel, AppBar } from "@mui/material";
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { AdminProductInterface } from "../interface/interface";
@@ -24,6 +24,7 @@ import CheckIcon from "@mui/icons-material/Check";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
+
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -64,6 +65,21 @@ const Products: React.FC = () => {
       setSortOption(option);
       setSortOrder("asc");
     }
+  };
+
+  const handleToggleIsForSale = (productId: string) => {
+    setProducts((prevProducts) => {
+      const updatedProducts = prevProducts.map((product) => {
+        if (product["product.product_id"] === productId) {
+          return {
+            ...product,
+            is_for_sale: !product.is_for_sale,
+          };
+        }
+        return product;
+      });
+      return updatedProducts;
+    });
   };
 
   useEffect(() => {
@@ -162,8 +178,12 @@ const Products: React.FC = () => {
   }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
-    console.log(productId);
-    navigate(`/Product/${productId}`);
+    if (productId) {
+      console.log(productId);
+      navigate(`/Product/${productId}`);
+    } else {
+      console.error("Product ID is undefined");
+    }
   };
 
   const handleAddProduct = async () => {
@@ -346,10 +366,32 @@ const Products: React.FC = () => {
                     </Typography>
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {product["is_for_sale"] ? (
-                      <CheckIcon style={{ color: "green" }} />
+                    {product.is_for_sale ? (
+                      <CheckIcon
+                        style={{ color: "green", cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents the row click event from triggering
+                          const productId = product["product.product_id"];
+                          if (productId) {
+                            handleToggleIsForSale(productId);
+                          } else {
+                            console.error("Product ID is undefined");
+                          }
+                        }}
+                      />
                     ) : (
-                      <ClearIcon style={{ color: "red" }} />
+                      <ClearIcon
+                        style={{ color: "red", cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents the row click event from triggering
+                          const productId = product["product.product_id"];
+                          if (productId) {
+                            handleToggleIsForSale(productId);
+                          } else {
+                            console.error("Product ID is undefined");
+                          }
+                        }}
+                      />
                     )}
                   </StyledTableCell>
                 </StyledTableRow>
