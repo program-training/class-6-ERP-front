@@ -16,10 +16,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { AdminProductInterface } from "../interface/interfaceAddProduct";
-
-// const apiUrl = import.meta.env.VITE_BASE_URL;
-
-// console.log(`API Base URL: ${apiUrl}`);
+import { AxiosError } from 'axios';
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -32,6 +29,8 @@ function AddProduct() {
 
   const [isForSale, setIsForSale] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
+  const [isAlertSuccess, setIsAlertSuccess] = useState<boolean | null>(null);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -89,10 +88,29 @@ function AddProduct() {
       navigate(`/products}`);
       console.log(response);
       
-    } catch (error) {
-      console.error("Error saving product:", error);
-    }
-  };
+      setIsAlertSuccess(true);
+      setAlertMessage("Product added successfully!");
+
+      setTimeout(() => {
+        setAlertMessage(null);
+        }, 2000);
+        try {
+        } catch (error: unknown) {
+          if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError;
+            if (axiosError.response) {
+              setIsAlertSuccess(false);
+              setAlertMessage(axiosError.response);
+            } else {
+              setIsAlertSuccess(false);
+              setAlertMessage("Error adding the product. Please try again.");
+            }
+          } else {
+            setIsAlertSuccess(false);
+            setAlertMessage("An unknown error occurred. Please try again.");
+          }
+        }
+  
 
   return (
     <Container>
@@ -253,6 +271,11 @@ function AddProduct() {
             Save Product
           </Button>
         </Box>
+        {isAlertSuccess !== null && (
+          <Alert severity={isAlertSuccess ? "success" : "error"} sx={{ mt: 2 }}>
+            {alertMessage}
+          </Alert>
+        )}
       </Paper>
     </Container>
   );
