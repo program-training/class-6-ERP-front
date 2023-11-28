@@ -15,13 +15,6 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { FormDataSignUp } from "../interface/interface";
 
-
-
-// const apiUrl = import.meta.env.VITE_BASE_URL;
-
-// console.log(`API Base URL: ${apiUrl}`);
-
-
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
@@ -46,13 +39,14 @@ const SignUp = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FormDataSignUp>();
   const [open, setOpen] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const handleRegistration = async (data: FormDataSignUp) => {
     const { password, confirmPassword } = data;
 
- 
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
       return;
@@ -71,6 +65,7 @@ const SignUp = () => {
 
       if (response.data.user) {
         console.log("Registration successful");
+        setLoginSuccess(true);
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
@@ -78,14 +73,22 @@ const SignUp = () => {
         }, 1500);
       } else {
         console.error("Registration failed");
+        setLoginSuccess(false);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error during registration:", error);
+      setLoginSuccess(false);
     }
   };
 
   const handleClose = () => {
     setOpen(false);
+
+    if (loginSuccess) {
+      navigate("/Products");
+    } else {
+      console.error("Registration failed");
+    }
   };
 
   return (
@@ -141,6 +144,9 @@ const SignUp = () => {
                   type="password"
                   {...register("confirmPassword", {
                     required: "Password confirmation is required",
+                    validate: (value) =>
+                      value === getValues("password") ||
+                      "Passwords do not match",
                   })}
                 />
                 {errors.confirmPassword && (
@@ -161,10 +167,12 @@ const SignUp = () => {
               >
                 <Alert
                   onClose={handleClose}
-                  severity="success"
+                  severity={loginSuccess ? "success" : "error"}
                   sx={{ width: "100%" }}
                 >
-                  Register successful! Redirecting to Products...
+                  {loginSuccess
+                    ? "Registration successful! Redirecting to Products..."
+                    : "Registration failed"}
                 </Alert>
               </Snackbar>
             </Box>

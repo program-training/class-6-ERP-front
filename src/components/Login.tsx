@@ -13,10 +13,10 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-// const apiUrl = import.meta.env.VITE_BASE_URL;
-
-// console.log(`API Base URL: ${apiUrl}`);
-
+interface FormData {
+  username: string;
+  password: string;
+}
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
@@ -42,15 +42,15 @@ const Login = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
 
   const handleLogin = async (data: FormData) => {
-  try {
-    const response = await axios.post(
-      "https://erp-beak1-6.onrender.com/api/users/login",
-      data
-    );
+    try {
+      const response = await axios.post(
+        "https://erp-beak1-6.onrender.com/api/users/login",
+        data
+      );
 
-    if (response.status === 200) {
-      const token = response.data.token;
-      Cookies.set("token", token, { expires: 1 });
+      if (response.status === 200) {
+        const token = response.data.token;
+        Cookies.set("token", token, { expires: 1 });
 
         setOpen(true);
         setTimeout(() => {
@@ -66,6 +66,7 @@ const Login = () => {
       setLoginError("An unexpected error occurred during login.");
     }
   };
+ 
 
   const handleClose = () => {
     setOpen(false);
@@ -96,25 +97,25 @@ const Login = () => {
                   component="form"
                   style={RegisterFormStyle}
                   onSubmit={handleSubmit(handleLogin)}
-                >
-                  <TextField
-                    id="username"
-                    label="Username"
-                    type="text"
-                    {...register}
-                    fullWidth
-                    margin="normal"
-                    inputProps={register}
-                  />
-                  <TextField
-                    id="password"
-                    label="Password"
-                    type="password"
-                    {...register}
-                    fullWidth
-                    margin="normal"
-                    inputProps={register}
-                  />
+                  >
+                    
+                    <TextField
+                      id="username"
+                      label="Username"
+                      type="text"
+                      {...register("username")}
+                      fullWidth
+                      margin="normal"
+                    />
+                    <TextField
+                      id="password"
+                      label="Password"
+                      type="password"
+                      {...register("password")}
+                      fullWidth
+                      margin="normal"
+                    />
+                  
                   <Button
                     type="submit"
                     sx={{
@@ -129,7 +130,6 @@ const Login = () => {
                     onClick={() => {
                       navigate("./Sign_up");
                     }}
-                    type="submit"
                     sx={{
                       backgroundColor: "grey",
                       color: "white",
