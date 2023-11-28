@@ -320,7 +320,7 @@ const Products: React.FC = () => {
       Logout
     </Button>
   </div>
-</Typography>;
+</Typography>
 
 
       {loading ? (

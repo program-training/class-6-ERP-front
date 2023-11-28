@@ -3,7 +3,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Grid from '@mui/material/Grid';
 
 const rowSkeletons = Array.from({ length: 10 }, (_, index) => (
-  <Skeleton key={index} height={60} style={{ margin: '8px 0' }} />
+  <Skeleton key={index} height={130} style={{ margin: '8px 0' }} />
 ));
 
 function SkeletonTable() {
