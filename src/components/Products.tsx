@@ -56,6 +56,21 @@ const Products: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("name");
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [isPostRead, setIsPostRead] = useState(false);
+  
+    const handleIconClick = (productId : string | undefined ) => {
+      // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
+      // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
+  
+      // לדוג', אם המשתמש לוחץ על האיקון והפוסט לא נקרא, יש לשנות את המשתנה ל-true
+      setIsPostRead(!isPostRead);
+     console.log(productId);
+  
+      // לאחר מכן, ניתן לבצע את הקריאה לשרת או כל פעולה אחרת
+      // אפשר להוסיף כל פעולה נוספת שתתאים לדרישות שלך
+    }
+
+
 
   const handleSortChange = (option: string) => {
     if (option === sortOption) {
@@ -80,7 +95,6 @@ const Products: React.FC = () => {
         setProducts(response.data);
         setFilteredProducts(response.data);
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
         setLoading(false);
@@ -98,7 +112,6 @@ const Products: React.FC = () => {
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
 
-  // Effect to filter products based on the search term
   useEffect(() => {
     const filtered = products.filter((product) =>
       product["product.name"].toLowerCase().includes(searchTerm.toLowerCase())
@@ -115,27 +128,27 @@ const Products: React.FC = () => {
             sortOption === "name"
               ? a["product.name"]
               : sortOption === "sale_price"
-              ? parseFloat(String(a["product.sale_price"]))
-              : sortOption === "discount_percentage"
-              ? parseFloat(String(a["product.discount_percentage"]))
-              : sortOption === "description"
-              ? a["product.description"]
-              : sortOption === "quantity"
-              ? a["product.quantity"]
-              : 0;
+                ? parseFloat(String(a["product.sale_price"]))
+                : sortOption === "discount_percentage"
+                  ? parseFloat(String(a["product.discount_percentage"]))
+                  : sortOption === "description"
+                    ? a["product.description"]
+                    : sortOption === "quantity"
+                      ? a["product.quantity"]
+                      : 0;
 
           const valueB =
             sortOption === "name"
               ? b["product.name"]
               : sortOption === "sale_price"
-              ? parseFloat(String(b["product.sale_price"]))
-              : sortOption === "discount_percentage"
-              ? parseFloat(String(b["product.discount_percentage"]))
-              : sortOption === "description"
-              ? b["product.description"]
-              : sortOption === "quantity"
-              ? b["product.quantity"]
-              : 0;
+                ? parseFloat(String(b["product.sale_price"]))
+                : sortOption === "discount_percentage"
+                  ? parseFloat(String(b["product.discount_percentage"]))
+                  : sortOption === "description"
+                    ? b["product.description"]
+                    : sortOption === "quantity"
+                      ? b["product.quantity"]
+                      : 0;
 
           if (typeof valueA === "number" && typeof valueB === "number") {
             return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
@@ -149,7 +162,7 @@ const Products: React.FC = () => {
               return sortOrder === "asc" ? 1 : -1;
             }
 
-            return 0; 
+            return 0;
           }
         }
       );
@@ -159,13 +172,13 @@ const Products: React.FC = () => {
   }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
-    console.log(productId);
     navigate(`/Product/${productId}`);
   };
 
   const handleAddProduct = async () => {
     navigate(`/addProduct`);
   };
+  
 
   return (
     <Box>
@@ -240,10 +253,10 @@ const Products: React.FC = () => {
           Add Product
         </Button>
         <Button
-          onClick={() =>{
+          onClick={() => {
             Cookies.remove('token')
             navigate("/")
-          } }
+          }}
           style={{
             marginLeft: "10px",
             padding: "8px",
@@ -347,12 +360,15 @@ const Products: React.FC = () => {
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {product["is_for_sale"] ? (
-                      <CheckIcon style={{ color: "green" }} />
+                      <CheckIcon
+                        style={{ color: isPostRead ? "blue" : "green" }}
+                        onClick={() => handleIconClick(product["product.product_id"])}
+                      />
                     ) : (
                       <ClearIcon style={{ color: "red" }} />
                     )}
-                  </StyledTableCell>
-                </StyledTableRow>
+                  </StyledTableCell>       
+                           </StyledTableRow>
               ))}
             </TableBody>
           </Table>

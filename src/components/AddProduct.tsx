@@ -16,6 +16,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { AdminProductInterface } from "../interface/interfaceAddProduct";
+import { AxiosError } from 'axios';
+
+interface YourResponseType {
+  message: string;
+  // other properties...
+}
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -82,28 +88,34 @@ function AddProduct() {
           },
         }
       );
-
-      console.log(response.data);
-
+      
+        
+      navigate(`/products}`);
+      console.log(response);
+      
       setIsAlertSuccess(true);
       setAlertMessage("Product added successfully!");
 
       setTimeout(() => {
         setAlertMessage(null);
-        navigate(`/product/${response.data.product_id}`);
-      }, 2000);
-    } catch  (error: any) {
-      console.error("Error saving product:", error);
-
-      if (error.response && error.response.data && error.response.data.message) {
-        setIsAlertSuccess(false);
-        setAlertMessage(error.response.data.message);
-      } else {
-        setIsAlertSuccess(false);
-        setAlertMessage("Error adding the product. Please try again.");
-      }
-    }
-  };
+        }, 2000);
+        
+        } catch (error: unknown) {
+          if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<YourResponseType>;
+            if (axiosError.response) {
+              setIsAlertSuccess(false);
+              setAlertMessage(axiosError.response.data.message);
+            } else {
+              setIsAlertSuccess(false);
+              setAlertMessage("Error adding the product. Please try again.");
+            }
+          } else {
+            setIsAlertSuccess(false);
+            setAlertMessage("An unknown error occurred. Please try again.");
+          }
+        }
+  }
 
   return (
     <Container>
@@ -273,5 +285,5 @@ function AddProduct() {
     </Container>
   );
 }
-
+  
 export default AddProduct;

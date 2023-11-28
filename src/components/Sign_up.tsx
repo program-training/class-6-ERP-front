@@ -69,13 +69,13 @@ const SignUp = () => {
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
-          navigate("/Products");
+          navigate("/");
         }, 1500);
       } else {
         console.error("Registration failed");
         setLoginSuccess(false);
       }
-    } catch (error:any) {
+    } catch (error) {
       console.error("Error during registration:", error);
       setLoginSuccess(false);
     }
@@ -85,7 +85,7 @@ const SignUp = () => {
     setOpen(false);
 
     if (loginSuccess) {
-      navigate("/Products");
+      navigate("/");
     } else {
       console.error("Registration failed");
     }
