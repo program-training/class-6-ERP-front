@@ -17,10 +17,6 @@ import {
 import { useState } from "react";
 import { AdminProductInterface } from "../interface/interfaceAddProduct";
 
-// const apiUrl = import.meta.env.VITE_BASE_URL;
-
-// console.log(`API Base URL: ${apiUrl}`);
-
 function AddProduct() {
   const navigate = useNavigate();
   const {
@@ -32,6 +28,8 @@ function AddProduct() {
 
   const [isForSale, setIsForSale] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
+  const [isAlertSuccess, setIsAlertSuccess] = useState<boolean | null>(null);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -87,9 +85,23 @@ function AddProduct() {
 
       console.log(response.data);
 
-      navigate(`/product/${response.data.product_id}`);
-    } catch (error) {
+      setIsAlertSuccess(true);
+      setAlertMessage("Product added successfully!");
+
+      setTimeout(() => {
+        setAlertMessage(null);
+        navigate(`/product/${response.data.product_id}`);
+      }, 2000);
+    } catch  (error: any) {
       console.error("Error saving product:", error);
+
+      if (error.response && error.response.data && error.response.data.message) {
+        setIsAlertSuccess(false);
+        setAlertMessage(error.response.data.message);
+      } else {
+        setIsAlertSuccess(false);
+        setAlertMessage("Error adding the product. Please try again.");
+      }
     }
   };
 
@@ -252,6 +264,11 @@ function AddProduct() {
             Save Product
           </Button>
         </Box>
+        {isAlertSuccess !== null && (
+          <Alert severity={isAlertSuccess ? "success" : "error"} sx={{ mt: 2 }}>
+            {alertMessage}
+          </Alert>
+        )}
       </Paper>
     </Container>
   );
