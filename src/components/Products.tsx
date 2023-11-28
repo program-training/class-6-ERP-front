@@ -10,7 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../pages/Loading";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -20,6 +19,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { AdminProductInterface } from "../interface/interface";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
+import SkeletonTable from "../pages/Skeleton";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -271,7 +271,7 @@ const Products: React.FC = () => {
       </Typography>
 
       {loading ? (
-        <LoadingSpinner />
+        <SkeletonTable />
       ) : (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
