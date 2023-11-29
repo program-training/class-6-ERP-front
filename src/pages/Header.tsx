@@ -19,6 +19,7 @@ const headerStyle: React.CSSProperties = {
   padding: '1rem',
   textAlign: 'center',
   position :'sticky',
+  
 };
 
 export default Header;

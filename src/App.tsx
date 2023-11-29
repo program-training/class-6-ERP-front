@@ -1,12 +1,12 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import Home from "./components/Login";
+import Home from "./components/Login/Login";
 import Sign_up from "./components/Sign_up";
 import Products from "./components/Products/Products";
-import AddProduct from "./components/AddProduct";
-import Product from "./components/Product";
-import EditProduct from "./components/EditProduct";
+import AddProduct from "./components/AddProduct/AddProduct";
+import Product from "./components/Product/Product";
+import EditProduct from "./components/EditProduct/EditProduct";
 
 
 

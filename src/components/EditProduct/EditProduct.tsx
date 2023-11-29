@@ -1,47 +1,38 @@
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
-import InputLabel from "@mui/material/InputLabel";
-import {
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-  Paper,
-  Alert,
-} from "@mui/material";
-import { useState } from "react";
-import { AdminProductInterface } from "../interface/interfaceAddProduct";
-import { AxiosError } from 'axios';
-import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
-
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import { Container } from "@mui/material";
+import { useForm } from "react-hook-form";
+import LinearWithValueLabel from "../../pages/LinearProgressWithLabel";
+import { AdminProductInterface } from "../../interface/interfaceEditProduct";
+import { ProductData } from "../../interface/interfaceAddProduct";
+import { Input } from '@mui/material';
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
-console.log(`API Base URL: ${apiUrl}`);
-
-interface YourResponseType {
-  message: string;
-  // other properties...
-}
-
-function AddProduct() {
+function EditProduct() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<AdminProductInterface>();
 
   const [isForSale, setIsForSale] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
-  const [isAlertSuccess, setIsAlertSuccess] = useState<boolean | null>(null);
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [mesge, setMesge] = useState<string | null>(null);
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -75,12 +66,12 @@ function AddProduct() {
       setUploading(false);
     }
   };
-        
-      
+
   const onSubmit = async (data: AdminProductInterface) => {
     try {
-      const requestData = {
+      const postData = {
         product: {
+          product_id: id,
           name: data.name,
           sale_price: data.sale_price,
           quantity: data.quantity,
@@ -94,54 +85,66 @@ function AddProduct() {
         cost_price: data.cost_price,
         supplier: data.supplier,
       };
+console.log(postData);
 
-      const response = await axios.post(
-        `${apiUrl}/api/products/inventory`,
-
-        // `https://erp-beak1-6.onrender.com/api/products/inventory`,
-        requestData,
+      const response = await axios.patch(
+        `${apiUrl}/api/products/inventory/${id}`,
+        postData,
         {
           headers: {
             Authorization: Cookies.get("token"),
           },
         }
       );
-      
-        
-      navigate(`/products`);
-      console.log(response);
-      
-      setIsAlertSuccess(true);
-      setAlertMessage("Product added successfully!");
 
-      setTimeout(() => {
-        setAlertMessage(null);
+      if (response.status === 200) {
+        setMesge("Added successfully!");
+        setTimeout(() => {
+          navigate(`/products`);
         }, 2000);
-        
-        } catch (error: unknown) {
-          if (axios.isAxiosError(error)) {
-            const axiosError = error as AxiosError<YourResponseType>;
-            if (axiosError.response) {
-              setIsAlertSuccess(false);
-              setAlertMessage(axiosError.response.data.message + ", please try again or later.");
-            } else {
-              setIsAlertSuccess(false);
-              setAlertMessage("Error adding the product. Please try again or later.");
-            }
-          } else {
-            setIsAlertSuccess(false);
-            setAlertMessage("An unknown error occurred. Please try again or later.");
-          }
-        } finally {
-          setUploading(false);
+      } else {
+        console.error("Failed to add product");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
 
-        }
-  }
+  useEffect(() => {
+    async function getProduct(id: string) {
+      try {
+        const productData = await axios.get(
+          `${apiUrl}/api/products/inventory/${id}`,
+          {
+            headers: {
+              Authorization: Cookies.get("token"),
+            },
+          }
+        );
+
+        Object.keys(productData.data).forEach((key) => {
+          if (!key.includes("product_id")) {
+            setValue(key as ProductData, productData.data[key]);
+          }
+        });
+      } catch (err) {
+        console.error("Error getting product:", err);
+      }
+    }
+    getProduct(id!);
+  }, [id, setValue]);
 
   return (
     <Container>
-      <Typography variant="h4">Add Product</Typography>
-      <Button onClick={() => navigate("/")}>Logout</Button>
+      <Typography variant="h4">Edit Product</Typography>
+      <Button
+        onClick={() => {
+          Cookies.remove("token");
+          navigate("/");
+        }}
+      >
+        Logout
+      </Button>
       <Button onClick={() => navigate("/Products")}>All Products</Button>
       <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
         <Typography variant="h5">Product properties</Typography>
@@ -152,87 +155,77 @@ function AddProduct() {
           sx={{ mt: 2, display: "flex", flexDirection: "column" }}
         >
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Product Name"
             type="text"
-            {...register("name", { required: true })}
+            {...register("product.name" as ProductData, { required: true })}
             margin="normal"
           />
-          {errors.name && (
-            <Alert severity="error">Product Name is required.</Alert>
-          )}
+          {errors.name && <Alert severity="error">Product Name is required.</Alert>}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Sale Price"
             type="number"
-            {...register("sale_price", { required: true })}
+            {...register("product.sale_price" as ProductData, { required: true })}
             margin="normal"
           />
-          {errors.sale_price && (
-            <Alert severity="error">Sale Price is required.</Alert>
-          )}
+          {errors.sale_price && <Alert severity="error">Sale Price is required.</Alert>}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Quantity"
             type="number"
-            {...register("quantity", { required: true })}
+            {...register("product.quantity" as ProductData, { required: true })}
             margin="normal"
           />
-          {errors.quantity && (
-            <Alert severity="error">Quantity is required.</Alert>
-          )}
+          {errors.quantity && <Alert severity="error">Quantity is required.</Alert>}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Description"
             type="text"
-            {...register("description", { required: true })}
+            {...register("product.description" as ProductData, { required: true })}
             margin="normal"
           />
-          {errors.description && (
-            <Alert severity="error">Description is required.</Alert>
-          )}
+          {errors.description && <Alert severity="error">Description is required.</Alert>}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Category"
             type="text"
-            {...register("category", { required: true })}
+            {...register("product.category" as ProductData, { required: true })}
             margin="normal"
           />
-          {errors.category && (
-            <Alert severity="error">Category is required.</Alert>
-          )}
+          {errors.category && <Alert severity="error">Category is required.</Alert>}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Discount Percentage"
             type="number"
-            {...register("discount_percentage", { required: true })}
+            {...register("product.discount_percentage" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.discount_percentage && (
             <Alert severity="error">Discount Percentage is required.</Alert>
           )}
 
-          <input
+           <label htmlFor="imageInput">
+            <Button variant="contained" component="span" sx={{ mt: 2  }}>
+          <Input
             type="file"
             id="imageInput"
-            {...register("image_url", { required: true })}
-            accept="image/*"
+            {...register("product.image_url" as ProductData, { required: true })}
             style={{ display: "none" }}
-
             onChange={() => {
               handleSubmitImage();
             }}
-
           />
-            
-          <InputLabel htmlFor="imageInput">
-            <Button variant="contained" component="span" sx={{ mt: 2 }}
-            >
               Upload Image
             </Button>
-          </InputLabel>
-          {errors.image_url && (
-            <Alert severity="error">Image URL is required.</Alert>
-          )}
+          </label>
+
+          {errors.image_url && <Alert severity="error">Image URL is required.</Alert>}
           {uploading && <LinearWithValueLabel />}
           {image && (
             <img
@@ -247,14 +240,13 @@ function AddProduct() {
           )}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Image Alt"
             type="text"
-            {...register("image_alt", { required: true })}
+            {...register("product.image_alt" as ProductData, { required: true })}
             margin="normal"
           />
-          {errors.image_alt && (
-            <Alert severity="error">Image Alt is required.</Alert>
-          )}
+          {errors.image_alt && <Alert severity="error">Image Alt is required.</Alert>}
 
           <Typography variant="h5" sx={{ mt: 2 }}>
             Product meta data
@@ -271,48 +263,35 @@ function AddProduct() {
             }
             label="Is for Sale"
           />
-          {errors.is_for_sale && (
-            <Alert severity="error">Is For Sale is required.</Alert>
-          )}
+          {errors.is_for_sale && <Alert severity="error">Is For Sale is required.</Alert>}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Cost Price"
             type="number"
             {...register("cost_price", { required: true })}
             margin="normal"
           />
-          {errors.cost_price && (
-            <Alert severity="error">Cost Price is required.</Alert>
-          )}
+          {errors.cost_price && <Alert severity="error">Cost Price is required.</Alert>}
 
           <TextField
+            InputLabelProps={{ shrink: true }}
             label="Supplier"
             type="text"
             {...register("supplier", { required: true })}
             margin="normal"
           />
-          {errors.supplier && (
-            <Alert severity="error">Supplier is required.</Alert>
-          )}
+          {errors.supplier && <Alert severity="error">Supplier is required.</Alert>}
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ mt: 2 }}
-          >
+          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Save Product
           </Button>
 
+          {mesge ? <h1> {mesge} </h1> : null}
         </Box>
-        {isAlertSuccess !== null && (
-          <Alert severity={isAlertSuccess ? "success" : "error"} sx={{ mt: 2 }}>
-            {alertMessage}
-          </Alert>
-        )}
       </Paper>
     </Container>
   );
 }
-  
-export default AddProduct;
+
+export default EditProduct;
