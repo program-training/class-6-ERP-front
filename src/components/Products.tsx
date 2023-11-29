@@ -89,7 +89,7 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}api/products/inventory`,
+          `${apiUrl}/api/products/inventory`,
           // "https://erp-beak1-6.onrender.com/api/products/inventory",
           {
             headers: {

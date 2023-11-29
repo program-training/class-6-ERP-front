@@ -59,7 +59,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        `${apiUrl}api/users/register`,
+        `${apiUrl}/api/users/register`,
 
         // "https://erp-beak1-6.onrender.com/api/users/register",
         data,
