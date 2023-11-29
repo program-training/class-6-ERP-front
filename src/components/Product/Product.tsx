@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import CardMedia from "@mui/material/CardMedia";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import LoadingSpinner from "../pages/Loading";
+import LoadingSpinner from "../../pages/Loading";
 import { Paper } from "@mui/material";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
