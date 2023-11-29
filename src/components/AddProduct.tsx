@@ -89,8 +89,6 @@ function AddProduct() {
 
       const response = await axios.post(
         `${apiUrl}api/products/inventory`,
-
-        // `https://erp-beak1-6.onrender.com/api/products/inventory`,
         requestData,
         {
           headers: {
