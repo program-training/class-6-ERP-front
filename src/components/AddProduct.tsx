@@ -118,7 +118,7 @@ function AddProduct() {
             const axiosError = error as AxiosError<YourResponseType>;
             if (axiosError.response) {
               setIsAlertSuccess(false);
-              setAlertMessage(axiosError.response.data.message + " Please try again or later.");
+              setAlertMessage(axiosError.response.data.message + ", please try again or later.");
             } else {
               setIsAlertSuccess(false);
               setAlertMessage("Error adding the product. Please try again or later.");
