@@ -34,7 +34,6 @@ function AddProduct() {
   const {
     register,
     handleSubmit,
-    setValue, 
     formState: { errors },
   } = useForm<AdminProductInterface>();
 
@@ -48,11 +47,13 @@ function AddProduct() {
     setIsForSale(!isForSale);
   };
 
-  const onSubmit = async (data: AdminProductInterface) => {
-    try {
+  const handleSubmitImage = async () => {
+    setUploading(true);
 
+    try {
       const preset_key = "hyjuf7js";
       const cloudName = "class6erp";
+
       const imageInput = document.getElementById(
         "imageInput"
       ) as HTMLInputElement;
@@ -61,17 +62,23 @@ function AddProduct() {
         const formData = new FormData();
         formData.append("file", imageFile);
         formData.append("upload_preset", preset_key);
+
         const imageUrl = await axios.post(
           `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
           formData
         );
-        console.log(imageUrl.data.url);
-        setValue("image_url", imageUrl.data.url);
         setImage(imageUrl.data.url);
-        setUploading(true);
-
-        
       }
+    } catch (error) {
+      console.error("Error saving product:", error);
+    } finally {
+      setUploading(false);
+    }
+  };
+        
+      
+  const onSubmit = async (data: AdminProductInterface) => {
+    try {
       const requestData = {
         product: {
           name: data.name,
@@ -80,14 +87,12 @@ function AddProduct() {
           description: data.description,
           category: data.category,
           discount_percentage: data.discount_percentage,
-          image_url: data.image_url,
+          image_url: image,
           image_alt: data.image_alt,
         },
-        Admin_Products: {
-          is_for_sale: isForSale,
-          cost_price: data.cost_price,
-          supplier: data.supplier,
-        },
+        is_for_sale: isForSale,
+        cost_price: data.cost_price,
+        supplier: data.supplier,
       };
 
       const response = await axios.post(
@@ -212,6 +217,11 @@ function AddProduct() {
             {...register("image_url", { required: true })}
             accept="image/*"
             style={{ display: "none" }}
+
+            onChange={() => {
+              handleSubmitImage();
+            }}
+
           />
             
           <InputLabel htmlFor="imageInput">
@@ -222,6 +232,18 @@ function AddProduct() {
           </InputLabel>
           {errors.image_url && (
             <Alert severity="error">Image URL is required.</Alert>
+          )}
+          {uploading && <LinearWithValueLabel />}
+          {image && (
+            <img
+              src={image}
+              alt="Preview"
+              style={{
+                maxWidth: "30%",
+                maxHeight: "30%",
+                marginTop: "10px",
+              }}
+            />
           )}
 
           <TextField
@@ -272,17 +294,6 @@ function AddProduct() {
           {errors.supplier && (
             <Alert severity="error">Supplier is required.</Alert>
           )}
-          {image && (
-            <img
-              src={image}
-              alt="Preview"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "300px",
-                marginTop: "10px",
-              }}
-            />
-          )}
 
           <Button
             type="submit"
@@ -292,7 +303,6 @@ function AddProduct() {
           >
             Save Product
           </Button>
-          {uploading && <LinearWithValueLabel />}
 
         </Box>
         {isAlertSuccess !== null && (

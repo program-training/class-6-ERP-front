@@ -85,6 +85,7 @@ function EditProduct() {
         cost_price: data.cost_price,
         supplier: data.supplier,
       };
+console.log(postData);
 
       const response = await axios.patch(
         `${apiUrl}/api/products/inventory/${id}`,
@@ -209,6 +210,8 @@ function EditProduct() {
             <Alert severity="error">Discount Percentage is required.</Alert>
           )}
 
+           <label htmlFor="imageInput">
+            <Button variant="contained" component="span" sx={{ mt: 2  }}>
           <Input
             type="file"
             id="imageInput"
@@ -218,13 +221,23 @@ function EditProduct() {
               handleSubmitImage();
             }}
           />
-          <label htmlFor="imageInput">
-            <Button variant="contained" component="span" sx={{ mt: 2 }}>
               Upload Image
             </Button>
           </label>
 
           {errors.image_url && <Alert severity="error">Image URL is required.</Alert>}
+          {uploading && <LinearWithValueLabel />}
+          {image && (
+            <img
+              src={image}
+              alt="Preview"
+              style={{
+                maxWidth: "30%",
+                maxHeight: "30%",
+                marginTop: "10px",
+              }}
+            />
+          )}
 
           <TextField
             InputLabelProps={{ shrink: true }}
@@ -269,18 +282,10 @@ function EditProduct() {
             margin="normal"
           />
           {errors.supplier && <Alert severity="error">Supplier is required.</Alert>}
-          {image && (
-            <img
-              src={image}
-              alt="Preview"
-              style={{ maxWidth: "100%", maxHeight: "300px", marginTop: "10px" }}
-            />
-          )}
 
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Save Product
           </Button>
-          {uploading && <LinearWithValueLabel />}
 
           {mesge ? <h1> {mesge} </h1> : null}
         </Box>
