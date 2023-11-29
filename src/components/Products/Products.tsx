@@ -193,11 +193,11 @@ const Products: React.FC =  () => {
   }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
-    navigate(`/Product/${productId}`);
+    navigate(`/erp/Product/${productId}`);
   };
 
   const handleAddProduct = async () => {
-    navigate(`/addProduct`);
+    navigate(`/erp/addProduct`);
   };
 
   return (
@@ -319,7 +319,7 @@ const Products: React.FC =  () => {
     <Button
       onClick={() => {
         Cookies.remove('token')
-        navigate("/")
+        navigate("/erp")
       }}
       style={{
         padding: "8px",

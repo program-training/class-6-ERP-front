@@ -110,7 +110,7 @@ function AddProduct() {
       );
       
         
-      navigate(`/products`);
+      navigate(`/erp/products`);
       console.log(response);
       
       setIsAlertSuccess(true);
@@ -143,8 +143,8 @@ function AddProduct() {
   return (
     <Container>
       <Typography variant="h4">Add Product</Typography>
-      <Button onClick={() => navigate("/")}>Logout</Button>
-      <Button onClick={() => navigate("/Products")}>All Products</Button>
+      <Button onClick={() => navigate("/erp")}>Logout</Button>
+      <Button onClick={() => navigate("/erp/Products")}>All Products</Button>
       <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
         <Typography variant="h5">Product properties</Typography>
 

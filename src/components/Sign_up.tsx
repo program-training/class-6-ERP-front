@@ -76,7 +76,7 @@ const SignUp = () => {
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
-          navigate("/");
+          navigate("/erp");
         }, 1500);
       } else {
         console.error("Registration failed");
@@ -92,7 +92,7 @@ const SignUp = () => {
     setOpen(false);
 
     if (loginSuccess) {
-      navigate("/");
+      navigate("/erp");
     } else {
       console.error("Registration failed");
     }

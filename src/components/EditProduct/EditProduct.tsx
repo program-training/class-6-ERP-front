@@ -100,7 +100,7 @@ console.log(postData);
       if (response.status === 200) {
         setMesge("Added successfully!");
         setTimeout(() => {
-          navigate(`/products`);
+          navigate(`/erp/products`);
         }, 2000);
       } else {
         console.error("Failed to add product");
@@ -140,12 +140,12 @@ console.log(postData);
       <Button
         onClick={() => {
           Cookies.remove("token");
-          navigate("/");
+          navigate("/erp");
         }}
       >
         Logout
       </Button>
-      <Button onClick={() => navigate("/Products")}>All Products</Button>
+      <Button onClick={() => navigate("/erp/Products")}>All Products</Button>
       <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
         <Typography variant="h5">Product properties</Typography>
 

@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <div style={headerStyle}>
       <h1 onClick={() =>{
-        nav('/products')
+        nav('/erp/products')
       }}>Inventory Management</h1>
     </div>
   );
