@@ -83,7 +83,7 @@ function EditProduct() {
         };
 
         const response = await axios.patch(
-          `${apiUrl}api/products/inventory/${id}`,
+          `${apiUrl}/api/products/inventory/${id}`,
 
           // `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           postData,
@@ -114,7 +114,7 @@ function EditProduct() {
     async function getProduct(id: string) {
       try {
         const productData = await axios.get(
-          `${apiUrl}api/products/inventory/${id}`,
+          `${apiUrl}/api/products/inventory/${id}`,
 
           // `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           {
