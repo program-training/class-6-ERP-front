@@ -199,7 +199,7 @@ const Products: React.FC = () => {
   return (
     <Box>
 
-  component="div"
+ <Typography component="div"
   style={{
     backgroundColor: "gray",
     display: "flex",
