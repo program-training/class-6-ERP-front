@@ -215,7 +215,7 @@ function EditProduct() {
           <input
             type="file"
             id="imageInput"
-            {...register("product.image_url" as ProductData, { required: false })}
+            {...register("product.image_url" as ProductData, { required: true })}
             accept="image/*"
             style={{ display: "none" }}
           />
@@ -224,7 +224,6 @@ function EditProduct() {
               Upload Image
             </Button>
           </label>
-          {uploading && <LinearWithValueLabel />}
 
           {errors.image_url && <Alert severity="error">Image URL is required.</Alert>}
 
@@ -282,7 +281,9 @@ function EditProduct() {
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Save Product
           </Button>
-          {mesge ? <p> {mesge} </p> : null}
+          {uploading && <LinearWithValueLabel />}
+
+          {mesge ? <h1> {mesge} </h1> : null}
         </Box>
       </Paper>
     </Container>
