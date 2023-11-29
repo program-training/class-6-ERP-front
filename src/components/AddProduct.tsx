@@ -17,6 +17,12 @@ import {
 import { useState } from "react";
 import { AdminProductInterface } from "../interface/interfaceAddProduct";
 import { AxiosError } from 'axios';
+import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
+
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
 
 interface YourResponseType {
   message: string;
@@ -36,6 +42,7 @@ function AddProduct() {
   const [image, setImage] = useState<string | null>(null);
   const [isAlertSuccess, setIsAlertSuccess] = useState<boolean | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -43,6 +50,7 @@ function AddProduct() {
 
   const onSubmit = async (data: AdminProductInterface) => {
     try {
+
       const preset_key = "hyjuf7js";
       const cloudName = "class6erp";
       const imageInput = document.getElementById(
@@ -60,6 +68,9 @@ function AddProduct() {
         console.log(imageUrl.data.url);
         setValue("image_url", imageUrl.data.url);
         setImage(imageUrl.data.url);
+        setUploading(true);
+
+        
       }
       const requestData = {
         product: {
@@ -80,7 +91,9 @@ function AddProduct() {
       };
 
       const response = await axios.post(
-        `https://erp-beak1-6.onrender.com/api/products/inventory`,
+        `${apiUrl}/api/products/inventory`,
+
+        // `https://erp-beak1-6.onrender.com/api/products/inventory`,
         requestData,
         {
           headers: {
@@ -105,15 +118,18 @@ function AddProduct() {
             const axiosError = error as AxiosError<YourResponseType>;
             if (axiosError.response) {
               setIsAlertSuccess(false);
-              setAlertMessage(axiosError.response.data.message);
+              setAlertMessage(axiosError.response.data.message + ", please try again or later.");
             } else {
               setIsAlertSuccess(false);
-              setAlertMessage("Error adding the product. Please try again.");
+              setAlertMessage("Error adding the product. Please try again or later.");
             }
           } else {
             setIsAlertSuccess(false);
-            setAlertMessage("An unknown error occurred. Please try again.");
+            setAlertMessage("An unknown error occurred. Please try again or later.");
           }
+        } finally {
+          setUploading(false);
+
         }
   }
 
@@ -193,7 +209,7 @@ function AddProduct() {
           <input
             type="file"
             id="imageInput"
-            {...register("image_url", { required: false })}
+            {...register("image_url", { required: true })}
             accept="image/*"
             style={{ display: "none" }}
           />
@@ -276,6 +292,8 @@ function AddProduct() {
           >
             Save Product
           </Button>
+          {uploading && <LinearWithValueLabel />}
+
         </Box>
         {isAlertSuccess !== null && (
           <Alert severity={isAlertSuccess ? "success" : "error"} sx={{ mt: 2 }}>

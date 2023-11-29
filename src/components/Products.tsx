@@ -21,6 +21,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import SkeletonTable from "../pages/Skeleton";
 
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -97,7 +101,8 @@ const Products: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://erp-beak1-6.onrender.com/api/products/inventory",
+          `${apiUrl}/api/products/inventory`,
+          // "https://erp-beak1-6.onrender.com/api/products/inventory",
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -193,93 +198,139 @@ const Products: React.FC = () => {
 
   return (
     <Box>
-      <Typography
-        component="div"
-        style={{
-          backgroundColor: "gray",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* <Typography component="h1" style={{ marginRight: "10px" }}>
-          All Products
-        </Typography> */}
-        <TextField
-          placeholder="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            "& .MuiInputBase-root": {
-              backgroundColor: "white",
-            },
-            "& .MuiInputBase-input": {
-              color: "withe",
-            },
-          }}
-        />
-        <Typography component="div">
-          <InputLabel sx={{ color: "white" }}>Sort By:</InputLabel>
-          <Select
-            onChange={(e) => handleSortChange(e.target.value)}
-            value={sortOption}
-            sx={{ color: "white" }}
-          >
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="sale_price">Sale Price</MenuItem>
-            <MenuItem value="discount_percentage">Discount Percentage</MenuItem>
-            <MenuItem value="description">Description</MenuItem>
-            <MenuItem value="quantity">Quantity</MenuItem>
-          </Select>
-        </Typography>
-        <Typography component="div">
-          <InputLabel sx={{ color: "white" }}>Sort Order:</InputLabel>
-          <Select
-            onChange={(e) => setSortOrder(e.target.value)}
-            value={sortOrder}
-            sx={{ color: "white" }}
-          >
-            <MenuItem value="asc">Ascending</MenuItem>
-            <MenuItem value="desc">Descending</MenuItem>
-          </Select>
-        </Typography>
-        <Button
-          onClick={handleAddProduct}
-          style={{
-            marginLeft: "10px",
-            padding: "8px",
-            borderRadius: "4px",
-            backgroundColor: "black",
-            color: "white",
-            border: "none",
-          }}
-        >
-          Add Product
-        </Button>
-        <Button
-          onClick={() => {
-            Cookies.remove("token");
-            navigate("/");
-          }}
-          style={{
-            marginLeft: "10px",
-            padding: "8px",
-            borderRadius: "4px",
-            backgroundColor: "black",
-            color: "white",
-            border: "none",
-          }}
-        >
-          Logout
-        </Button>
-      </Typography>
+
+  component="div"
+  style={{
+    backgroundColor: "gray",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px", 
+  }}
+>
+  <Typography component="h2" style={{ marginRight: "10px" }}>
+    All Products
+  </Typography>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <TextField
+      placeholder="Search products..."
+      
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        ),
+      }}
+      sx={{
+        "& .MuiInputBase-root": {
+          backgroundColor: "white",
+          borderRadius: "30px",
+          height: "40px",
+        },
+        "& .MuiInputBase-input": {
+          color: "black",
+          borderRadius: "30px",
+          height: "40px",
+        },
+      }}
+    />
+  </div>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <InputLabel
+      sx={{
+        color: "white",
+        borderRadius: "15px",
+        margin: "0",
+        marginLeft: "10px", // Adding margin for better spacing
+      }}
+    >
+      Sort By:
+    </InputLabel>
+    <Select
+      onChange={(e) => handleSortChange(e.target.value)}
+      value={sortOption}
+      sx={{
+        color: "white",
+        borderRadius: "5px",
+        backgroundColor: "#aaaaaa" ,// Adjust the color code as needed
+        height: "40px",
+        marginLeft: "5px", // Adding margin for better spacing
+      }}
+    >
+      <MenuItem value="name">Name</MenuItem>
+      <MenuItem value="sale_price">Sale Price</MenuItem>
+      <MenuItem value="discount_percentage">Discount Percentage</MenuItem>
+      <MenuItem value="description">Description</MenuItem>
+      <MenuItem value="quantity">Quantity</MenuItem>
+    </Select>
+  </div>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <InputLabel
+      sx={{
+        color: "white",
+        borderRadius: "15px",
+        margin: "0",
+        marginLeft: "10px",
+      }}
+    >
+      Sort Order:
+    </InputLabel>
+    <Select
+      onChange={(e) => setSortOrder(e.target.value)}
+      value={sortOrder}
+      sx={{
+        color: "white",
+        borderRadius: "5px",
+        backgroundColor: "#aaaaaa" ,
+        height: "40px",
+        marginLeft: "5px", 
+      }}
+    >
+      <MenuItem value="asc">Ascending</MenuItem>
+      <MenuItem value="desc">Descending</MenuItem>
+    </Select>
+  </div>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <Button
+      onClick={handleAddProduct}
+      style={{
+        padding: "8px",
+        borderRadius: "15px",
+        backgroundColor: "black",
+        color: "white",
+        height: "40px",
+        marginLeft: "10px", // Adding margin for better spacing
+      }}
+    >
+      Add Product
+    </Button>
+
+    <Button
+      onClick={() => {
+        Cookies.remove('token')
+        navigate("/")
+      }}
+      style={{
+        padding: "8px",
+        borderRadius: "15px",
+        backgroundColor: "black",
+        color: "white",
+        border: "none",
+        height: "40px",
+        marginLeft: "10px", // Adding margin for better spacing
+      }}
+    >
+      Logout
+    </Button>
+  </div>
+</Typography>
 
       {loading ? (
         <SkeletonTable />

@@ -13,6 +13,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import LoadingSpinner from "../pages/Loading";
 import { Paper } from "@mui/material";
 
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
+
 const ProductDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -22,7 +26,9 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+          `${apiUrl}/api/products/inventory/${id}`,
+
+          // `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           { headers: { Authorization: Cookies.get("token") } }
         );
         setProductDetails(response.data);
@@ -37,7 +43,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+        `${apiUrl}/api/products/inventory/${id}`,
         { headers: { Authorization: Cookies.get("token") } }
       );
 
