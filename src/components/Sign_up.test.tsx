@@ -1,34 +1,26 @@
-// import { test, expect } from 'vitest';
-// import SignUp from './Sign_up';
+import { expect, test } from "vitest";
+import SignUp from "./Sign_up";
+import { render, screen, fireEvent } from "@testing-library/react";
 
-// describe('SignUp Component', () => {
-//   it('renders without crashing', () => {
-//     const wrapper: any = test(SignUp);
-//     expect(wrapper).toBeTruthy();
-//   });
+test("Password And Confirm Password is ecooil", () => {
+  render(<SignUp />);
 
-  // If you're not using the form submission test for now, remove it.
-  // it('handles form submission', async () => {
-  //   const wrapper: any = test(SignUp);
+ 
+  const userEmail = "test@example.com";
+  const password = "password123";
 
-  //   // Mocking the useNavigate function
-  //   const mockNavigate = jest.fn();
-  //   jest.mock('react-router-dom', () => ({
-  //     ...jest.requireActual('react-router-dom'),
-  //     useNavigate: () => mockNavigate,
-  //   }));
 
-  //   // Simulate form submission
-  //   await wrapper.find('form').trigger('submit', {
-  //     target: {
-  //       elements: {
-  //         email: { value: 'test@example.com' },
-  //         password: { value: 'password123' },
-  //         confirmPassword: { value: 'password123' },
-  //       },
-  //     },
-  //   });
+  const emailInput = screen.getByLabelText("Enter Your Email") as HTMLInputElement;
+  const passwordInput = screen.getByLabelText("Password") as HTMLInputElement;
+  const confirmPasswordInput = screen.getByLabelText("Confirm Password") as HTMLInputElement;
 
-  //   expect(mockNavigate).toHaveBeenCalledWith('/Products');
-  // });
-// });
+
+  fireEvent.change(emailInput, { target: { value: userEmail } });
+  fireEvent.change(passwordInput, { target: { value: password } });
+  fireEvent.change(confirmPasswordInput, { target: { value: password } });
+
+  
+  expect(emailInput.value).toBe(userEmail);
+  expect(passwordInput.value).toBe(password);
+  expect(confirmPasswordInput.value).toBe(password);
+});
