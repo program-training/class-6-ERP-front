@@ -49,7 +49,7 @@ const ProductDetails = () => {
 
       if (response.status === 200) {
         console.log("Product deleted successfully");
-        navigate("/Products");
+        navigate("/erp/Products");
       } else {
         console.error("Failed to delete product");
       }
@@ -58,7 +58,7 @@ const ProductDetails = () => {
     }
   };
   
-  const handleEdit = () => navigate(`/EditProduct/${id}`);
+  const handleEdit = () => navigate(`/erp/EditProduct/${id}`);
   
   return (<>
     {productDetails ? (

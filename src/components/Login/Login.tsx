@@ -60,7 +60,7 @@ const Login = () => {
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
-          navigate("/Products");
+          navigate("/erp/Products");
         }, 1500);
       } else {
         console.error("Login failed");
@@ -133,7 +133,7 @@ const Login = () => {
                   </Button>
                   <Button
                     onClick={() => {
-                      navigate("./Sign_up");
+                      navigate("/erp/Sign_up");
                     }}
                     sx={{
                       backgroundColor: "grey",
