@@ -16,10 +16,11 @@ import Typography from "@mui/material/Typography";
 import { MenuItem, Select, InputLabel } from "@mui/material";
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { AdminProductInterface } from "../interface/interface";
+import { AdminProductInterface } from "../../interface/interface";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
-import SkeletonTable from "../pages/Skeleton";
+import SkeletonTable from "../../pages/Skeleton";
+import  './Products.css'; // Import your custom styled cell component
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -49,7 +50,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const Products: React.FC = () => {
+const Products: React.FC =  () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<AdminProductInterface[]>([]);
@@ -60,21 +61,8 @@ const Products: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("name");
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  // const [isPostRead, setIsPostRead] = useState(false);
 
-  // const handleIconClick = (productId: string | undefined) => {
-  //   // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
-  //   // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
-
-  //   // לדוג', אם המשתמש לוחץ על האיקון והפוסט לא נקרא, יש לשנות את המשתנה ל-true
-  //   setIsPostRead(!isPostRead);
-  //   console.log(productId);
-
-  //   // לאחר מכן, ניתן לבצע את הקריאה לשרת או כל פעולה אחרת
-  //   // אפשר להוסיף כל פעולה נוספת שתתאים לדרישות שלך
-  // };
-
-  const handleSortChange = (option: string) => {
+  const handleSortChange =  (option: string) => {
     if (option === sortOption) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -82,20 +70,36 @@ const Products: React.FC = () => {
       setSortOrder("asc");
     }
   };
-  const handleToggleIsForSale = (productId: string) => {
-    setProducts((prevProducts) => {
-      const updatedProducts = prevProducts.map((product) => {
-        if (product["product.product_id"] === productId) {
-          return {
-            ...product,
-            is_for_sale: !product.is_for_sale,
-          };
-        }
-        return product;
-      });
-      return updatedProducts;
-    });
-  };
+  const handleToggleIsForSale = async (productId: string) => {
+    try {
+    const updatedProducts = await Promise.all(
+     products.map(async(product) => {
+      if (product["product.product_id"] === productId) {
+        const updatedProduct =  {
+          ...product,
+          is_for_sale: !product.is_for_sale,
+        };
+        const res = await axios.patch(`${apiUrl}/api/products/inventory/${productId}`, {
+          is_for_sale: updatedProduct.is_for_sale,
+        }, {
+          headers: {
+            Authorization: Cookies.get("token"),
+          },
+        });
+          console.log(res);
+          
+        return updatedProduct;
+      }
+      return product;
+    }))
+
+    setProducts(updatedProducts);
+  } catch (error) {
+    console.error('Error updating is_for_sale property:', error);
+}
+};
+    
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -306,7 +310,7 @@ const Products: React.FC = () => {
         backgroundColor: "black",
         color: "white",
         height: "40px",
-        marginLeft: "10px", // Adding margin for better spacing
+        marginLeft: "10px", 
       }}
     >
       Add Product
@@ -324,7 +328,7 @@ const Products: React.FC = () => {
         color: "white",
         border: "none",
         height: "40px",
-        marginLeft: "10px", // Adding margin for better spacing
+        marginLeft: "10px", 
       }}
     >
       Logout
@@ -336,8 +340,8 @@ const Products: React.FC = () => {
         <SkeletonTable />
       ) : (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <TableHead style={{ position: 'sticky', top: 0 }} className="TableStickyHeader">
               <TableRow>
                 <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
@@ -438,7 +442,7 @@ const Products: React.FC = () => {
                       <ClearIcon
                         style={{ color: "red", cursor: "pointer" }}
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevents the row click event from triggering
+                          e.stopPropagation(); 
                           const productId = product["product.product_id"];
                           if (productId) {
                             handleToggleIsForSale(productId);
