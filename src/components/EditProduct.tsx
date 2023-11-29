@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-// import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -18,6 +17,8 @@ import { useForm } from "react-hook-form";
 import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
 import { AdminProductInterface } from "../interface/interfaceEditProduct";
 import { ProductData } from "../interface/interfaceAddProduct";
+import { Input } from '@mui/material';
+
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -212,11 +213,10 @@ function EditProduct() {
             <Alert severity="error">Discount Percentage is required.</Alert>
           )}
 
-          <input
+          <Input
             type="file"
             id="imageInput"
-            {...register("product.image_url" as ProductData, { required: false })}
-            accept="image/*"
+            {...register("product.image_url" as ProductData, { required: true })}
             style={{ display: "none" }}
           />
           <label htmlFor="imageInput">
@@ -224,7 +224,6 @@ function EditProduct() {
               Upload Image
             </Button>
           </label>
-          {uploading && <LinearWithValueLabel />}
 
           {errors.image_url && <Alert severity="error">Image URL is required.</Alert>}
 
@@ -282,7 +281,9 @@ function EditProduct() {
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Save Product
           </Button>
-          {mesge ? <p> {mesge} </p> : null}
+          {uploading && <LinearWithValueLabel />}
+
+          {mesge ? <h1> {mesge} </h1> : null}
         </Box>
       </Paper>
     </Container>

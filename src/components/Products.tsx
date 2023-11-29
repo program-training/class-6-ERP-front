@@ -204,6 +204,7 @@ const Products: React.FC = () => {
   <div style={{ display: "flex", alignItems: "center" }}>
     <TextField
       placeholder="Search products..."
+      
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       InputProps={{
@@ -220,7 +221,7 @@ const Products: React.FC = () => {
           height: "40px",
         },
         "& .MuiInputBase-input": {
-          color: "white",
+          color: "black",
           borderRadius: "30px",
           height: "40px",
         },
@@ -245,7 +246,6 @@ const Products: React.FC = () => {
       sx={{
         color: "white",
         borderRadius: "5px",
-        marginBottom: "25px",
         backgroundColor: "#aaaaaa" ,// Adjust the color code as needed
         height: "40px",
         marginLeft: "5px", // Adding margin for better spacing
@@ -265,7 +265,7 @@ const Products: React.FC = () => {
         color: "white",
         borderRadius: "15px",
         margin: "0",
-        marginLeft: "10px", // Adding margin for better spacing
+        marginLeft: "10px",
       }}
     >
       Sort Order:
@@ -276,10 +276,9 @@ const Products: React.FC = () => {
       sx={{
         color: "white",
         borderRadius: "5px",
-        marginBottom: "25px",
-        backgroundColor: "#aaaaaa" ,// Adjust the color code as needed
+        backgroundColor: "#aaaaaa" ,
         height: "40px",
-        marginLeft: "5px", // Adding margin for better spacing
+        marginLeft: "5px", 
       }}
     >
       <MenuItem value="asc">Ascending</MenuItem>
