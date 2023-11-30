@@ -75,7 +75,7 @@ const SignUp = () => {
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
-          navigate("/erp");
+          navigate("/");
         }, 1500);
       } else {
         console.error("Registration failed");
