@@ -57,8 +57,14 @@ const Login = () => {
   };
 
   return (
-    <Card style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
-      <CardContent
+    <Card style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    //  backgroundImage: 'url("https://www.picshare.co.il/s_pictures/img171970.jpg")'
+    //   ,backgroundRepeat:"no-repeat" ,
+    //   backgroundSize:"contain" ,
+    //   width :' 100%' ,
+    //   height : '100%'
+      }}>
+    <CardContent
         style={{
           display: "flex",
           flexDirection: "column",
