@@ -8,20 +8,18 @@ import AddProduct from "./components/AddProduct/AddProduct";
 import Product from "./components/Product/Product";
 import EditProduct from "./components/EditProduct/EditProduct";
 
-
-
 function App() {
-
-
   return (
     <div>
       <BrowserRouter>
         <Routes>
-        <Route index element={<Home/>} />
-        <Route path="/erp/Sign_up" element={<Sign_up />} />
+          <Route index element={<Home />} />
+          <Route path="/erp/Sign_up" element={<Sign_up />} />
+
+       
 
           <Route path="/erp" element={<Layout />}>
-          <Route path="/erp/Products" element={<Products />} />
+            <Route path="/erp/Products" element={<Products />} />
 
             <Route path="/erp/Product/:id" element={<Product />} />
             <Route path="/erp/AddProduct" element={<AddProduct />} />
