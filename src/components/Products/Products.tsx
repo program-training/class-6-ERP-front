@@ -79,7 +79,7 @@ const Products: React.FC =  () => {
           ...product,
           is_for_sale: !product.is_for_sale,
         };
-        const res = await axios.patch(`${apiUrl}/api/products/inventory/${productId}`, {
+        const res = await axios.patch(`${apiUrl}/products/inventory/${productId}`, {
           is_for_sale: updatedProduct.is_for_sale,
         }, {
           headers: {
@@ -105,8 +105,7 @@ const Products: React.FC =  () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}/api/products/inventory`,
-          // "https://erp-beak1-6.onrender.com/api/products/inventory",
+          `${apiUrl}/products/inventory`,
           {
             headers: {
               Authorization: Cookies.get("token"),
