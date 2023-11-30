@@ -34,6 +34,8 @@ const Login = () => {
       if (response.status === 200) {
         const token = response.data.token;
         Cookies.set("token", token, { expires: 1 });
+        console.log(token);
+        
 
         setOpen(true);
         setTimeout(() => {
