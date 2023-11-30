@@ -140,7 +140,7 @@ console.log(postData);
       <Button
         onClick={() => {
           Cookies.remove("token");
-          navigate("/erp");
+          navigate("/");
         }}
       >
         Logout

@@ -319,7 +319,7 @@ const Products: React.FC =  () => {
     <Button
       onClick={() => {
         Cookies.remove('token')
-        navigate("/erp")
+        navigate("/")
       }}
       style={{
         padding: "8px",
