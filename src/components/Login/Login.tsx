@@ -27,7 +27,7 @@ const Login = () => {
   const handleLogin = async (data: FormData) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/users/login`,
+        `${apiUrl}/users/login`,
         data
       );
 

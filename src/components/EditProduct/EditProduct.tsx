@@ -88,7 +88,7 @@ function EditProduct() {
 console.log(postData);
 
       const response = await axios.patch(
-        `${apiUrl}/api/products/inventory/${id}`,
+        `${apiUrl}/products/inventory/${id}`,
         postData,
         {
           headers: {
@@ -114,7 +114,7 @@ console.log(postData);
     async function getProduct(id: string) {
       try {
         const productData = await axios.get(
-          `${apiUrl}/api/products/inventory/${id}`,
+          `${apiUrl}/products/inventory/${id}`,
           {
             headers: {
               Authorization: Cookies.get("token"),
