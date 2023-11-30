@@ -135,41 +135,55 @@ console.log(postData);
   }, [id, setValue]);
 
   return (
-    <Container>
-      <Typography variant="h4">Edit Product</Typography>
-      <Button
-        onClick={() => {
-          Cookies.remove("token");
-          navigate("/");
-        }}
+
+  <Box
+  style={{
+    backgroundImage: 'url("https://assets-discuss-neos-io.s3.dualstack.eu-central-1.amazonaws.com/original/2X/6/665c28e208724e2280dd9520eee68b45665743ed.jpg")', // Add your background image URL
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  <Container>
+    <Typography variant="h4">Edit Product</Typography>
+    <Button sx={{border:"solid 2px" , borderRadius:"10px" , margin :"5px"}}
+      onClick={() => {
+        Cookies.remove("token");
+        navigate("/");
+      }}
+    >
+      Logout
+    </Button>
+    <Button sx={{border:"solid 2px" , borderRadius:"10px"}} onClick={() => navigate("/erp/Products")}>All Products</Button>
+    <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
+      <Typography variant="h5">Product properties</Typography>
+
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ mt: 2, display: "flex", flexDirection: "column" }}
       >
-        Logout
-      </Button>
-      <Button onClick={() => navigate("/erp/Products")}>All Products</Button>
-      <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
-        <Typography variant="h5">Product properties</Typography>
+        <TextField
+          InputLabelProps={{ shrink: true }}
+          label="Product Name"
+          type="text"
+          {...register("product.name" as ProductData, { required: true })}
+          margin="normal"
+        />
+        {errors.name && <Alert severity="error">Product Name is required.</Alert>}
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{ mt: 2, display: "flex", flexDirection: "column" }}
-        >
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            label="Product Name"
-            type="text"
-            {...register("product.name" as ProductData, { required: true })}
-            margin="normal"
-          />
-          {errors.name && <Alert severity="error">Product Name is required.</Alert>}
-
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            label="Sale Price"
-            type="number"
-            {...register("product.sale_price" as ProductData, { required: true })}
-            margin="normal"
-          />
+        <TextField
+          InputLabelProps={{ shrink: true }}
+          label="Sale Price"
+          type="number"
+          {...register("product.sale_price" as ProductData, { required: true })}
+          margin="normal"
+        />
           {errors.sale_price && <Alert severity="error">Sale Price is required.</Alert>}
 
           <TextField
@@ -291,6 +305,8 @@ console.log(postData);
         </Box>
       </Paper>
     </Container>
+    </Box>
+
   );
 }
 

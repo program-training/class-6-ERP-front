@@ -11,7 +11,7 @@ import CardMedia from "@mui/material/CardMedia";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import LoadingSpinner from "../../pages/Loading";
-import { Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -62,6 +62,18 @@ const ProductDetails = () => {
   
   return (<>
     {productDetails ? (
+      <Box
+      style={{
+        backgroundImage: 'url("https://media.istockphoto.com/id/1096460950/vector/vector-set-of-design-templates-and-elements-for-e-commerce-in-trendy-linear-style-seamless.jpg?s=612x612&w=0&k=20&c=GhmLjjeTXzmhzX4YZ0jA6g-k7245d2i4RjIbGK2QIdY=")', // Add your background image URL
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
     <Grid container justifyContent="center" alignItems="center" height="100vh">
       <Paper style={{ background: "#f0eae2", padding: "20px" }}>
         <Card
@@ -167,6 +179,8 @@ const ProductDetails = () => {
         </Card>
       </Paper>
     </Grid>
+    </Box>
+
      ) : (<LoadingSpinner />)
     }
     </>
