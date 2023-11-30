@@ -14,6 +14,7 @@ import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { FormDataSignUp } from "../interface/interface";
+import { Typography } from "@mui/material";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -116,8 +117,11 @@ const SignUp = () => {
         alignItems="center"
         height="100vh"
       >
+
         <Grid item xs={12} md={6}>
           <Card style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
+          <Typography variant="h4">SignUp</Typography>
+
             <CardContent>
               <Box
                 component="form"
