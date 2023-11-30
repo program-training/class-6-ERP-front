@@ -6,18 +6,18 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-// import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import {
-  Container,
-} from "@mui/material";
+import { Container } from "@mui/material";
 import { useForm } from "react-hook-form";
-import LinearWithValueLabel from "../pages/LinearProgressWithLabel";
-import { AdminProductInterface } from "../interface/interfaceEditProduct";
-import { ProductData } from "../interface/interfaceAddProduct";
+import LinearWithValueLabel from "../../pages/LinearProgressWithLabel";
+import { AdminProductInterface } from "../../interface/interfaceEditProduct";
+import { ProductData } from "../../interface/interfaceAddProduct";
+import { Input } from '@mui/material';
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 function EditProduct() {
   const { id } = useParams();
@@ -38,7 +38,9 @@ function EditProduct() {
     setIsForSale(!isForSale);
   };
 
-  const onSubmit = async (data: AdminProductInterface) => {
+  const handleSubmitImage = async () => {
+    setUploading(true);
+
     try {
       const preset_key = "hyjuf7js";
       const cloudName = "class6erp";
@@ -52,49 +54,11 @@ function EditProduct() {
         formData.append("file", imageFile);
         formData.append("upload_preset", preset_key);
 
-        setUploading(true);
-
         const imageUrl = await axios.post(
           `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
           formData
         );
         setImage(imageUrl.data.url);
-
-        const postData = {
-          product: {
-            product_id: id,
-            name: data.name,
-            sale_price: data.sale_price,
-            quantity: data.quantity,
-            description: data.description,
-            category: data.category,
-            discount_percentage: data.discount_percentage,
-            image_url: imageUrl.data.url,
-            image_alt: data.image_alt,
-          },
-          is_for_sale: isForSale,
-          cost_price: data.cost_price,
-          supplier: data.supplier,
-        };
-
-        const response = await axios.patch(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
-          postData,
-          {
-            headers: {
-              Authorization: Cookies.get("token"),
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          setMesge("Added successfully!");
-          setTimeout(() => {
-            navigate(`/products`);
-          }, 2000);
-        } else {
-          console.error("Failed to add product");
-        }
       }
     } catch (error) {
       console.error("Error saving product:", error);
@@ -103,11 +67,54 @@ function EditProduct() {
     }
   };
 
+  const onSubmit = async (data: AdminProductInterface) => {
+    try {
+      const postData = {
+        product: {
+          product_id: id,
+          name: data.name,
+          sale_price: data.sale_price,
+          quantity: data.quantity,
+          description: data.description,
+          category: data.category,
+          discount_percentage: data.discount_percentage,
+          image_url: image,
+          image_alt: data.image_alt,
+        },
+        is_for_sale: isForSale,
+        cost_price: data.cost_price,
+        supplier: data.supplier,
+      };
+console.log(postData);
+
+      const response = await axios.patch(
+        `${apiUrl}/api/products/inventory/${id}`,
+        postData,
+        {
+          headers: {
+            Authorization: Cookies.get("token"),
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setMesge("Added successfully!");
+        setTimeout(() => {
+          navigate(`/erp/products`);
+        }, 2000);
+      } else {
+        console.error("Failed to add product");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   useEffect(() => {
     async function getProduct(id: string) {
       try {
         const productData = await axios.get(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+          `${apiUrl}/api/products/inventory/${id}`,
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -115,17 +122,17 @@ function EditProduct() {
           }
         );
 
-        Object.keys(productData.data).forEach(key => {
+        Object.keys(productData.data).forEach((key) => {
           if (!key.includes("product_id")) {
-            setValue(key as ProductData, productData.data[key])
-          }})
-
+            setValue(key as ProductData, productData.data[key]);
+          }
+        });
       } catch (err) {
-        console.error(err);
+        console.error("Error getting product:", err);
       }
     }
     getProduct(id!);
-  }, []);
+  }, [id, setValue]);
 
   return (
     <Container>
@@ -138,7 +145,7 @@ function EditProduct() {
       >
         Logout
       </Button>
-      <Button onClick={() => navigate("/Products")}>All Products</Button>
+      <Button onClick={() => navigate("/erp/Products")}>All Products</Button>
       <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
         <Typography variant="h5">Product properties</Typography>
 
@@ -151,7 +158,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Product Name"
             type="text"
-            {...register("product.name"as ProductData, { required: true })}
+            {...register("product.name" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.name && <Alert severity="error">Product Name is required.</Alert>}
@@ -160,7 +167,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Sale Price"
             type="number"
-            {...register("product.sale_price"as ProductData, { required: true })}
+            {...register("product.sale_price" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.sale_price && <Alert severity="error">Sale Price is required.</Alert>}
@@ -178,7 +185,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Description"
             type="text"
-            {...register("product.description"as ProductData, { required: true })}
+            {...register("product.description" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.description && <Alert severity="error">Description is required.</Alert>}
@@ -187,7 +194,7 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Category"
             type="text"
-            {...register("product.category"as ProductData, { required: true })}
+            {...register("product.category" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.category && <Alert severity="error">Category is required.</Alert>}
@@ -196,28 +203,41 @@ function EditProduct() {
             InputLabelProps={{ shrink: true }}
             label="Discount Percentage"
             type="number"
-            {...register("product.discount_percentage"as ProductData, { required: true })}
+            {...register("product.discount_percentage" as ProductData, { required: true })}
             margin="normal"
           />
           {errors.discount_percentage && (
             <Alert severity="error">Discount Percentage is required.</Alert>
           )}
 
-          <input
+           <label htmlFor="imageInput">
+            <Button variant="contained" component="span" sx={{ mt: 2  }}>
+          <Input
             type="file"
             id="imageInput"
-            {...register("product.image_url" as ProductData, { required: false })}
-            accept="image/*"
+            {...register("product.image_url" as ProductData, { required: true })}
             style={{ display: "none" }}
+            onChange={() => {
+              handleSubmitImage();
+            }}
           />
-          <label htmlFor="imageInput">
-            <Button variant="contained" component="span" sx={{ mt: 2 }}>
               Upload Image
             </Button>
           </label>
-          {uploading && <LinearWithValueLabel />}
 
           {errors.image_url && <Alert severity="error">Image URL is required.</Alert>}
+          {uploading && <LinearWithValueLabel />}
+          {image && (
+            <img
+              src={image}
+              alt="Preview"
+              style={{
+                maxWidth: "30%",
+                maxHeight: "30%",
+                marginTop: "10px",
+              }}
+            />
+          )}
 
           <TextField
             InputLabelProps={{ shrink: true }}
@@ -262,18 +282,12 @@ function EditProduct() {
             margin="normal"
           />
           {errors.supplier && <Alert severity="error">Supplier is required.</Alert>}
-          {image && (
-            <img
-              src={image}
-              alt="Preview"
-              style={{ maxWidth: "100%", maxHeight: "300px", marginTop: "10px" }}
-            />
-          )}
 
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Save Product
           </Button>
-          {mesge ? <p> {mesge} </p> : null}
+
+          {mesge ? <h1> {mesge} </h1> : null}
         </Box>
       </Paper>
     </Container>

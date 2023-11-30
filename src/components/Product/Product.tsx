@@ -10,8 +10,12 @@ import Grid from "@mui/material/Grid";
 import CardMedia from "@mui/material/CardMedia";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import LoadingSpinner from "../pages/Loading";
+import LoadingSpinner from "../../pages/Loading";
 import { Paper } from "@mui/material";
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
 
 const ProductDetails = () => {
   const navigate = useNavigate();
@@ -22,7 +26,9 @@ const ProductDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+          `${apiUrl}/api/products/inventory/${id}`,
+
+          // `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
           { headers: { Authorization: Cookies.get("token") } }
         );
         setProductDetails(response.data);
@@ -37,13 +43,13 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `https://erp-beak1-6.onrender.com/api/products/inventory/${id}`,
+        `${apiUrl}/api/products/inventory/${id}`,
         { headers: { Authorization: Cookies.get("token") } }
       );
 
       if (response.status === 200) {
         console.log("Product deleted successfully");
-        navigate("/Products");
+        navigate("/erp/Products");
       } else {
         console.error("Failed to delete product");
       }
@@ -52,7 +58,7 @@ const ProductDetails = () => {
     }
   };
   
-  const handleEdit = () => navigate(`/EditProduct/${id}`);
+  const handleEdit = () => navigate(`/erp/EditProduct/${id}`);
   
   return (<>
     {productDetails ? (

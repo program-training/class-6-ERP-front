@@ -16,10 +16,15 @@ import Typography from "@mui/material/Typography";
 import { MenuItem, Select, InputLabel } from "@mui/material";
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { AdminProductInterface } from "../interface/interface";
+import { AdminProductInterface } from "../../interface/interface";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
-import SkeletonTable from "../pages/Skeleton";
+import SkeletonTable from "../../pages/Skeleton";
+import  './Products.css'; // Import your custom styled cell component
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,7 +50,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const Products: React.FC = () => {
+const Products: React.FC =  () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<AdminProductInterface[]>([]);
@@ -56,21 +61,8 @@ const Products: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("name");
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  // const [isPostRead, setIsPostRead] = useState(false);
 
-  // const handleIconClick = (productId: string | undefined) => {
-  //   // כאן יש להוסיף לוגיקה שמשנה את המצב של הפוסט, לדוג', על פי מזהה המוצר
-  //   // ולאחר מכן לבצע את הקריאה לשרת או כל פעולה אחרת שתכיל הפונקציה
-
-  //   // לדוג', אם המשתמש לוחץ על האיקון והפוסט לא נקרא, יש לשנות את המשתנה ל-true
-  //   setIsPostRead(!isPostRead);
-  //   console.log(productId);
-
-  //   // לאחר מכן, ניתן לבצע את הקריאה לשרת או כל פעולה אחרת
-  //   // אפשר להוסיף כל פעולה נוספת שתתאים לדרישות שלך
-  // };
-
-  const handleSortChange = (option: string) => {
+  const handleSortChange =  (option: string) => {
     if (option === sortOption) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -78,26 +70,43 @@ const Products: React.FC = () => {
       setSortOrder("asc");
     }
   };
-  const handleToggleIsForSale = (productId: string) => {
-    setProducts((prevProducts) => {
-      const updatedProducts = prevProducts.map((product) => {
-        if (product["product.product_id"] === productId) {
-          return {
-            ...product,
-            is_for_sale: !product.is_for_sale,
-          };
-        }
-        return product;
-      });
-      return updatedProducts;
-    });
-  };
+  const handleToggleIsForSale = async (productId: string) => {
+    try {
+    const updatedProducts = await Promise.all(
+     products.map(async(product) => {
+      if (product["product.product_id"] === productId) {
+        const updatedProduct =  {
+          ...product,
+          is_for_sale: !product.is_for_sale,
+        };
+        const res = await axios.patch(`${apiUrl}/api/products/inventory/${productId}`, {
+          is_for_sale: updatedProduct.is_for_sale,
+        }, {
+          headers: {
+            Authorization: Cookies.get("token"),
+          },
+        });
+          console.log(res);
+          
+        return updatedProduct;
+      }
+      return product;
+    }))
+
+    setProducts(updatedProducts);
+  } catch (error) {
+    console.error('Error updating is_for_sale property:', error);
+}
+};
+    
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://erp-beak1-6.onrender.com/api/products/inventory",
+          `${apiUrl}/api/products/inventory`,
+          // "https://erp-beak1-6.onrender.com/api/products/inventory",
           {
             headers: {
               Authorization: Cookies.get("token"),
@@ -184,109 +193,155 @@ const Products: React.FC = () => {
   }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
-    navigate(`/Product/${productId}`);
+    navigate(`/erp/Product/${productId}`);
   };
 
   const handleAddProduct = async () => {
-    navigate(`/addProduct`);
+    navigate(`/erp/addProduct`);
   };
 
   return (
     <Box>
-      <Typography
-        component="div"
-        style={{
-          backgroundColor: "gray",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* <Typography component="h1" style={{ marginRight: "10px" }}>
-          All Products
-        </Typography> */}
-        <TextField
-          placeholder="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            "& .MuiInputBase-root": {
-              backgroundColor: "white",
-            },
-            "& .MuiInputBase-input": {
-              color: "withe",
-            },
-          }}
-        />
-        <Typography component="div">
-          <InputLabel sx={{ color: "white" }}>Sort By:</InputLabel>
-          <Select
-            onChange={(e) => handleSortChange(e.target.value)}
-            value={sortOption}
-            sx={{ color: "white" }}
-          >
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="sale_price">Sale Price</MenuItem>
-            <MenuItem value="discount_percentage">Discount Percentage</MenuItem>
-            <MenuItem value="description">Description</MenuItem>
-            <MenuItem value="quantity">Quantity</MenuItem>
-          </Select>
-        </Typography>
-        <Typography component="div">
-          <InputLabel sx={{ color: "white" }}>Sort Order:</InputLabel>
-          <Select
-            onChange={(e) => setSortOrder(e.target.value)}
-            value={sortOrder}
-            sx={{ color: "white" }}
-          >
-            <MenuItem value="asc">Ascending</MenuItem>
-            <MenuItem value="desc">Descending</MenuItem>
-          </Select>
-        </Typography>
-        <Button
-          onClick={handleAddProduct}
-          style={{
-            marginLeft: "10px",
-            padding: "8px",
-            borderRadius: "4px",
-            backgroundColor: "black",
-            color: "white",
-            border: "none",
-          }}
-        >
-          Add Product
-        </Button>
-        <Button
-          onClick={() => {
-            Cookies.remove("token");
-            navigate("/");
-          }}
-          style={{
-            marginLeft: "10px",
-            padding: "8px",
-            borderRadius: "4px",
-            backgroundColor: "black",
-            color: "white",
-            border: "none",
-          }}
-        >
-          Logout
-        </Button>
-      </Typography>
+
+ <Typography component="div"
+  style={{
+    backgroundColor: "gray",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px", 
+  }}
+>
+  <Typography component="h2" style={{ marginRight: "10px" }}>
+    All Products
+  </Typography>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <TextField
+      placeholder="Search products..."
+      
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        ),
+      }}
+      sx={{
+        "& .MuiInputBase-root": {
+          backgroundColor: "white",
+          borderRadius: "30px",
+          height: "40px",
+        },
+        "& .MuiInputBase-input": {
+          color: "black",
+          borderRadius: "30px",
+          height: "40px",
+        },
+      }}
+    />
+  </div>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <InputLabel
+      sx={{
+        color: "white",
+        borderRadius: "15px",
+        margin: "0",
+        marginLeft: "10px", // Adding margin for better spacing
+      }}
+    >
+      Sort By:
+    </InputLabel>
+    <Select
+      onChange={(e) => handleSortChange(e.target.value)}
+      value={sortOption}
+      sx={{
+        color: "white",
+        borderRadius: "5px",
+        backgroundColor: "#aaaaaa" ,// Adjust the color code as needed
+        height: "40px",
+        marginLeft: "5px", // Adding margin for better spacing
+      }}
+    >
+      <MenuItem value="name">Name</MenuItem>
+      <MenuItem value="sale_price">Sale Price</MenuItem>
+      <MenuItem value="discount_percentage">Discount Percentage</MenuItem>
+      <MenuItem value="description">Description</MenuItem>
+      <MenuItem value="quantity">Quantity</MenuItem>
+    </Select>
+  </div>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <InputLabel
+      sx={{
+        color: "white",
+        borderRadius: "15px",
+        margin: "0",
+        marginLeft: "10px",
+      }}
+    >
+      Sort Order:
+    </InputLabel>
+    <Select
+      onChange={(e) => setSortOrder(e.target.value)}
+      value={sortOrder}
+      sx={{
+        color: "white",
+        borderRadius: "5px",
+        backgroundColor: "#aaaaaa" ,
+        height: "40px",
+        marginLeft: "5px", 
+      }}
+    >
+      <MenuItem value="asc">Ascending</MenuItem>
+      <MenuItem value="desc">Descending</MenuItem>
+    </Select>
+  </div>
+
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <Button
+      onClick={handleAddProduct}
+      style={{
+        padding: "8px",
+        borderRadius: "15px",
+        backgroundColor: "black",
+        color: "white",
+        height: "40px",
+        marginLeft: "10px", 
+      }}
+    >
+      Add Product
+    </Button>
+
+    <Button
+      onClick={() => {
+        Cookies.remove('token')
+        navigate("/")
+      }}
+      style={{
+        padding: "8px",
+        borderRadius: "15px",
+        backgroundColor: "black",
+        color: "white",
+        border: "none",
+        height: "40px",
+        marginLeft: "10px", 
+      }}
+    >
+      Logout
+    </Button>
+  </div>
+</Typography>
 
       {loading ? (
         <SkeletonTable />
       ) : (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <TableHead style={{ position: 'sticky', top: 0 }} className="TableStickyHeader">
               <TableRow>
                 <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
@@ -387,7 +442,7 @@ const Products: React.FC = () => {
                       <ClearIcon
                         style={{ color: "red", cursor: "pointer" }}
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevents the row click event from triggering
+                          e.stopPropagation(); 
                           const productId = product["product.product_id"];
                           if (productId) {
                             handleToggleIsForSale(productId);

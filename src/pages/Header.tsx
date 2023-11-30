@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <div style={headerStyle}>
       <h1 onClick={() =>{
-        nav('/products')
+        nav('/erp/products')
       }}>Inventory Management</h1>
     </div>
   );
@@ -18,6 +18,8 @@ const headerStyle: React.CSSProperties = {
   color: '#fff',
   padding: '1rem',
   textAlign: 'center',
+  position :'sticky',
+  
 };
 
 export default Header;

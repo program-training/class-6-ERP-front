@@ -15,6 +15,11 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { FormDataSignUp } from "../interface/interface";
 
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+console.log(`API Base URL: ${apiUrl}`);
+
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
@@ -54,7 +59,9 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        "https://erp-beak1-6.onrender.com/api/users/register",
+        `${apiUrl}/api/users/register`,
+
+        // "https://erp-beak1-6.onrender.com/api/users/register",
         data,
         {
           headers: {
@@ -69,7 +76,7 @@ const SignUp = () => {
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
-          navigate("/");
+          navigate("/erp");
         }, 1500);
       } else {
         console.error("Registration failed");
@@ -85,7 +92,7 @@ const SignUp = () => {
     setOpen(false);
 
     if (loginSuccess) {
-      navigate("/");
+      navigate("/erp");
     } else {
       console.error("Registration failed");
     }
