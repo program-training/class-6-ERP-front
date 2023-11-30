@@ -61,7 +61,7 @@ const Login = () => {
     //  backgroundImage: 'url("https://www.picshare.co.il/s_pictures/img171970.jpg")'
     //   ,backgroundRepeat:"no-repeat" ,
     //   backgroundSize:"contain" ,
-    //   width :' 100%' ,
+    //   width :'100%' ,
     //   height : '100%'
       }}>
     <CardContent
