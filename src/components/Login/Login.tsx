@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -12,32 +11,12 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { FormData } from "../../interface/interface";
+import {Alert ,RegisterFormStyle} from "./LoginStyle" 
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
-console.log(`API Base URL: ${apiUrl}`);
 
-interface FormData {
-  username: string;
-  password: string;
-}
-
-const RegisterFormStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "16px",
-  padding: "20px",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  background: "linear-gradient(to right bottom, #ffffff, #f0f0f0)",
-};
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,7 +28,6 @@ const Login = () => {
     try {
       const response = await axios.post(
         `${apiUrl}/api/users/login`,
-        // "https://erp-beak1-6.onrender.com/api/users/login",
         data
       );
 
