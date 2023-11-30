@@ -8,8 +8,8 @@ export const RegisterFormStyle: React.CSSProperties = {
     gap: "16px",
     padding: "20px",
     borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    background: "linear-gradient(to right bottom, #ffffff, #f0f0f0)",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.0)",
+    backgroundColor: "rgba(255, 255, 255, 0.0)" 
   };
   
   export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
