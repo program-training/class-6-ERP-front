@@ -60,7 +60,6 @@ const SignUp = () => {
     try {
       const response = await axios.post(
         `${apiUrl}/users/register`,
-
         // "https://erp-beak1-6.onrender.com/api/users/register",
         data,
         {
