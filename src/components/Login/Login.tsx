@@ -1,38 +1,48 @@
-import  { useState } from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-// import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { FormData } from "../../interface/interface";
-import {Alert ,RegisterFormStyle} from "./LoginStyle"
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
-
-
+import { Alert, RegisterFormStyle } from "./LoginStyle";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../../state/graphqlMutations";
 
 const Login = () => {
+
+
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormData>();
   const [open, setOpen] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
-  const handleLogin = async (data: FormData) => {
-    try {
-      const response = await axios.post(
-        `${apiUrl}/users/login`,
-        data
-      );
 
-      if (response.status === 200) {
-        const token = response.data.token;
+  const [loginUser] = useMutation(LOGIN_USER);
+
+  const handleLogin = async (data: FormData) => {
+
+    // console.log(data.username, data.password,);
+
+    try {
+      const response = await loginUser({
+        variables: {
+          username: data.username,
+          password: data.password,
+        },
+      });
+      
+      
+
+      if (response.data?.loginUser.status === 200) {
+        const token = response.data?.loginUser.token
+        console.log('status : ' + response.data?.loginUser.status ,' , token : '+ token);
+        
         Cookies.set("token", token, { expires: 1 });
 
         setOpen(true);
@@ -54,7 +64,7 @@ const Login = () => {
     setOpen(false);
     setLoginError(null);
   };
-  
+
   return (
     <Box
       style={{
@@ -97,7 +107,7 @@ const Login = () => {
               {...register("username")}
               fullWidth
               margin="normal"
-              style={{ backgroundColor: "rgba(255, 255, 255, 0.5)" }} // Adjust alpha for transparency
+              style={{ backgroundColor: "rgba(255, 255, 255, 0.5)" }}
             />
             <TextField
               id="password"
@@ -106,12 +116,12 @@ const Login = () => {
               {...register("password")}
               fullWidth
               margin="normal"
-              style={{ backgroundColor: "rgba(255, 255, 255, 0.5)" }} // Adjust alpha for transparency
+              style={{ backgroundColor: "rgba(255, 255, 255, 0.5)" }}
             />
             <Button
               type="submit"
               sx={{
-                backgroundColor: "rgba(128, 128, 128, 0.7)", // Adjust alpha for transparency
+                backgroundColor: "rgba(128, 128, 128, 0.7)",
                 color: "white",
               }}
               variant="contained"
@@ -123,7 +133,7 @@ const Login = () => {
                 navigate("/erp/Sign_up");
               }}
               sx={{
-                backgroundColor: "rgba(128, 128, 128, 0.7)", // Adjust alpha for transparency
+                backgroundColor: "rgba(128, 128, 128, 0.7)",
                 color: "white",
               }}
               variant="contained"

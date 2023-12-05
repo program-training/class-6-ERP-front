@@ -21,6 +21,9 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import SkeletonTable from "../../pages/Skeleton";
 import  './Products.css'; // Import your custom styled cell component
+import { useQuery  } from "@apollo/client";
+import { GET_PRODUCTS } from "../../state/graphqlQueriesProducts";
+
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -61,6 +64,17 @@ const Products: React.FC =  () => {
   const [sortOption, setSortOption] = useState<string>("name");
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+
+
+  const { data } = useQuery(GET_PRODUCTS);
+
+ console.log(data.getProducts.message);
+ console.log(data.getProducts.status);
+ console.log(data[0]);
+ 
+  
+  
+
 
   const handleSortChange =  (option: string) => {
     if (option === sortOption) {
@@ -104,14 +118,9 @@ const Products: React.FC =  () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${apiUrl}/products/inventory`,
-          {
-            headers: {
-              Authorization: Cookies.get("token"),
-            },
-          }
-        );
+        const response = data
+       console.log(response);
+       
         setProducts(response.data);
         setFilteredProducts(response.data);
         setLoading(false);

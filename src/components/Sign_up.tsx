@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -15,10 +14,11 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { FormDataSignUp } from "../interface/interface";
 import { Typography } from "@mui/material";
+import { REGISTER_USER } from "../state/graphqlMutations";
+import { useMutation } from "@apollo/client";
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
 
-console.log(`API Base URL: ${apiUrl}`);
+
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
@@ -49,6 +49,9 @@ const SignUp = () => {
   const [open, setOpen] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
 
+  const [reristerUser] = useMutation(REGISTER_USER);
+  
+
   const handleRegistration = async (data: FormDataSignUp) => {
     const { password, confirmPassword } = data;
 
@@ -56,22 +59,18 @@ const SignUp = () => {
       console.error("Passwords do not match");
       return;
     }
-
     try {
-      const response = await axios.post(
-        `${apiUrl}/users/register`,
-        // "https://erp-beak1-6.onrender.com/api/users/register",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-console.log(response);
+      const response = await reristerUser({
+        variables: {
+          username: data.username,
+          password: data.password,
+        },
+      });
+      
+        console.log(response);
 
-      if (response.data.user) {
-        console.log("Registration successful");
+        if (response.data?.register.status === 201) {
+          console.log("Registration successful");
         setLoginSuccess(true);
         setOpen(true);
         setTimeout(() => {
